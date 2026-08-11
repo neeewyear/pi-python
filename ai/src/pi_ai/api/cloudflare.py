@@ -1,0 +1,26 @@
+"""Cloudflare API 适配（对应 ``cloudflare.ts``）。
+
+提供 Cloudflare Workers AI 和 AI Gateway 的 Base URL 常量。
+"""
+
+# Workers AI 直连端点
+CLOUDFLARE_WORKERS_AI_BASE_URL = (
+    "https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/v1"
+)
+
+# AI Gateway Unified API
+# https://developers.cloudflare.com/ai-gateway/usage/unified-api/
+CLOUDFLARE_AI_GATEWAY_COMPAT_BASE_URL = (
+    "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/compat"
+)
+
+# AI Gateway → OpenAI 透传
+# 在 /compat 支持 /v1/responses 之前使用
+CLOUDFLARE_AI_GATEWAY_OPENAI_BASE_URL = (
+    "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/openai"
+)
+
+# AI Gateway → Anthropic 透传
+CLOUDFLARE_AI_GATEWAY_ANTHROPIC_BASE_URL = (
+    "https://gateway.ai.cloudflare.com/v1/{CLOUDFLARE_ACCOUNT_ID}/{CLOUDFLARE_GATEWAY_ID}/anthropic"
+)

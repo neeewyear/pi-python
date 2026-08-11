@@ -1,0 +1,52 @@
+[project]
+name = "pi-agent"
+version = "0.1.0"
+description = "Pi Agent 模块的 Python 重构（对应 @earendil-works/pi-agent-core）"
+requires-python = ">=3.11"
+dependencies = [
+    "pi-ai>=0.1.0",
+    "pi-session>=0.1.0",
+    "pydantic>=2.0",
+    "orjson>=3.9",
+    "aiofiles>=23.2",
+    "pyyaml>=6.0",
+    "pathspec>=0.12",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.8",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "types-PyYAML>=6.0",
+    "types-aiofiles>=23.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+explicit_package_bases = true
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disable_error_code = [
+    "var-annotated",    # 测试变量无需完整类型注解
+    "unused-ignore",    # 测试中可能遗留 type: ignore
+    "comparison-overlap",  # 测试中 identity 检查常见
+    "union-attr",       # 联合类型属性访问在测试中常见
+    "operator",         # 操作符类型检查在测试中可放宽
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

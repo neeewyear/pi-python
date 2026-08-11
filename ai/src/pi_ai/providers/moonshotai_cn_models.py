@@ -1,0 +1,16 @@
+"""模型目录（对应 ``moonshotai-cn.models.ts``）。
+
+TODO: 在模型数据迁移后，从 JSON 数据文件加载实际模型数据。
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from ..model_catalog import flatten_model_catalog
+
+# TODO: 从 JSON 数据文件加载后替换
+# 当前使用空字典作为占位
+_MODEL_DATA: dict[str, dict[str, Any]] = {}
+
+MOONSHOTAI_CN_MODELS: dict[str, Any] = flatten_model_catalog("moonshotai-cn", _MODEL_DATA)

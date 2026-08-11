@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "pi-session-sqlite"
+version = "0.1.0"
+description = "SQLite session backend for pi-session"
+requires-python = ">=3.11"
+dependencies = [
+    "aiosqlite>=0.19",
+    "pi-session>=0.1.0",
+    "pi-agent>=0.1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+strict = true

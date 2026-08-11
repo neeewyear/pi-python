@@ -1,0 +1,56 @@
+[project]
+name = "pi-coding-agent"
+version = "0.1.0"
+description = "Pi Coding Agent 产品层（对应 @earendil-works/pi-coding-agent）"
+requires-python = ">=3.11"
+dependencies = [
+    "pi-ai>=0.1.0",
+    "pi-agent>=0.1.0",
+    "pi-session>=0.1.0",
+    "pydantic>=2.0",
+    "orjson>=3.9",
+    "aiofiles>=23.2",
+    "pyyaml>=6.0",
+    "pathspec>=0.12",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.8",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "types-PyYAML>=6.0",
+    "types-aiofiles>=23.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+explicit_package_bases = true
+mypy_path = "src"
+disable_error_code = [
+    "unused-ignore",
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disable_error_code = [
+    "var-annotated",
+    "unused-ignore",
+    "comparison-overlap",
+    "union-attr",
+    "operator",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
