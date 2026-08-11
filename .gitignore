@@ -13,3 +13,5 @@ __pycache__/
 # 文档
 doc/
 todo/
+origin_pi/
+**/tests/
