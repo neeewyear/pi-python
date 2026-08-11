@@ -1,0 +1,15 @@
+pi/
+# ide
+.vscode/
+.codex/
+.trae/
+.zcode/
+
+# 缓存
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+
+# 文档
+doc/
+todo/
