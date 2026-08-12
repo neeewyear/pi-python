@@ -122,6 +122,13 @@ class CompatibilityRequestConfig:
 # ---------------------------------------------------------------------------
 
 
+def _model_field(model: Any, name: str, default: Any = None) -> Any:
+    """从 dict 或 Model 对象读取字段（组合流程中 model 可能是任意一种）。"""
+    if isinstance(model, dict):
+        return model.get(name, default)
+    return getattr(model, name, default)
+
+
 def _merge_compat(
     base: dict[str, Any] | None,
     override: dict[str, Any] | None,
@@ -678,7 +685,7 @@ def compose_model_provider(
 
     def supports_base_api(model: dict[str, Any]) -> bool:
         return any(
-            getattr(m, "api", "") == model.get("api", "")
+            getattr(m, "api", "") == _model_field(model, "api", "")
             for m in (base.get_models() if base else [])
         )
 
@@ -698,7 +705,11 @@ def compose_model_provider(
         options: dict[str, Any] | None,
         simple: bool,
     ) -> AssistantMessageEventStream:
-        if extension and extension.stream_simple and model.get("api") == extension.api:
+        if (
+            extension
+            and extension.stream_simple
+            and _model_field(model, "api") == extension.api
+        ):
             return cast(
                 AssistantMessageEventStream,
                 extension.stream_simple(model, context, options),
@@ -711,9 +722,11 @@ def compose_model_provider(
             return base.stream(
                 cast(Model, model), context, cast("StreamOptions", options)
             )
-        api_provider = get_api_provider(model["api"])
+        api_provider = get_api_provider(_model_field(model, "api", ""))
         if not api_provider:
-            raise ValueError(f"No API provider registered for api: {model['api']}")
+            raise ValueError(
+                f"No API provider registered for api: {_model_field(model, 'api', '')}"
+            )
         if simple:
             return cast(
                 AssistantMessageEventStream,
