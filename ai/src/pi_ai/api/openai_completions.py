@@ -319,14 +319,10 @@ def stream(
                 if next_params is not None:
                     params = next_params
 
-            # 请求选项
-            request_options: dict[str, Any] = {
-                "max_retries": 0,
-            }
-            if options and options.signal is not None:
-                request_options["signal"] = options.signal
+            # 请求选项（openai SDK 2.x：create() 仅支持 timeout，单位为秒）
+            request_options: dict[str, Any] = {}
             if options and options.timeout_ms is not None:
-                request_options["timeout"] = options.timeout_ms
+                request_options["timeout"] = options.timeout_ms / 1000.0
 
             # 发起请求（带重试）
             raw_response = await retry_provider_request(
@@ -334,7 +330,7 @@ def stream(
                     **params, **request_options
                 ),
                 ProviderRetryOptions(
-                    max_retries=cast(int, options.max_retries if options else 0),
+                    max_retries=(options.max_retries if options else None) or 0,
                     max_retry_delay_ms=options.max_retry_delay_ms if options else None,
                     signal=options.signal if options else None,
                 ),
@@ -405,7 +401,7 @@ def stream(
                 if block_type == "text":
                     event_stream.push(AssistantTextDelta(delta=block.text))
                 elif block_type == "thinking":
-                    event_stream.push(AssistantThinkingDelta(delta=block.thinking))
+                    event_stream.push(AssistantThinkingDelta(delta=block.text))
                 elif block_type == "toolCall":
                     custom_input = getattr(block, "custom_input", None)
                     if custom_input:
@@ -900,7 +896,6 @@ def create_client(
     return AsyncOpenAI(
         api_key=api_key,
         base_url=getattr(model, "base_url", ""),
-        dangerously_allow_browser=True,  # type: ignore[call-arg]
         default_headers=filtered_headers,
         http_client=fetch,
     )
@@ -1780,8 +1775,7 @@ def parse_chunk_usage(raw_usage: Any, model: Any) -> Usage:
         total_tokens=input + output_tokens + cache_read_tokens + cache_write_tokens,
         cost=Cost(input=0, output=0, cache_read=0, cache_write=0, total=0),
     )
-    # 额外字段
-    usage.reasoning = reasoning_tokens  # type: ignore[attr-defined]
+    usage.reasoning = reasoning_tokens
 
     calculate_cost(model, usage)
     return usage
