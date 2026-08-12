@@ -76,14 +76,14 @@ class ModelCostRates(BaseModel):
 
     input: float = 0.0
     output: float = 0.0
-    cache_read: float = 0.0
-    cache_write: float = 0.0
+    cache_read: float = Field(default=0.0, alias="cacheRead")
+    cache_write: float = Field(default=0.0, alias="cacheWrite")
 
 
 class ModelCostTier(ModelCostRates):
     """模型成本费率层级（对应 TS ``ModelCostTier``）。"""
 
-    input_tokens_above: int = 0
+    input_tokens_above: int = Field(default=0, alias="inputTokensAbove")
 
 
 class ModelCost(ModelCostRates):
@@ -95,7 +95,7 @@ class ModelCost(ModelCostRates):
 class ModelRecord(BaseModel):
     """模型记录——``Model`` 协议的具体实现（对应 TS ``Model`` 接口）。"""
 
-    model_config = {"extra": "allow"}
+    model_config = {"extra": "allow", "populate_by_name": True}
 
     model_id: str = Field(alias="id")
     """模型 ID。"""
@@ -105,19 +105,21 @@ class ModelRecord(BaseModel):
     """API 类型。"""
     provider: str = ""
     """Provider ID。"""
-    base_url: str = ""
+    base_url: str = Field(default="", alias="baseUrl")
     """基础 URL。"""
     reasoning: bool = False
     """是否支持推理。"""
-    thinking_level_map: ThinkingLevelMap | None = None
+    thinking_level_map: ThinkingLevelMap | None = Field(
+        default=None, alias="thinkingLevelMap"
+    )
     """思考级别映射。"""
     input_types: list[str] = Field(default_factory=lambda: ["text"], alias="input")
     """输入类型（text / image）。"""
     cost: ModelCost = Field(default_factory=ModelCost)
     """成本费率。"""
-    context_window: int = 0
+    context_window: int = Field(default=0, alias="contextWindow")
     """上下文窗口大小。"""
-    max_tokens: int = 0
+    max_tokens: int = Field(default=0, alias="maxTokens")
     """最大输出 token 数。"""
     sampling_params: dict[str, Any] | None = None
     """默认采样参数。"""
@@ -357,11 +359,20 @@ def _merge_headers(
 
 def _create_setup_error_message(model: Model, error: BaseException) -> AssistantMessage:
     """创建设置错误消息（对应 TS ``createSetupErrorMessage``）。"""
+    # model 可能是 Model 对象，也可能是 provider 组合流程传入的 dict
+    if isinstance(model, dict):
+        api = model.get("api", "")
+        provider = model.get("provider", "")
+        model_id = model.get("model_id", model.get("id", ""))
+    else:
+        api = getattr(model, "api", "")
+        provider = getattr(model, "provider", "")
+        model_id = getattr(model, "model_id", "")
     return AssistantMessage(
         content=[],
-        api=model.api,
-        provider=model.provider,
-        model=model.model_id,
+        api=str(api),
+        provider=str(provider),
+        model=str(model_id),
         stop_reason="error",
         error_message=str(error),
         timestamp=int(time.time() * 1000),
