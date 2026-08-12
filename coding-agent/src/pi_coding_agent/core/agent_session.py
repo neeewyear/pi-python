@@ -28,7 +28,9 @@ from typing import Any, Literal, TypeAlias, cast
 
 from pi_agent.agent import Agent
 from pi_agent.types import (
+    AgentContext,
     AgentEvent,
+    AgentLoopTurnUpdate,
     AgentMessage,
     AgentState,
     AgentTool,
@@ -750,24 +752,31 @@ class AgentSession:
             previous_snapshot = (
                 await previous_prepare(turn, signal) if previous_prepare else None
             )
+            # turn.context 是 AgentContext 对象，需转为 dict 才能用 ** 展开
             previous_context = (
                 previous_snapshot.get("context")
                 if previous_snapshot
                 and isinstance(previous_snapshot, dict)
                 and "context" in previous_snapshot
-                else turn.context
+                else (
+                    turn.context.model_dump()
+                    if hasattr(turn.context, "model_dump")
+                    else dict(turn.context)
+                )
             )
-            return {
-                **(previous_snapshot or {}),
-                "context": {
-                    **previous_context,  # type: ignore[dict-item]
+            next_context = AgentContext(
+                **{
+                    **previous_context,
                     "system_prompt": self._system_prompt_override
                     or self._base_system_prompt,
                     "tools": list(self.agent.state.tools),
-                },
-                "model": self.agent.state.model,
-                "thinking_level": self.agent.state.thinking_level,
-            }
+                }
+            )
+            return AgentLoopTurnUpdate(
+                context=next_context,
+                model=self.agent.state.model,
+                thinking_level=self.agent.state.thinking_level,
+            )
 
         agent.prepare_next_turn_with_context = prepare_next_turn_with_context
 
@@ -891,8 +900,8 @@ class AgentSession:
         if event.type != "agent_end":
             return False
         settings = self.settings_manager.get_retry_settings()
-        if not settings.get("enabled", False) or self._retry_attempt >= settings.get(
-            "max_retries", 0
+        if not (settings.enabled or False) or self._retry_attempt >= (
+            settings.max_retries or 0
         ):
             return False
         for i in range(len(event.messages) - 1, -1, -1):
@@ -1947,7 +1956,7 @@ class AgentSession:
             path_entries = self.session_manager.get_branch()
             settings = self.settings_manager.get_compaction_settings()
 
-            preparation = prepare_compaction(path_entries, settings)  # type: ignore[arg-type]
+            preparation = prepare_compaction(path_entries, settings)
             if not preparation:
                 last_entry = path_entries[-1] if path_entries else None
                 if last_entry and last_entry.type == "compaction":
@@ -2100,7 +2109,7 @@ class AgentSession:
     ) -> bool:
         """Check if compaction is needed and run it."""
         settings = self.settings_manager.get_compaction_settings()
-        if not settings.get("enabled", False):
+        if not settings.enabled:
             return False
 
         if skip_aborted_check and assistant_message.stop_reason == "aborted":
@@ -2182,7 +2191,7 @@ class AgentSession:
         else:
             context_tokens = direct_context_tokens
 
-        if should_compact(context_tokens, context_window, settings):  # type: ignore[arg-type]
+        if should_compact(context_tokens, context_window, settings):
             return await self._run_auto_compaction("threshold", False)
         return False
 
@@ -2205,7 +2214,7 @@ class AgentSession:
 
             path_entries = self.session_manager.get_branch()
 
-            preparation = prepare_compaction(path_entries, settings)  # type: ignore[arg-type]
+            preparation = prepare_compaction(path_entries, settings)
             if not preparation:
                 return False
 
@@ -2927,23 +2936,21 @@ class AgentSession:
     async def _prepare_retry(self, message: AssistantMessage) -> bool:
         """Prepare a retryable error for continuation with exponential backoff."""
         settings = self.settings_manager.get_retry_settings()
-        if not settings.get("enabled", False):
+        if not (settings.enabled or False):
             return False
 
         self._retry_attempt += 1
 
-        if self._retry_attempt > settings.get("max_retries", 0):
+        if self._retry_attempt > (settings.max_retries or 0):
             self._retry_attempt -= 1
             return False
 
-        delay_ms = settings.get("base_delay_ms", 1000) * (
-            2 ** (self._retry_attempt - 1)
-        )
+        delay_ms = (settings.base_delay_ms or 1000) * (2 ** (self._retry_attempt - 1))
 
         self._emit(
             AgentSessionAutoRetryStartEvent(
                 attempt=self._retry_attempt,
-                max_attempts=settings.get("max_retries", 0),
+                max_attempts=settings.max_retries or 0,
                 delay_ms=delay_ms,
                 error_message=message.error_message or "Unknown error",
             )
@@ -3198,7 +3205,7 @@ class AgentSession:
                     signal=self._branch_summary_abort_event,
                     custom_instructions=custom_instructions,
                     replace_instructions=replace_instructions,
-                    reserve_tokens=branch_summary_settings.get("reserve_tokens", 0),
+                    reserve_tokens=branch_summary_settings.reserve_tokens or 0,
                     stream_fn=self.agent.stream_function,  # type: ignore[attr-defined]
                     retry=self.settings_manager.get_retry_settings(),
                     callbacks=self._summarization_retry_callbacks(
