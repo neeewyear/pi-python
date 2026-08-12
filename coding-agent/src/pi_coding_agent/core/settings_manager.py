@@ -7,14 +7,18 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Literal, TypeAlias
+from typing import TYPE_CHECKING, Any, Literal, TypeAlias
 
 import orjson
 from pi_agent.types import ThinkingLevel
 from pi_ai.types import Transport
 from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
 
 from ..config import get_settings_path
+
+if TYPE_CHECKING:
+    from .compaction.compaction import CompactionSettings as CompactionLogicSettings
 
 # ---------------------------------------------------------------------------
 # 设置子类型
@@ -120,9 +124,17 @@ class PackageSource(BaseModel):
 
 
 class Settings(BaseModel):
-    """顶层设置（对应 TS ``Settings``）。"""
+    """顶层设置（对应 TS ``Settings``）。
 
-    model_config = ConfigDict(extra="allow")
+    ``alias_generator=to_camel``：settings.json 使用 camelCase 键，
+    自动映射到 snake_case 字段。
+    """
+
+    model_config = ConfigDict(
+        extra="allow",
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
 
     last_changelog_version: str | None = None
     default_provider: str | None = None
@@ -304,7 +316,8 @@ class SettingsManager:
     @staticmethod
     def _write_file(path: Path, settings: Settings) -> None:
         """将设置序列化为 JSON 并写入文件。"""
-        raw = settings.model_dump(exclude_none=True, mode="json")
+        # by_alias=True：保持与 settings.json 的 camelCase 键格式一致
+        raw = settings.model_dump(exclude_none=True, mode="json", by_alias=True)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(orjson.dumps(raw, option=orjson.OPT_INDENT_2))
 
@@ -416,23 +429,23 @@ class SettingsManager:
             return self._merged.compaction.keep_recent_tokens
         return 20000
 
-    def get_compaction_settings(self) -> dict[str, bool | int]:
-        return {
-            "enabled": self.get_compaction_enabled(),
-            "reserve_tokens": self.get_compaction_reserve_tokens(),
-            "keep_recent_tokens": self.get_compaction_keep_recent_tokens(),
-        }
+    def get_compaction_settings(self) -> CompactionLogicSettings:
+        from .compaction.compaction import CompactionSettings
 
-    def get_branch_summary_settings(self) -> dict[str, bool | int]:
+        return CompactionSettings(
+            enabled=self.get_compaction_enabled(),
+            reserve_tokens=self.get_compaction_reserve_tokens(),
+            keep_recent_tokens=self.get_compaction_keep_recent_tokens(),
+        )
+
+    def get_branch_summary_settings(self) -> BranchSummarySettings:
         bs = self._merged.branch_summary
-        return {
-            "reserve_tokens": bs.reserve_tokens
+        return BranchSummarySettings(
+            reserve_tokens=bs.reserve_tokens
             if bs and bs.reserve_tokens is not None
             else 16384,
-            "skip_prompt": bs.skip_prompt
-            if bs and bs.skip_prompt is not None
-            else False,
-        }
+            skip_prompt=bs.skip_prompt if bs and bs.skip_prompt is not None else False,
+        )
 
     def get_retry_enabled(self) -> bool:
         if self._merged.retry and self._merged.retry.enabled is not None:
@@ -445,15 +458,15 @@ class SettingsManager:
         self._global_settings.retry.enabled = enabled
         self._save_global()
 
-    def get_retry_settings(self) -> dict[str, bool | int]:
+    def get_retry_settings(self) -> RetrySettings:
         r = self._merged.retry
-        return {
-            "enabled": self.get_retry_enabled(),
-            "max_retries": r.max_retries if r and r.max_retries is not None else 3,
-            "base_delay_ms": r.base_delay_ms
+        return RetrySettings(
+            enabled=self.get_retry_enabled(),
+            max_retries=r.max_retries if r and r.max_retries is not None else 3,
+            base_delay_ms=r.base_delay_ms
             if r and r.base_delay_ms is not None
             else 2000,
-        }
+        )
 
     def get_provider_retry_settings(self) -> ProviderRetrySettings:
         """获取 provider 重试设置（对应 TS ``getProviderRetrySettings``）。"""
