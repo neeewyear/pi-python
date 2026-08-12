@@ -172,6 +172,15 @@ def _merge_headers(
     return merged
 
 
+def _opt_get(options: Any, name: str, default: Any = None) -> Any:
+    """从 dict 或 Pydantic 模型读取选项字段。"""
+    if options is None:
+        return default
+    if isinstance(options, dict):
+        return options.get(name, default)
+    return getattr(options, name, default)
+
+
 def _operation_signal(signal: Any) -> Any:
     """获取操作信号。"""
     import signal as _signal
@@ -762,9 +771,14 @@ class ModelRuntime:
     async def _prepare_request(
         self,
         model: Model,
-        options: dict[str, Any] | None = None,
+        options: Any = None,
     ) -> dict[str, Any]:
-        """准备请求所需的 provider、model 和 options。"""
+        """准备请求所需的 provider、model 和 options。
+
+        保持 model 与 options 的原始类型（Pydantic 模型对象），
+        仅把认证解析出的 api_key / headers / env 合并进去，
+        供下游 API 实现通过属性（getattr）访问。
+        """
         provider = self._models.get_provider(model.provider)
         if not provider:
             raise ModelsError("provider", f"Unknown provider: {model.provider}")
@@ -776,31 +790,39 @@ class ModelRuntime:
             raise ModelsError("auth", f"Provider is not configured: {model.provider}")
 
         auth = resolution.get("auth", {})
-        provider_options = dict(options or {})
         headers = _merge_headers(
             auth.get("headers"),
-            provider_options.get("headers"),
+            _opt_get(options, "headers"),
         )
         env = None
-        if resolution.get("env") or provider_options.get("env"):
+        env_value = _opt_get(options, "env")
+        if resolution.get("env") or env_value:
             env = {
                 **(resolution.get("env") or {}),
-                **(provider_options.get("env") or {}),
+                **(dict(env_value or {})),
             }
 
-        req_model = _model_to_dict(model)
-        if auth.get("base_url"):
-            req_model["baseUrl"] = auth["base_url"]
+        req_model: Model = model
+        if auth.get("base_url") and hasattr(model, "model_copy"):
+            req_model = model.model_copy(update={"base_url": auth["base_url"]})
+
+        api_key = _opt_get(options, "api_key") or auth.get("api_key")
+        if options is not None and hasattr(options, "model_copy"):
+            merged_options: Any = options.model_copy(
+                update={"api_key": api_key, "headers": headers, "env": env}
+            )
+        else:
+            merged_options = {
+                **dict(options or {}),
+                "api_key": api_key,
+                "headers": headers,
+                "env": env,
+            }
 
         return {
             "provider": provider,
             "model": req_model,
-            "options": {
-                **provider_options,
-                "api_key": provider_options.get("api_key") or auth.get("api_key"),
-                "headers": headers,
-                "env": env,
-            },
+            "options": merged_options,
         }
 
     def stream(
@@ -817,9 +839,7 @@ class ModelRuntime:
         context: Context,
         options: StreamOptions | None = None,
     ) -> AssistantMessageEventStream:
-        prepared = await self._prepare_request(
-            model, cast("dict[str, Any] | None", options)
-        )
+        prepared = await self._prepare_request(model, options)
         return cast(
             AssistantMessageEventStream,
             prepared["provider"].stream(
@@ -854,9 +874,7 @@ class ModelRuntime:
         context: Context,
         options: SimpleStreamOptions | None = None,
     ) -> AssistantMessageEventStream:
-        prepared = await self._prepare_request(
-            model, cast("dict[str, Any] | None", options)
-        )
+        prepared = await self._prepare_request(model, options)
         return cast(
             AssistantMessageEventStream,
             prepared["provider"].stream_simple(
@@ -892,9 +910,7 @@ class ModelRuntime:
         handle: DeferredHandle,
         options: DeferredFetchOptions | None = None,
     ) -> AssistantMessageEventStream:
-        prepared = await self._prepare_request(
-            model, cast("dict[str, Any] | None", options)
-        )
+        prepared = await self._prepare_request(model, options)
         provider = prepared["provider"]
         if not hasattr(provider, "fetch_deferred") or provider.fetch_deferred is None:
             raise ModelsError(
