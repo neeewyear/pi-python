@@ -952,8 +952,11 @@ class ExtensionRunner:
         ctx = self.create_context()
         result: Any = None
 
+        # 兼容 dict 和 Pydantic model 两种事件格式
+        event_type = event.get("type", "") if isinstance(event, dict) else event.type
+
         for ext in self._extensions:
-            handlers = ext.handlers.get(event.type, [])
+            handlers = ext.handlers.get(event_type, [])
             if not handlers:
                 continue
 
@@ -961,7 +964,7 @@ class ExtensionRunner:
                 try:
                     handler_result = await handler(event, ctx)
 
-                    if handler_result is not None and event.type in (
+                    if handler_result is not None and event_type in (
                         "session_before_switch",
                         "session_before_fork",
                         "session_before_compact",
@@ -974,7 +977,7 @@ class ExtensionRunner:
                     self.emit_error(
                         ExtensionError(
                             extension_path=ext.path,
-                            event=event.type,
+                            event=event_type,
                             error=str(err),
                             stack=getattr(err, "__traceback__", None),
                         )
