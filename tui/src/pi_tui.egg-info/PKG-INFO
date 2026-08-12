@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: pi-tui
+Version: 0.1.0
+Summary: Terminal User Interface library with differential rendering — Python port of @earendil-works/pi-tui
+Requires-Python: >=3.11
+Requires-Dist: wcwidth>=0.2.13
+Requires-Dist: mistune>=3.0.2
+Provides-Extra: dev
+Requires-Dist: mypy>=1.8; extra == "dev"
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23; extra == "dev"

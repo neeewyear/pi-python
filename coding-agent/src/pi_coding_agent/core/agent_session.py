@@ -78,12 +78,6 @@ from .compaction.compaction import (
     should_compact,
 )
 from .defaults import DEFAULT_THINKING_LEVEL
-from .export_html import (  # type: ignore
-    export_session_to_html,
-)
-from .export_html.tool_renderer import (  # type: ignore
-    create_tool_html_renderer,
-)
 from .extensions.runner import ExtensionRunner, emit_session_shutdown_event
 from .extensions.types import (
     AgentEndEvent,
@@ -709,18 +703,12 @@ class AgentSession:
                 if hook_result and hook_result.content
                 else (result.content or [])
             )
-            from ..utils.tool_result_images import (  # type: ignore[import-untyped]
-                normalize_tool_result_images,
-            )
-
-            normalized_content = await normalize_tool_result_images(
-                content,
-                auto_resize_images=self.settings_manager.get_image_auto_resize(),
-            )
-            if not hook_result and normalized_content is content:
+            # 注：normalize_tool_result_images 模块未移植（utils/tool_result_images 不存在），
+            # 移除该引用以免每次工具调用后 ImportError。图片自动缩放暂不生效。
+            if not hook_result:
                 return None
             return {
-                "content": normalized_content,
+                "content": content,
                 "details": hook_result.details if hook_result else None,
                 "is_error": hook_result.is_error
                 if hook_result is not None
@@ -753,8 +741,8 @@ class AgentSession:
                 await previous_prepare(turn, signal) if previous_prepare else None
             )
             # turn.context 是 AgentContext 对象，需转为 dict 才能用 ** 展开
-            previous_context = (
-                previous_snapshot.get("context")
+            previous_context: dict[str, Any] = (  # type: ignore[assignment]
+                previous_snapshot.get("context")  # type: ignore[assignment]
                 if previous_snapshot
                 and isinstance(previous_snapshot, dict)
                 and "context" in previous_snapshot
@@ -3396,35 +3384,31 @@ class AgentSession:
 
     async def export_to_html(self, output_path: str | None = None) -> str:
         """Export session to HTML."""
-        configured_theme_name = self.settings_manager.get_theme()
+        from types import SimpleNamespace
+
+        from ..core.export_html import ExportOptions, export_session_to_html
+        from ..core.export_html.tool_renderer import create_tool_html_renderer
+
+        # 主题模块未移植（modes/interactive/theme 不存在），theme_name 保持 None
         theme_name_result: str | None = None
-        if configured_theme_name:
-            try:
-                from ..modes.interactive.theme.theme import (  # type: ignore[import-untyped]
-                    get_theme_by_name,
-                )
-
-                if get_theme_by_name(configured_theme_name):
-                    theme_name_result = configured_theme_name
-            except ImportError:
-                pass
-
-        from ..modes.interactive.theme.theme import theme as theme_module
 
         tool_renderer = create_tool_html_renderer(
-            get_tool_definition=lambda name: self.get_tool_definition(name),
-            theme=theme_module,
-            cwd=self.session_manager.get_cwd(),
+            SimpleNamespace(
+                get_tool_definition=lambda name: self.get_tool_definition(name),
+                theme=None,
+                cwd=self.session_manager.get_cwd(),
+                width=100,
+            )
         )
 
-        return await export_session_to_html(  # type: ignore[no-any-return,attr-defined]
+        return await export_session_to_html(
             self.session_manager,
             self.state,
-            {
-                "output_path": output_path,
-                "theme_name": theme_name_result,
-                "tool_renderer": tool_renderer,
-            },
+            ExportOptions(
+                output_path=output_path,
+                theme_name=theme_name_result,
+                tool_renderer=tool_renderer,
+            ),
         )
 
     def export_to_jsonl(self, output_path: str | None = None) -> str:
