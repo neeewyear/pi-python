@@ -450,7 +450,6 @@ def create_client(
     return AsyncOpenAI(
         api_key=api_key,
         base_url=getattr(model, "base_url", ""),
-        dangerously_allow_browser=True,  # type: ignore[call-arg]
         default_headers=filtered_headers,
         http_client=fetch,
     )
