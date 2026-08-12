@@ -438,7 +438,7 @@ def _make_stream_fn(
 ) -> Any:
     """创建 stream_fn 可调用对象。"""
 
-    async def _stream_fn(
+    def _stream_fn(
         model: Model,
         context: Any,
         options: dict[str, Any] | None = None,
