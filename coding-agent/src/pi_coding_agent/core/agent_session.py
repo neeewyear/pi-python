@@ -84,6 +84,8 @@ from .export_html.tool_renderer import (  # type: ignore
 )
 from .extensions.runner import ExtensionRunner, emit_session_shutdown_event
 from .extensions.types import (
+    AgentEndEvent,
+    AgentStartEvent,
     CompactOptions,
     ContextUsage,
     ExtensionCommandContextActions,
@@ -98,6 +100,8 @@ from .extensions.types import (
     ReplacedSessionContext,
     SessionBeforeCompactResult,
     SessionBeforeTreeResult,
+    SessionShutdownEvent,
+    SessionStartEvent,
     ToolDefinition,
     ToolExecutionEndEvent,
     ToolExecutionStartEvent,
@@ -546,10 +550,13 @@ class AgentSession:
         self._base_tools_override: dict[str, AgentTool] | None = (
             config.base_tools_override
         )
-        self._session_start_event: Any = config.session_start_event or {
-            "type": "session_start",
-            "reason": "startup",
-        }
+        self._session_start_event: SessionStartEvent = (
+            SessionStartEvent(**config.session_start_event)
+            if isinstance(config.session_start_event, dict)
+            else config.session_start_event
+            if config.session_start_event
+            else SessionStartEvent(reason="startup")
+        )
         self._extension_ui_context: ExtensionUIContext | None = None
         self._extension_mode: ExtensionMode = "print"
         self._extension_command_context_actions: (
@@ -803,6 +810,11 @@ class AgentSession:
 
     async def _handle_agent_event(self, event: AgentEvent) -> None:
         """Internal handler for agent events."""
+        # 调试：确保 event 是 Pydantic model 而非 dict
+        if isinstance(event, dict):
+            raise TypeError(
+                f"_handle_agent_event 收到 dict 而非 AgentEvent (type={event.get('type', '?')})"
+            )
         # When a user message starts, check if it's from either queue and remove it
         if event.type == "message_start" and event.message.role == "user":
             self._overflow_recovery_attempted = False
@@ -916,9 +928,9 @@ class AgentSession:
 
         if event.type == "agent_start":
             self._turn_index = 0
-            await runner.emit({"type": "agent_start"})  # type: ignore[arg-type]
+            await runner.emit(AgentStartEvent(type="agent_start"))
         elif event.type == "agent_end":
-            await runner.emit({"type": "agent_end", "messages": event.messages})  # type: ignore[arg-type]
+            await runner.emit(AgentEndEvent(type="agent_end", messages=event.messages))
         elif event.type == "turn_start":
             await runner.emit(
                 TurnStartEvent(
@@ -2389,9 +2401,7 @@ class AgentSession:
             self._apply_extension_bindings(self._extension_runner)
             await self._extension_runner.emit(self._session_start_event)
             reason = (
-                "reload"
-                if self._session_start_event.get("reason") == "reload"
-                else "startup"
+                "reload" if self._session_start_event.reason == "reload" else "startup"
             )
             await self._extend_resources_from_extensions(reason)  # type: ignore[arg-type]
 
@@ -2836,7 +2846,7 @@ class AgentSession:
             previous_flag_values = self._extension_runner.get_flag_values()
             await emit_session_shutdown_event(
                 self._extension_runner,
-                {"type": "session_shutdown", "reason": "reload"},  # type: ignore[arg-type]
+                SessionShutdownEvent(reason="reload"),
             )
         else:
             previous_flag_values = {}
