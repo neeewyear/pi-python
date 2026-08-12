@@ -28,6 +28,7 @@ from .cancellation import CancellationToken
 from .stream_fn import get_default_stream_fn
 from .types import (
     AgentContext,
+    AgentEndEvent,
     AgentEvent,
     AgentLoopConfig,
     AgentLoopTurnUpdate,
@@ -35,10 +36,13 @@ from .types import (
     AssistantMessage,
     ImageContent,
     Message,
+    MessageEndEvent,
+    MessageStartEvent,
     PrepareNextTurnContext,
     QueueMode,
     StreamFn,
     TextContent,
+    TurnEndEvent,
     UserMessage,
 )
 
@@ -470,16 +474,16 @@ class Agent:
         )
 
         await self._process_events(
-            {"type": "message_start", "message": failure_message}  # type: ignore[arg-type]
+            MessageStartEvent(type="message_start", message=failure_message)
         )
         await self._process_events(
-            {"type": "message_end", "message": failure_message}  # type: ignore[arg-type]
+            MessageEndEvent(type="message_end", message=failure_message)
         )
         await self._process_events(
-            {"type": "turn_end", "message": failure_message, "tool_results": []}  # type: ignore[arg-type]
+            TurnEndEvent(type="turn_end", message=failure_message, tool_results=[])
         )
         await self._process_events(
-            {"type": "agent_end", "messages": [failure_message]}  # type: ignore[arg-type]
+            AgentEndEvent(type="agent_end", messages=[failure_message])
         )
 
     # ------------------------------------------------------------------
