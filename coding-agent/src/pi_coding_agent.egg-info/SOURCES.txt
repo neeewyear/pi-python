@@ -1,5 +1,6 @@
 pyproject.toml
 src/pi_coding_agent/__init__.py
+src/pi_coding_agent/__main__.py
 src/pi_coding_agent/config.py
 src/pi_coding_agent/main.py
 src/pi_coding_agent/migrations.py
@@ -108,6 +109,14 @@ src/pi_coding_agent/modes/__init__.py
 src/pi_coding_agent/modes/json_event.py
 src/pi_coding_agent/modes/print_mode.py
 src/pi_coding_agent/modes/interactive/__init__.py
+src/pi_coding_agent/modes/interactive/app.py
+src/pi_coding_agent/modes/interactive/commands.py
+src/pi_coding_agent/modes/interactive/completer.py
+src/pi_coding_agent/modes/interactive/history.py
+src/pi_coding_agent/modes/interactive/output_renderer.py
+src/pi_coding_agent/modes/interactive/session_ui.py
+src/pi_coding_agent/modes/interactive/signal_handler.py
+src/pi_coding_agent/modes/interactive/status_bar.py
 src/pi_coding_agent/modes/rpc/__init__.py
 src/pi_coding_agent/modes/rpc/jsonl.py
 src/pi_coding_agent/modes/rpc/rpc_client.py
@@ -118,6 +127,8 @@ src/pi_coding_agent/utils/abort.py
 src/pi_coding_agent/utils/ansi.py
 src/pi_coding_agent/utils/deprecation.py
 src/pi_coding_agent/utils/frontmatter.py
+src/pi_coding_agent/utils/fs_watch.py
+src/pi_coding_agent/utils/git.py
 src/pi_coding_agent/utils/html.py
 src/pi_coding_agent/utils/json.py
 src/pi_coding_agent/utils/mime.py
@@ -126,3 +137,4 @@ src/pi_coding_agent/utils/paths.py
 src/pi_coding_agent/utils/pi_user_agent.py
 src/pi_coding_agent/utils/shell.py
 src/pi_coding_agent/utils/sleep.py
+tests/test_signal_handler.py

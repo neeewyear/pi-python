@@ -73,7 +73,7 @@ def register_signal_handlers(
             cleanup_handlers.append(cleanup)
         else:
 
-            def cleanup(sig_value: int = sig) -> None:
+            def cleanup(sig_value: int = sig, original_handler: object = None) -> None:
                 try:
                     loop.remove_signal_handler(sig_value)
                 except (ValueError, NotImplementedError):
