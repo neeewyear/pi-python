@@ -13,7 +13,6 @@ from .cli.args import (
     parse_args,
     print_help,
 )
-from .main import MainOptions, main
 from .migrations import (
     SessionMigration,
     migrate_auth_to_auth_json,
@@ -27,11 +26,9 @@ from .rpc_entry import run_rpc_entry
 __all__: list[str] = [
     "Args",
     "Diagnostic",
-    "MainOptions",
     "Mode",
     "SessionMigration",
     "is_valid_thinking_level",
-    "main",
     "migrate_auth_to_auth_json",
     "migrate_session",
     "migrate_sessions_from_agent_root",
