@@ -445,7 +445,7 @@ def _make_stream_fn(
         options: dict[str, Any] | None = None,
     ) -> Any:
         provider_retry_settings = settings_manager.get_provider_retry_settings()
-        http_idle_timeout_ms = settings_manager.get_http_idle_timeout_ms()  # type: ignore[attr-defined]
+        http_idle_timeout_ms = settings_manager.get_http_idle_timeout_ms()
         effective_timeout_ms = (
             2147483647 if http_idle_timeout_ms == 0 else http_idle_timeout_ms
         )
@@ -457,7 +457,7 @@ def _make_stream_fn(
         if options and options.get("timeout_ms") is not None:
             timeout_ms = options["timeout_ms"]
         websocket_connect_timeout_ms = (
-            settings_manager.get_web_socket_connect_timeout_ms()  # type: ignore[attr-defined]
+            settings_manager.get_web_socket_connect_timeout_ms()
         )
         if options and options.get("websocket_connect_timeout_ms") is not None:
             websocket_connect_timeout_ms = options["websocket_connect_timeout_ms"]
