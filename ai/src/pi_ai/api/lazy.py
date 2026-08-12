@@ -26,11 +26,21 @@ def _create_setup_error_message(model: Model, error: Exception) -> AssistantMess
     """创建设置错误消息。"""
     import time
 
+    # model 可能是 Model 对象，也可能是 provider 组合流程传入的 dict
+    if isinstance(model, dict):
+        api = model.get("api", "")
+        provider = model.get("provider", "")
+        model_id = model.get("model_id", model.get("id", ""))
+    else:
+        api = getattr(model, "api", "")
+        provider = getattr(model, "provider", "")
+        model_id = getattr(model, "model_id", "")
+
     return AssistantMessage(
         content=[],
-        api=model.api,
-        provider=model.provider,
-        model=model.model_id,
+        api=str(api),
+        provider=str(provider),
+        model=str(model_id),
         stop_reason="error",
         error_message=str(error),
         timestamp=int(time.time() * 1000),
@@ -110,7 +120,10 @@ def lazy_api(
 
     class _LazyApi:
         async def _load(self) -> Any:
-            impl = await load()
+            # load 通常是返回模块的同步 lambda；也兼容异步加载函数
+            impl = load()
+            if hasattr(impl, "__await__"):
+                impl = await impl
             return impl
 
         def stream(
