@@ -323,6 +323,8 @@ class SimpleStreamOptions(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
+    api_key: str | None = None
+    env: ProviderEnv | None = None
     transport: Transport | None = None
     timeout_ms: int | None = None
     max_retries: int | None = None
