@@ -10,6 +10,8 @@ pi-ai ──▶ pi-agent ──▶ pi-coding-agent
 pi-session ──────────────┘
      ▲
 pi-session-sqlite ───────┘
+
+pi-tui ──▶ pi-coding-agent（interactive 模式）
 ```
 
 | 包 | 说明 | 行数 | 状态 |
@@ -17,6 +19,7 @@ pi-session-sqlite ───────┘
 | [`pi-ai`](ai/) | LLM API 底座：39 家 provider 工厂、认证/OAuth、模型注册表 | 22,243 | ✅ 已完成 |
 | [`pi-agent`](agent/) | 通用 Agent 引擎：Agent 循环、Harness 层、内置工具集、上下文压缩 | 6,134 | ✅ 已完成 |
 | [`pi-session`](session/) | 会话数据层：Entry/LaneRecord 模型、SessionStorage 契约、上下文构建 | 1,200 | ✅ 已完成 |
+| [`pi-tui`](tui/) | 终端 UI 库：差分渲染引擎、组件系统、编辑器、Markdown 渲染 | - | ✅ 已完成 |
 | [`pi-coding-agent`](coding-agent/) | 编码助手产品层：CLI、工具系统、会话管理、扩展框架 | 57,985 | ✅ 已完成 |
 | [`pi-session-sqlite`](session-sqlite/) | SQLite 会话后端：写租约 fencing、FTS5 搜索、分支缓存 | 2,215 | ✅ 已完成 |
 
@@ -26,9 +29,10 @@ pi-session-sqlite ───────┘
 
 ```bash
 # 安装顺序（editable 模式）
-pip install -e agent/
-pip install -e session/
 pip install -e ai/
+pip install -e session/
+pip install -e agent/
+pip install -e tui/
 pip install -e coding-agent/
 pip install -e session-sqlite/
 ```
@@ -128,6 +132,8 @@ pi-python/
 │   └── src/pi_coding_agent/#   源码
 ├── session-sqlite/         # pi-session-sqlite 包
 │   └── src/pi_session_sqlite/  # 源码
+├── tui/                    # pi-tui 包
+│   └── src/pi_tui/         #   源码
 ├── pi/                     # 原始 TypeScript 单仓库（重构参考）
 ├── todo/                   # 任务规划文档
 ├── main.py                 # 端到端测试入口

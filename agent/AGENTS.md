@@ -26,25 +26,33 @@ pip install -e ".[dev]"
 agent/
 ├── src/pi_agent/                  # 源码
 │   ├── agent.py                   # Agent 高层封装（~530 行）
+│   ├── agent_lifecycle.py         # Agent 生命周期（状态机）
 │   ├── agent_loop.py              # AgentEventStream 与入口函数
 │   ├── agent_loop_core.py         # Agent 循环主逻辑（流式事件）
 │   ├── agent_loop_tools.py        # 工具执行流水线
-│   ├── agent_lifecycle.py         # Agent 生命周期（状态机）
 │   ├── agent_queue.py             # 待处理消息队列
-│   ├── proxy.py                   # 流式代理
-│   ├── stream_fn.py               # 默认流函数注册表
-│   ├── result.py                  # Result 类型（ok/err）
 │   ├── cancellation.py            # CancellationToken
-│   ├── uuid7.py                   # UUIDv7 生成
+│   ├── deepseek_provider.py       # DeepSeek 模型对接
+│   ├── node.py                    # 节点相关
+│   ├── proxy.py                   # 流式代理
+│   ├── result.py                  # Result 类型（ok/err）
+│   ├── stream_fn.py               # 默认流函数注册表
 │   ├── types.py                   # 核心类型定义
+│   ├── uuid7.py                   # UUIDv7 生成
+│   │
 │   └── harness/                   # Harness 层
 │       ├── types.py               # 协议与错误类型
 │       ├── messages.py            # 消息转换
 │       ├── system_prompt.py       # 系统提示词
 │       ├── skills.py              # 技能加载
 │       ├── prompt_templates.py    # 提示词模板
-│       ├── agent_harness.py       # Agent Harness
+│       ├── agent_harness.py       # Agent Harness 脚手架
+│       ├── agent_harness_types.py # Harness 类型定义
 │       ├── compaction/            # 上下文压缩
+│       │   ├── compaction.py      # 压缩调度
+│       │   ├── compaction_summary.py / compaction_token.py
+│       │   ├── branch_summarization.py
+│       │   └── utils.py
 │       ├── env/                   # 执行环境
 │       │   ├── node_fs.py         # 文件系统（aiofiles）
 │       │   └── node.py            # Shell + NodeExecutionEnv
@@ -52,12 +60,12 @@ agent/
 │       │   ├── bash.py / read.py / write.py / edit.py
 │       │   ├── edit_diff.py       # Diff/Patch 算法
 │       │   ├── image.py           # 图片处理
+│       │   ├── tool_context.py    # ExecutionToolContext
 │       │   └── file_mutation_queue.py / path_utils.py
 │       └── utils/                 # 工具函数
 │           ├── truncate.py        # 文本截断
 │           └── shell_output.py    # Shell 输出捕获
 ├── tests/                         # 测试（pytest + pytest-asyncio）
-├── main.py                        # DeepSeek 启动测试入口
 ├── pyproject.toml                 # 项目配置
 └── README.md                      # 使用文档
 ```
@@ -92,6 +100,16 @@ agent/
 - 公共方法必须有 docstring（中文）。
 - 对应 TS 实现的方法注释标注 `（对应 TS ``xxx``）` 便于溯源。
 
+## 依赖关系
+
+```
+pi-ai ──▶ pi-agent ──▶ pi-coding-agent
+                         ▲
+pi-session ──────────────┘
+```
+
+本包（pi-agent）依赖 `pi-ai`（LLM API 层）和 `pi-session`（会话数据层），被 `pi-coding-agent`（产品层）依赖。
+
 ## 常用命令
 
 ```bash
@@ -120,5 +138,5 @@ conda run -n pi_env python main.py
 
 ## 任务完成约定
 
-- 任务完成后更新 `doc/todo.md` 状态。
+- 任务完成后更新 `todo/` 下的规划文档状态。
 - 结构性改动需同步更新 `README.md` 与本文档。

@@ -22,23 +22,25 @@ pi_agent/
 ├── proxy.py / stream_fn.py                          # 流式代理
 ├── result.py / cancellation.py / uuid7.py / types.py # 基础工具
 │
-└── harness/
-    ├── types.py                      # FileError / ExecutionError / FileSystem / Shell 协议
-    ├── messages.py / system_prompt.py # 消息转换与系统提示词
-    ├── skills.py / prompt_templates.py # 技能与模板加载
-    ├── compaction/                   # 上下文压缩（Token 估算 / 摘要 / 分支摘要）
-    ├── agent_harness.py              # Agent Harness 脚手架
-    ├── env/
-    │   ├── node_fs.py                # 文件系统实现（aiofiles）
-    │   └── node.py                   # Shell 执行 + NodeExecutionEnv
-    ├── tools/
-    │   ├── bash.py / read.py / write.py / edit.py  # 内置工具
-    │   ├── edit_diff.py              # Diff/Patch 算法
-    │   ├── image.py                  # 图片 MIME 检测 + Base64
-    │   └── file_mutation_queue.py / path_utils.py  # 工具辅助
-    └── utils/
-        ├── truncate.py               # 文本截断
-        └── shell_output.py           # Shell 输出捕获
+├── harness/
+│   ├── types.py                      # FileError / ExecutionError / FileSystem / Shell 协议
+│   ├── messages.py / system_prompt.py # 消息转换与系统提示词
+│   ├── skills.py / prompt_templates.py # 技能与模板加载
+│   ├── compaction/                   # 上下文压缩（Token 估算 / 摘要 / 分支摘要）
+│   ├── agent_harness.py              # Agent Harness 脚手架
+│   ├── env/
+│   │   ├── node_fs.py                # 文件系统实现（aiofiles）
+│   │   └── node.py                   # Shell 执行 + NodeExecutionEnv
+│   ├── tools/
+│   │   ├── bash.py / read.py / write.py / edit.py  # 内置工具
+│   │   ├── edit_diff.py              # Diff/Patch 算法
+│   │   ├── image.py                  # 图片 MIME 检测 + Base64
+│   │   └── file_mutation_queue.py / path_utils.py / tool_context.py  # 工具辅助
+│   └── utils/
+│       ├── truncate.py               # 文本截断
+│       └── shell_output.py           # Shell 输出捕获
+│
+└── deepseek_provider.py / node.py    # 扩展接入点
 ```
 
 ## 安装
@@ -49,9 +51,9 @@ conda create -n pi_env python=3.11
 conda activate pi_env
 
 # 安装依赖（先装 pi-session，再装本包；两包互依赖，editable 下无发布问题）
-cd agent
+cd session
 pip install -e ".[dev]"
-cd ../session
+cd ../agent
 pip install -e ".[dev]"
 ```
 
@@ -90,13 +92,13 @@ prompt = format_skills_for_system_prompt(skills)
 
 ```bash
 # 类型检查
-mypy src/pi_agent/ --strict
+conda run -n pi_env python -m mypy src/pi_agent/ --strict
 
 # 运行测试
-pytest tests/ -v
+conda run -n pi_env python -m pytest tests/ -v
 
 # 单文件测试
-pytest tests/test_result.py -v
+conda run -n pi_env python -m pytest tests/test_result.py -v
 ```
 
 ## 技术栈

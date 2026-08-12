@@ -20,8 +20,7 @@ pi-session ──依赖──▶ pi_agent（叶子模块：types / result / uuid
 pi_agent ──依赖──▶ pi-session（harness.compaction / harness.agent_harness 消费 session）
 ```
 
-依赖方向为**跨包叶子依赖**：`pi_session` 只从 `pi_agent` 导入不依赖 session 的叶子模块，
-两包静态无环。
+依赖方向为**跨包叶子依赖**：`pi_session` 只从 `pi_agent` 导入不依赖 session 的叶子模块，两包静态无环。
 
 ## 架构
 
