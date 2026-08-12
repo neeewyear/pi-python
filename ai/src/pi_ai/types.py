@@ -215,19 +215,19 @@ class ToolResultContent(BaseModel):
     usage: Usage | None = None
 
 
-ContentBlock: TypeAlias = Annotated[
-    TextContent | ImageContent | ToolCallContent | ToolResultContent,
-    Field(discriminator="type"),
-]
-"""内容块判别联合（对应 TS ``ContentBlock``）。"""
-
-
 class ThinkingBlock(BaseModel):
     """assistant 思考内容块（仅部分模型族支持）。"""
 
     type: Literal["thinking"] = "thinking"
     text: str
     signature: str | None = None
+
+
+ContentBlock: TypeAlias = Annotated[
+    TextContent | ImageContent | ToolCallContent | ToolResultContent | ThinkingBlock,
+    Field(discriminator="type"),
+]
+"""内容块判别联合（对应 TS ``ContentBlock``）。"""
 
 
 # ---------------------------------------------------------------------------
