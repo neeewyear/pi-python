@@ -15,6 +15,7 @@ from pi_agent.stream_fn import set_default_stream_fn
 from pi_agent.types import (
     AgentMessage,
     AgentState,
+    CancellationToken,
     ThinkingLevel,
 )
 from pi_ai.compat import stream_simple
@@ -508,6 +509,7 @@ def _make_transform_context(
 
     async def _transform_context(
         messages: list[AgentMessage],
+        signal: CancellationToken | None = None,
     ) -> list[AgentMessage]:
         runner = extension_runner_ref.get("current")
         if runner is not None:
