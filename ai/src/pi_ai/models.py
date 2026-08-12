@@ -393,7 +393,7 @@ def lazy_stream(
                 outer.end()
         except Exception as error:
             message = _create_setup_error_message(model, error)
-            outer.push(AssistantErrorEvent(error=str(error)))
+            outer.push(AssistantErrorEvent(error=message))
             outer.end(message)
         finally:
             if not outer._done:
