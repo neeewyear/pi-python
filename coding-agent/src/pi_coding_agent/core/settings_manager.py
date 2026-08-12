@@ -619,6 +619,12 @@ class SettingsManager:
     def get_http_proxy(self) -> str | None:
         return self._merged.http_proxy
 
+    def get_http_idle_timeout_ms(self) -> int | None:
+        return self._merged.http_idle_timeout_ms
+
+    def get_web_socket_connect_timeout_ms(self) -> int | None:
+        return self._merged.websocket_connect_timeout_ms
+
     def is_project_trusted(self) -> bool:
         """检查当前项目是否受信任。"""
         trust = self.get_default_project_trust()
