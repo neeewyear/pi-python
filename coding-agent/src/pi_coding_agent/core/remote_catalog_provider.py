@@ -11,7 +11,7 @@ from __future__ import annotations
 import time
 from typing import Any, cast
 
-from pi_ai.models import Provider, RefreshModelsContext
+from pi_ai.models import ModelRecord, Provider, RefreshModelsContext
 
 from pi_coding_agent.config import VERSION
 
@@ -38,14 +38,17 @@ def _merge_models(
 
 
 def _dict_to_model(d: dict[str, Any]) -> Any:
-    """将模型字典转换为 Model 协议兼容对象。"""
-    from types import SimpleNamespace
+    """将模型字典转换为 ``ModelRecord``（属性为 snake_case，供 API 层访问）。"""
+    try:
+        return ModelRecord(**d)
+    except Exception:
+        # 字典字段无法通过 ModelRecord 校验时，回退为 SimpleNamespace
+        from types import SimpleNamespace
 
-    obj = SimpleNamespace(**d)
-    # 映射 id -> model_id（Model 协议需要 model_id 属性）
-    if "id" in d and not hasattr(obj, "model_id"):
-        obj.model_id = d["id"]
-    return obj
+        obj = SimpleNamespace(**d)
+        if "id" in d and not hasattr(obj, "model_id"):
+            obj.model_id = d["id"]
+        return obj
 
 
 def _parse_catalog(provider_id: str, value: Any) -> list[dict[str, Any]]:
@@ -198,7 +201,7 @@ def with_remote_catalog(
             _dict_to_model(m)
             for m in _merge_models(
                 [
-                    cast("dict[str, Any]", m.model_dump())
+                    cast("dict[str, Any]", m.model_dump(by_alias=True))
                     if hasattr(m, "model_dump")
                     else cast("dict[str, Any]", m)
                     for m in original_get_models()
