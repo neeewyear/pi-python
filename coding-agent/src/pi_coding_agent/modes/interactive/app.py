@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
 from pi_agent.types import AgentEvent, CancellationToken
+from pi_ai.utils.text import content_text
 from textual.app import App, ComposeResult
 from textual.binding import Binding, BindingType
 from textual.containers import Horizontal, Vertical
@@ -194,9 +195,12 @@ class InteractiveModeApp(App[None]):
     def _on_agent_event(
         self, event: AgentEvent, token: CancellationToken | None = None
     ) -> None:
-        """处理 Agent 事件（同步回调 -> 异步 UI 更新）。"""
-        # 使用 call_from_thread 确保 UI 线程安全
-        self.call_from_thread(cast("Callable[..., None]", self._handle_event), event)
+        """处理 Agent 事件（同步回调 -> 异步 UI 更新）。
+
+        注意：Agent 回调运行在 UI 的同一事件循环线程中，
+        因此直接调用 _handle_event 即可，无需 call_from_thread。
+        """
+        self._handle_event(event)
 
     # ------------------------------------------------------------------
     # 事件处理
@@ -247,9 +251,26 @@ class InteractiveModeApp(App[None]):
     def _handle_message_end(self, event: object, log: RichLog) -> None:
         """消息结束 — 渲染完整消息（含代码块语法高亮）。"""
         full_text = "".join(self._message_buffer)
+        # 如果缓冲区为空（非流式响应），从 event.message 提取完整文本
+        error_message: str | None = None
+        if not full_text.strip():
+            msg = getattr(event, "message", None)
+            if msg is not None:
+                content = getattr(msg, "content", None)
+                with open("message_end.txt", "a") as f:
+                    f.write(
+                        f"[dim]debug: message_end msg={msg!r}, content={content!r}[/]\n"
+                    )
+                if content is not None:
+                    full_text = content_text(content, "")
+                # 检查 error_message 属性（助理消息失败时使用）
+                if not full_text.strip():
+                    error_message = getattr(msg, "error_message", None)
         if full_text.strip():
             for item in self._message_renderer.render_message(full_text):
                 log.write(item)
+        elif error_message:
+            log.write(f"[bold red]Error: {error_message}[/]")
         self._message_buffer.clear()
         self.is_processing = False
         self._update_info_panel()
