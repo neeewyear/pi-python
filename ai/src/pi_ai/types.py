@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable
-from typing import Annotated, Literal, Protocol, TypeAlias, runtime_checkable
+from typing import Annotated, Any, Literal, Protocol, TypeAlias, runtime_checkable
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -172,6 +172,8 @@ class Usage(BaseModel):
     cache_write: int = 0
     total_tokens: int = 0
     cost: Cost = Field(default_factory=Cost)
+    reasoning: int = 0
+    """推理 token 用量。"""
 
 
 # ---------------------------------------------------------------------------
@@ -333,6 +335,13 @@ class SimpleStreamOptions(BaseModel):
     metadata: dict[str, object] | None = None
     cache_retention: str | None = None
     session_id: str | None = None
+    reasoning: ModelThinkingLevel | None = None
+    tool_choice: Any | None = None
+    max_tokens: int | None = None
+    temperature: float | None = None
+    sampling_params: dict[str, object] | None = None
+    fetch: FetchFunction | None = None
+    signal: Any | None = None
 
 
 # ---------------------------------------------------------------------------
