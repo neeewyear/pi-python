@@ -274,7 +274,10 @@ async def stream_assistant_response(
                 )
 
         elif event.type in ("stream_end", "error", "aborted"):
-            final_message = last_snapshot or partial_message
+            if event.type == "error":
+                final_message = getattr(event, "error", None)
+            if final_message is None:
+                final_message = last_snapshot or partial_message
             if final_message is None:
                 raise RuntimeError("No final message from stream")
             # 不 break：让 async for 自然消费完生成器（StopAsyncIteration）。
