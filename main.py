@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Pi Agent 工具调用测试 — 测试 agent_loop 自动调用工具。
 
-任务：读取 ``TypeScript学习指南.md``，归纳总结后写入
-``TypeScript 学习指南_总结.md``。
-
 Agent 通过注册的 read / write / edit / bash 工具自主完成任务，
 main.py 不做任何硬编码文件写入。
 """
@@ -52,8 +49,6 @@ TIMEOUT_MS = 120_000
 # 工作区根目录：main.py 所在目录（pi-python）
 WORKSPACE_ROOT = Path(__file__).resolve().parent
 
-# INPUT_FILE = WORKSPACE_ROOT / "TypeScript学习指南.md"
-# OUTPUT_FILE = WORKSPACE_ROOT / "TypeScript 学习指南_总结.md"
 INPUT_FILE = "doc/text_doc/TypeScript学习指南.md"
 OUTPUT_FILE = "doc/text_doc/TypeScript 学习指南_总结.md"
 
@@ -79,9 +74,7 @@ async def main() -> None:
     # 构建上下文
     context = AgentContext(
         system_prompt=(
-            "你是一位资深的 TypeScript 讲师，擅长由浅入深地讲解 TypeScript。"
-            "请用中文回答，内容准确、结构清晰，并尽量给出可直接运行的代码示例。\n\n"
-            "当需要读写文件或执行命令时，必须使用提供的工具完成，不要臆造文件内容。"
+            "你是一位人工智能助手，擅长根据用户需求，自动调用工具完成任务。"
         ),
         messages=[
             UserMessage(
