@@ -1,7 +1,7 @@
 [project]
 name = "pi-coding-agent"
 version = "0.1.0"
-description = "Pi Coding Agent 产品层（对应 @earendil-works/pi-coding-agent）"
+description = "Pi Coding Agent 产品层"
 requires-python = ">=3.11"
 dependencies = [
     "pi-ai>=0.1.0",

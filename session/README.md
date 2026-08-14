@@ -1,6 +1,6 @@
 # Pi Session
 
-Pi Agent 的 Session 数据层独立包（对应 `@earendil-works/pi-agent-core` 的 `harness/session/`）。
+Pi Agent 的 Session 数据层独立包。
 
 ## 项目概况
 
@@ -28,7 +28,7 @@ pi_agent ──依赖──▶ pi-session（harness.compaction / harness.agent_h
 session/
 ├── pyproject.toml            # pi-session 包配置（mypy strict）
 └── src/pi_session/
-    ├── __init__.py           # 导出面（对应 TS session/index.ts）
+    ├── __init__.py           # 导出面
     ├── types.py              # Entry(7种) / LaneRecord(9种) / 存储契约（551 行）
     ├── session.py            # Session 类（树视图，绑定 main lane）
     ├── memory.py             # InMemorySessionStorage / InMemorySessionRepo

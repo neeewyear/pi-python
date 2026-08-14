@@ -21,7 +21,7 @@ cd session-sqlite && pip install -e ".[dev]" && cd ..
 ```
 session-sqlite/
 ├── src/pi_session_sqlite/          # 源码
-│   ├── __init__.py                 # 导出面（对应 TS sqlite/index.ts）
+│   ├── __init__.py                 # 导出面
 │   ├── _adapter.py                 # aiosqlite 适配器
 │   ├── _migrations.py              # 自动迁移/建表
 │   ├── _repo.py                    # SqliteSessionRepository 主入口
@@ -63,7 +63,6 @@ session-sqlite/
 ### 代码风格
 - PEP 8：函数/变量 `snake_case`，类 `PascalCase`。
 - 公共方法必须有 docstring（中文）。
-- 对应 TS 实现的方法注释标注 `（对应 TS ``xxx``）` 便于溯源。
 
 ## 常用命令
 

@@ -1,7 +1,7 @@
 [project]
 name = "pi-session"
 version = "0.1.0"
-description = "Pi Agent Session 数据层（对应 @earendil-works/pi-agent-core 的 harness/session）"
+description = "Pi Agent Session 数据层"
 requires-python = ">=3.11"
 dependencies = [
     "pi-agent>=0.1.0",

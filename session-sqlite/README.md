@@ -26,7 +26,7 @@ pi-session-sqlite
 
 ```
 pi_session_sqlite/
-├── __init__.py                    # 导出面（对应 TS sqlite/index.ts）
+├── __init__.py                    # 导出面
 ├── _adapter.py                    # aiosqlite 适配器（create_aiosqlite_factory）
 ├── _migrations.py                 # 自动迁移/建表
 ├── _repo.py                       # SqliteSessionRepository（主入口）

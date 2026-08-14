@@ -2,7 +2,7 @@
 
 ## 项目介绍
 
-Pi Agent 的 Session 数据层独立包（对应 `@earendil-works/pi-agent-core` 的 `harness/session/`）。提供 Entry/LaneRecord 数据模型、SessionStorage/SessionRepo 存储契约、Session 树视图、上下文构建与会话搜索。从 `pi_agent` 包独立，跨包依赖其叶子模块（`pi_agent.types` / `result` / `uuid7` / `harness.messages` / `harness.types`）。
+Pi Agent 的 Session 数据层独立包。提供 Entry/LaneRecord 数据模型、SessionStorage/SessionRepo 存储契约、Session 树视图、上下文构建与会话搜索。从 `pi_agent` 包独立，跨包依赖其叶子模块（`pi_agent.types` / `result` / `uuid7` / `harness.messages` / `harness.types`）。
 
 ## 开发环境
 
@@ -21,7 +21,7 @@ pip install -e ".[dev]"
 ```
 session/
 ├── src/pi_session/            # 源码
-│   ├── __init__.py            # 导出面（对应 TS session/index.ts）
+│   ├── __init__.py            # 导出面
 │   ├── types.py               # Entry(7种) / LaneRecord(9种) / 存储契约
 │   ├── session.py             # Session 类（树视图，绑定 main lane）
 │   ├── memory.py              # InMemorySessionStorage / InMemorySessionRepo
@@ -54,7 +54,8 @@ session/
 ### 代码风格
 - PEP 8：函数/变量 `snake_case`，类 `PascalCase`。
 - 公共方法必须有 docstring（中文）。
-- 对应 TS 实现的方法注释标注 `（对应 TS ``xxx``）` 便于溯源。
+
+
 
 ## 常用命令
 

@@ -19,7 +19,7 @@ pip install -e ".[dev]"
 ```
 ai/
 ├── src/pi_ai/                    # 源码
-│   ├── __init__.py               # 导出面（对应 TS ai/index.ts）
+│   ├── __init__.py               # 导出面
 │   ├── types.py                  # 核心类型（Message / Tool / ContentBlock 等）
 │   ├── models.py / models_data.py / model_catalog.py
 │   ├── models_store.py           # 模型存储
@@ -74,7 +74,6 @@ ai/
 ### 代码风格
 - PEP 8：函数/变量 `snake_case`，类 `PascalCase`。
 - 公共方法必须有 docstring（中文）。
-- 对应 TS 实现的方法注释标注 `（对应 TS ``xxx``）` 便于溯源。
 
 ## 依赖关系
 

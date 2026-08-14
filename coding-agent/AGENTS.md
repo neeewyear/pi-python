@@ -109,7 +109,6 @@ coding-agent/
 ### 代码风格
 - PEP 8：函数/变量 `snake_case`，类 `PascalCase`。
 - 公共方法必须有 docstring（中文）。
-- 对应 TS 实现的方法注释标注 `（对应 TS ``xxx``）` 便于溯源。
 
 ## 常用命令
 

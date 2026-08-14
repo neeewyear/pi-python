@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: pi-coding-agent
 Version: 0.1.0
-Summary: Pi Coding Agent 产品层（对应 @earendil-works/pi-coding-agent）
+Summary: Pi Coding Agent 产品层
 Requires-Python: >=3.11
 Requires-Dist: pi-ai>=0.1.0
 Requires-Dist: pi-agent>=0.1.0

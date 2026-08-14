@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: pi-agent
 Version: 0.1.0
-Summary: Pi Agent 模块的 Python 重构（对应 @earendil-works/pi-agent-core）
+Summary: Pi Agent 模块的 Python 重构
 Requires-Python: >=3.11
 Requires-Dist: pi-session>=0.1.0
 Requires-Dist: pydantic>=2.0
