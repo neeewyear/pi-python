@@ -1,4 +1,4 @@
-"""Settings models and manager (对应 TS ``core/settings-manager.ts`` 的简化版)。
+"""Settings models and manager。
 
 提供 Pydantic 模型描述所有设置类型，以及 ``SettingsManager`` 类用于
 读写 ``settings.json``。
@@ -124,7 +124,7 @@ class PackageSource(BaseModel):
 
 
 class Settings(BaseModel):
-    """顶层设置（对应 TS ``Settings``）。
+    """顶层设置。
 
     ``alias_generator=to_camel``：settings.json 使用 camelCase 键，
     自动映射到 snake_case 字段。
@@ -214,7 +214,7 @@ class Settings(BaseModel):
 
 
 class SettingsManager:
-    """设置管理器（对应 TS ``SettingsManager`` 的简化版）。
+    """设置管理器。
 
     读取/写入 ``settings.json``，提供 getter/setter 方法。
     支持 global 和 project 两级设置，project 设置覆盖 global。
@@ -469,7 +469,7 @@ class SettingsManager:
         )
 
     def get_provider_retry_settings(self) -> ProviderRetrySettings:
-        """获取 provider 重试设置（对应 TS ``getProviderRetrySettings``）。"""
+        """获取 provider 重试设置。"""
         r = self._merged.retry
         if r and r.provider is not None:
             return r.provider

@@ -1,4 +1,4 @@
-"""远程会话（对应 TS ``client/remote-session.ts``）。
+"""远程会话。
 
 管理远程会话的生命周期、状态和操作。
 """
@@ -24,14 +24,14 @@ from .transcript import (
 RemoteSessionOperation: TypeAlias = Literal[
     "open", "create", "submit", "abort", "setModel", "setThinking", "reconnect"
 ]
-"""远程会话操作类型（对应 TS ``RemoteSessionOperation``）。"""
+"""远程会话操作类型。"""
 
 RemoteSessionLifecycle: TypeAlias = dict[str, Any]
-"""远程会话生命周期状态（对应 TS ``RemoteSessionLifecycle``）。"""
+"""远程会话生命周期状态。"""
 
 
 class RemoteSessionState:
-    """远程会话状态（对应 TS ``RemoteSessionState``）。"""
+    """远程会话状态。"""
 
     def __init__(
         self,
@@ -45,7 +45,7 @@ class RemoteSessionState:
 
 
 class CreateRemoteSessionOptions:
-    """创建远程会话选项（对应 TS ``CreateRemoteSessionOptions``）。"""
+    """创建远程会话选项。"""
 
     def __init__(
         self,
@@ -59,7 +59,7 @@ class CreateRemoteSessionOptions:
 
 
 class RemoteSessionOptions:
-    """远程会话选项（对应 TS ``RemoteSessionOptions``）。"""
+    """远程会话选项。"""
 
     def __init__(
         self,
@@ -99,7 +99,7 @@ async def _settle_remote_session_disposal(
 
 
 class RemoteSession:
-    """远程会话（对应 TS ``RemoteSession``）。
+    """远程会话。
 
     管理与远程 agent 服务的连接和会话生命周期。
     """

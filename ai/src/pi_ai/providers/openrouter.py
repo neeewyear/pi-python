@@ -1,4 +1,4 @@
-"""OpenRouter Provider（对应 ``openrouter.ts``）。"""
+"""OpenRouter Provider。"""
 
 from __future__ import annotations
 

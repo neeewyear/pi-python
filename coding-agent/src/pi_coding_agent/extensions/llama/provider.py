@@ -1,4 +1,4 @@
-"""Provider 实现（对应 TS ``extensions/llama/provider.ts``）。
+"""Provider 实现。
 
 简化版实现，创建 llama.cpp Provider 控制器。
 """
@@ -42,10 +42,10 @@ from .client import (
 # ============================================================================
 
 LLAMA_PROVIDER_ID = "llama.cpp"
-"""Provider ID（对应 TS ``LLAMA_PROVIDER_ID``）。"""
+"""Provider ID。"""
 
 DEFAULT_LLAMA_SERVER_URL = "http://127.0.0.1:8080"
-"""默认服务器 URL（对应 TS ``DEFAULT_LLAMA_SERVER_URL``）。"""
+"""默认服务器 URL。"""
 
 
 # ============================================================================
@@ -176,7 +176,7 @@ class _LlamaProvider:
 
 
 class LlamaProviderController:
-    """Llama Provider 控制器（对应 TS ``LlamaProviderController``）。
+    """Llama Provider 控制器。
 
     管理 provider 实例和模型目录。
     """
@@ -258,7 +258,7 @@ class LlamaProviderController:
 
 
 def create_llama_provider() -> LlamaProviderController:
-    """创建 Llama Provider 控制器（对应 TS ``createLlamaProvider``）。"""
+    """创建 Llama Provider 控制器。"""
     return LlamaProviderController()
 
 

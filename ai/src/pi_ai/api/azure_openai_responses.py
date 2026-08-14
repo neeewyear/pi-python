@@ -1,4 +1,4 @@
-"""Azure OpenAI Responses API 主入口（对应 ``azure-openai-responses.ts``）。"""
+"""Azure OpenAI Responses API 主入口"""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ OPENAI_RESPONSES_MIN_OUTPUT_TOKENS = 16
 
 
 def parse_deployment_name_map(value: str | None) -> dict[str, str]:
-    """解析部署名称映射字符串（对应 TS ``parseDeploymentNameMap``）。
+    """解析部署名称映射字符串。
 
     格式：``modelId=deploymentName,modelId2=deploymentName2``
     """
@@ -57,7 +57,7 @@ def resolve_deployment_name(
     model: Any,
     options: AzureOpenAIResponsesOptions | None = None,
 ) -> str:
-    """解析部署名称（对应 TS ``resolveDeploymentName``）。"""
+    """解析部署名称。"""
     if options and options.azure_deployment_name:
         return options.azure_deployment_name
     mapped_deployment = parse_deployment_name_map(
@@ -70,14 +70,14 @@ def resolve_deployment_name(
 
 
 def format_azure_openai_error(error: object) -> str:
-    """格式化 Azure OpenAI 错误（对应 TS ``formatAzureOpenAIError``）。"""
+    """格式化 Azure OpenAI 错误。"""
     return format_provider_error(
         normalize_provider_error(error), "Azure OpenAI API error"
     )
 
 
 def normalize_azure_base_url(base_url: str) -> str:
-    """规范化 Azure OpenAI 基础 URL（对应 TS ``normalizeAzureBaseUrl``）。"""
+    """规范化 Azure OpenAI 基础 URL。"""
     trimmed = base_url.strip().rstrip("/")
     try:
         from urllib.parse import urlparse, urlunparse
@@ -107,7 +107,7 @@ def normalize_azure_base_url(base_url: str) -> str:
 
 
 def build_default_base_url(resource_name: str) -> str:
-    """构建默认的 Azure OpenAI 基础 URL（对应 TS ``buildDefaultBaseUrl``）。"""
+    """构建默认的 Azure OpenAI 基础 URL。"""
     return f"https://{resource_name}.openai.azure.com/openai/v1"
 
 
@@ -115,7 +115,7 @@ def resolve_azure_config(
     model: Any,
     options: AzureOpenAIResponsesOptions | None = None,
 ) -> dict[str, str]:
-    """解析 Azure 配置（对应 TS ``resolveAzureConfig``）。"""
+    """解析 Azure 配置。"""
     api_version = (
         (options.azure_api_version if options else None)
         or get_provider_env_value(
@@ -195,7 +195,7 @@ from .simple_options import build_base_options
 
 
 class AzureOpenAIResponsesOptions(StreamOptions):
-    """Azure OpenAI Responses API 特定选项（对应 TS ``AzureOpenAIResponsesOptions``）。"""
+    """Azure OpenAI Responses API 特定选项。"""
 
     reasoning_effort: (
         Literal["minimal", "low", "medium", "high", "xhigh", "max"] | None
@@ -236,7 +236,7 @@ def stream(
     context: Context,
     options: AzureOpenAIResponsesOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Azure OpenAI Responses API 流式生成函数（对应 TS ``stream``）。"""
+    """Azure OpenAI Responses API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -391,7 +391,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的 Azure OpenAI 流式接口（对应 TS ``streamSimple``）。"""
+    """简化的 Azure OpenAI 流式接口。"""
     api_key = options.api_key if options else None
     if not api_key:
         raise ValueError(f"No API key for provider: {getattr(model, 'provider', '')}")
@@ -427,7 +427,7 @@ def create_client(
     api_key: str,
     options: AzureOpenAIResponsesOptions | None = None,
 ) -> Any:
-    """创建 Azure OpenAI 客户端（对应 TS ``createClient``）。"""
+    """创建 Azure OpenAI 客户端。"""
     headers: dict[str, str | None] = {}
 
     # 复制模型级请求头
@@ -462,7 +462,7 @@ def build_params(
     deployment_name: str = "",
     grammar_tool_input_properties: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    """构建请求参数。"""    
     if grammar_tool_input_properties is None:
         grammar_tool_input_properties = create_grammar_tool_input_properties(
             context.tools,

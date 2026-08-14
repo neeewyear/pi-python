@@ -1,4 +1,4 @@
-"""Agent 循环核心逻辑（对应 ``agent-loop.ts`` 主循环 + 流式响应）。
+"""Agent 循环核心逻辑。
 
 - ``run_loop``：外层 while（follow-up）+ 内层 while（tool calls + steering）
 - ``stream_assistant_response``：调用 LLM 并发射事件，返回 AssistantMessage
@@ -53,7 +53,7 @@ async def run_loop(
     emit: AgentEventSink,
     stream_function: StreamFn,
 ) -> None:
-    """agent 主循环（对应 TS ``runLoop``）。
+    """agent 主循环。
 
     外层 while 等待 follow-up 消息；内层 while 处理 tool calls + steering。
     """
@@ -205,7 +205,7 @@ async def stream_assistant_response(
     emit: AgentEventSink,
     stream_function: StreamFn,
 ) -> AssistantMessage:
-    """流式调用 LLM 并发射事件（对应 TS ``streamAssistantResponse``）。
+    """流式调用 LLM 并发射事件。
 
     这是 AgentMessage[] → Message[] 转换的边界点。
     """
@@ -312,7 +312,7 @@ async def _fail_tool_calls_from_truncated_message(
     tool_calls: list[ToolCallContent],
     emit: AgentEventSink,
 ) -> ExecutedToolCallBatch:
-    """将因 token 限制截断的工具调用全部标记为失败（对应 TS ``failToolCallsFromTruncatedMessage``）。"""
+    """将因 token 限制截断的工具调用全部标记为失败。"""
     messages: list[ToolResultMessage] = []
 
     for tool_call in tool_calls:

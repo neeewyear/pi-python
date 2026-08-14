@@ -1,4 +1,4 @@
-"""SQLite 迁移运行器（对应 TS ``sqlite/migrations.ts``）。"""
+"""SQLite 迁移运行器。"""
 
 from __future__ import annotations
 

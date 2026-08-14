@@ -1,4 +1,4 @@
-"""OpenRouter OAuth PKCE 流程（对应 ``oauth/openrouter.ts``）。
+"""OpenRouter OAuth PKCE 流程。
 
 OpenRouter 使用 PKCE 授权码流程，将授权码交换为永久的、用户控制的 API 密钥，
 而非过期的 access/refresh token 对。回调通过手动粘贴授权码完成（无本地回环服务器）。

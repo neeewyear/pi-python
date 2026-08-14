@@ -1,4 +1,4 @@
-"""认证辅助函数（对应 ``auth/helpers.ts``）。"""
+"""认证辅助函数。"""
 
 from __future__ import annotations
 

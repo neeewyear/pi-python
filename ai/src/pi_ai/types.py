@@ -1,4 +1,4 @@
-"""pi-ai 核心类型（对应 ``pi/packages/ai/src/types.ts``）。
+"""pi-ai 核心类型。
 
 命名约定：Python 使用 ``snake_case``，字段名与 TS 的 ``camelCase`` 一一对应。
 """
@@ -26,10 +26,10 @@ KnownApi: TypeAlias = Literal[
     "google-vertex",
     "pi-messages",
 ]
-"""已知 API 类型（对应 TS ``KnownApi``）。"""
+"""已知 API 类型。"""
 
 Api: TypeAlias = KnownApi | str
-"""API 类型（对应 TS ``Api``）。"""
+"""API 类型。"""
 
 KnownProvider: TypeAlias = Literal[
     "amazon-bedrock",
@@ -72,36 +72,36 @@ KnownProvider: TypeAlias = Literal[
     "xiaomi-token-plan-ams",
     "xiaomi-token-plan-sgp",
 ]
-"""已知 provider 列表（对应 TS ``KnownProvider``）。"""
+"""已知 provider 列表。"""
 
 ProviderId: TypeAlias = KnownProvider | str
-"""Provider 标识符（对应 TS ``ProviderId``）。"""
+"""Provider 标识符。"""
 
 KnownImagesApi: TypeAlias = Literal["openrouter-images"]
-"""已知图片生成 API（对应 TS ``KnownImagesApi``）。"""
+"""已知图片生成 API。"""
 
 ImagesApi: TypeAlias = KnownImagesApi | str
-"""图片生成 API（对应 TS ``ImagesApi``）。"""
+"""图片生成 API。"""
 
 KnownImagesProvider: TypeAlias = Literal["openrouter"]
-"""已知图片生成 provider（对应 TS ``KnownImagesProvider``）。"""
+"""已知图片生成 provider。"""
 
 ImagesProviderId: TypeAlias = KnownImagesProvider | str
-"""图片生成 provider 标识符（对应 TS ``ImagesProviderId``）。"""
+"""图片生成 provider 标识符。"""
 
 ThinkingLevel: TypeAlias = Literal[
     "off", "minimal", "low", "medium", "high", "xhigh", "max"
 ]
-"""思考级别（对应 TS ``ThinkingLevel``）。"""
+"""思考级别。"""
 
 ModelThinkingLevel: TypeAlias = Literal["off"] | ThinkingLevel
-"""模型思考级别（对应 TS ``ModelThinkingLevel``）。"""
+"""模型思考级别。"""
 
 ThinkingLevelMap: TypeAlias = dict[ModelThinkingLevel, str | None]
-"""思考级别映射（对应 TS ``ThinkingLevelMap``）。"""
+"""思考级别映射。"""
 
 ToolExecutionMode: TypeAlias = Literal["sequential", "parallel"]
-"""工具执行模式（对应 TS ``ToolExecutionMode``）。"""
+"""工具执行模式。"""
 
 StopReason: TypeAlias = Literal[
     "stop",
@@ -113,25 +113,25 @@ StopReason: TypeAlias = Literal[
     "deferred",
     "pending",
 ]
-"""assistant 消息停止原因（对应 TS ``StopReason``）。"""
+"""assistant 消息停止原因。"""
 
 CacheRetention: TypeAlias = Literal["none", "short", "long"]
-"""缓存保留策略（对应 TS ``CacheRetention``）。"""
+"""缓存保留策略。"""
 
 Transport: TypeAlias = Literal["sse", "websocket", "websocket-cached", "auto"]
-"""LLM 传输层（对应 TS ``Transport``）。"""
+"""LLM 传输层。"""
 
 SessionAffinityFormat: TypeAlias = Literal["openai", "openai-nosession", "openrouter"]
-"""会话亲和性格式（对应 TS ``SessionAffinityFormat``）。"""
+"""会话亲和性格式。"""
 
 FetchFunction: TypeAlias = Callable[..., object]
-"""fetch 函数类型（对应 TS ``FetchFunction``）。"""
+"""fetch 函数类型。"""
 
 ProviderEnv: TypeAlias = dict[str, str]
-"""Provider 环境变量（对应 TS ``ProviderEnv``）。"""
+"""Provider 环境变量。"""
 
 ProviderHeaders: TypeAlias = dict[str, str | None]
-"""Provider 请求头（对应 TS ``ProviderHeaders``）。"""
+"""Provider 请求头。"""
 
 
 # ---------------------------------------------------------------------------
@@ -140,7 +140,7 @@ ProviderHeaders: TypeAlias = dict[str, str | None]
 
 
 class ThinkingBudgets(BaseModel):
-    """各思考级别的 token 预算（对应 TS ``ThinkingBudgets``）。"""
+    """各思考级别的 token 预算。"""
 
     minimal: int | None = None
     low: int | None = None
@@ -154,7 +154,7 @@ class ThinkingBudgets(BaseModel):
 
 
 class Cost(BaseModel):
-    """token 成本（对应 TS ``Cost``）。"""
+    """token 成本。"""
 
     input: float = 0.0
     output: float = 0.0
@@ -164,7 +164,7 @@ class Cost(BaseModel):
 
 
 class Usage(BaseModel):
-    """token 用量（对应 TS ``Usage``）。"""
+    """token 用量。"""
 
     input: int = 0
     output: int = 0
@@ -227,7 +227,7 @@ ContentBlock: TypeAlias = Annotated[
     TextContent | ImageContent | ToolCallContent | ToolResultContent | ThinkingBlock,
     Field(discriminator="type"),
 ]
-"""内容块判别联合（对应 TS ``ContentBlock``）。"""
+"""内容块判别联合。"""
 
 
 # ---------------------------------------------------------------------------
@@ -278,7 +278,7 @@ Message: TypeAlias = Annotated[
     UserMessage | AssistantMessage | ToolResultMessage,
     Field(discriminator="role"),
 ]
-"""LLM 可理解的标准消息（对应 TS ``Message``）。"""
+"""LLM 可理解的标准消息。"""
 
 
 # ---------------------------------------------------------------------------
@@ -288,7 +288,7 @@ Message: TypeAlias = Annotated[
 
 @runtime_checkable
 class Model(Protocol):
-    """LLM 模型句柄（对应 TS ``Model``）。
+    """LLM 模型句柄。
 
     ``@runtime_checkable``：``Model`` 被用作 Pydantic 字段类型，需要可 isinstance 校验。
     """
@@ -299,7 +299,7 @@ class Model(Protocol):
 
 
 class Tool(BaseModel):
-    """工具定义基类（对应 TS ``Tool``，仅名称/描述/参数 schema）。"""
+    """工具定义基类。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -309,7 +309,7 @@ class Tool(BaseModel):
 
 
 class Context(BaseModel):
-    """发送给 LLM 的上下文（对应 TS ``Context``）。"""
+    """发送给 LLM 的上下文。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -321,7 +321,7 @@ class Context(BaseModel):
 
 
 class SimpleStreamOptions(BaseModel):
-    """流式请求选项（对应 TS ``SimpleStreamOptions``）。"""
+    """流式请求选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -350,14 +350,14 @@ class SimpleStreamOptions(BaseModel):
 
 
 class ProviderResponse(BaseModel):
-    """Provider HTTP 响应（对应 TS ``ProviderResponse``）。"""
+    """Provider HTTP 响应。"""
 
     status: int
     headers: dict[str, str]
 
 
 class ProviderRequestOptions(BaseModel):
-    """Provider 请求公共选项（对应 TS ``ProviderRequestOptions``）。"""
+    """Provider 请求公共选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -371,7 +371,7 @@ class ProviderRequestOptions(BaseModel):
 
 
 class StreamOptions(ProviderRequestOptions):
-    """流式请求选项（完整版，对应 TS ``StreamOptions``）。"""
+    """流式请求选项（完整版）。"""
 
     temperature: float | None = None
     sampling_params: dict[str, object] | None = None
@@ -384,13 +384,13 @@ class StreamOptions(ProviderRequestOptions):
 
 
 class DeferredFetchOptions(ProviderRequestOptions):
-    """Deferred 请求选项（对应 TS ``DeferredFetchOptions``）。"""
+    """Deferred 请求选项。"""
 
     wait: int = 0
 
 
 DeferredCancelOptions: TypeAlias = ProviderRequestOptions
-"""Deferred 取消选项（对应 TS ``DeferredCancelOptions``）。"""
+"""Deferred 取消选项。"""
 
 
 # ---------------------------------------------------------------------------
@@ -399,13 +399,13 @@ DeferredCancelOptions: TypeAlias = ProviderRequestOptions
 
 
 class ApiOptionsMap(BaseModel):
-    """各 API 的 stream 选项类型映射（对应 TS ``ApiOptionsMap``）。"""
+    """各 API 的 stream 选项类型映射。"""
 
     # 具体类型由各 API 格式化器模块定义
 
 
 ApiStreamOptions: TypeAlias = StreamOptions
-"""统一 API stream 选项（对应 TS ``ApiStreamOptions``）。"""
+"""统一 API stream 选项。"""
 
 
 # ---------------------------------------------------------------------------
@@ -414,7 +414,7 @@ ApiStreamOptions: TypeAlias = StreamOptions
 
 
 class ProviderStreams(Protocol):
-    """API 实现模块的流式传输契约（对应 TS ``ProviderStreams``）。"""
+    """API 实现模块的流式传输契约。"""
 
     def stream(
         self,
@@ -446,7 +446,7 @@ class ProviderStreams(Protocol):
 
 
 class ProviderImages(Protocol):
-    """图片生成 API 实现契约（对应 TS ``ProviderImages``）。"""
+    """图片生成 API 实现契约。"""
 
     async def generate_images(
         self,
@@ -462,7 +462,7 @@ class ProviderImages(Protocol):
 
 
 class DeferredHandle(BaseModel):
-    """Deferred 响应句柄（对应 TS ``DeferredHandle``）。"""
+    """Deferred 响应句柄。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -478,7 +478,7 @@ class DeferredHandle(BaseModel):
 
 
 class ImagesOptions(BaseModel):
-    """图片生成选项（对应 TS ``ImagesOptions``）。"""
+    """图片生成选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -486,7 +486,7 @@ class ImagesOptions(BaseModel):
 
 
 class ImagesModel(Protocol):
-    """图片生成模型句柄（对应 TS ``ImagesModel``）。"""
+    """图片生成模型句柄。"""
 
     api: str
     provider: str
@@ -494,7 +494,7 @@ class ImagesModel(Protocol):
 
 
 class ImagesContext(BaseModel):
-    """图片生成上下文（对应 TS ``ImagesContext``）。"""
+    """图片生成上下文。"""
 
     prompt: str
     negative_prompt: str | None = None
@@ -503,7 +503,7 @@ class ImagesContext(BaseModel):
 
 
 class AssistantImages(BaseModel):
-    """图片生成结果（对应 TS ``AssistantImages``）。"""
+    """图片生成结果。"""    
 
     data: list[ImageContent]
     usage: Usage | None = None
@@ -602,7 +602,7 @@ AssistantMessageEvent: TypeAlias = Annotated[
     | AssistantAbortedEvent,
     Field(discriminator="type"),
 ]
-"""assistant 消息流事件（对应 TS ``AssistantMessageEvent``）。"""
+"""assistant 消息流事件。"""
 
 
 # ---------------------------------------------------------------------------
@@ -611,7 +611,7 @@ AssistantMessageEvent: TypeAlias = Annotated[
 
 
 class StreamFn(Protocol):
-    """LLM 调用边界（对应 TS ``StreamFn``）。
+    """LLM 调用边界。
 
     契约：
     - 不得为请求/模型/运行时失败抛异常或返回 rejected promise；

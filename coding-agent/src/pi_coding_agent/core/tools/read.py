@@ -30,7 +30,7 @@ from .truncate import (
 
 
 class ReadToolInput(BaseModel):
-    """Read tool input parameters (corresponds to TS ``ReadToolInput``)."""
+    """Read tool input parameters."""
 
     path: str
     offset: int | None = None
@@ -38,7 +38,7 @@ class ReadToolInput(BaseModel):
 
 
 class ReadToolDetails(BaseModel):
-    """Read tool output details (corresponds to TS ``ReadToolDetails``)."""
+    """Read tool output details."""
 
     truncation: TruncationResult | None = None
 
@@ -52,7 +52,7 @@ class ReadOperations:
     """Pluggable operations for the read tool.
 
     Override these to delegate file reading to remote systems.
-    Corresponds to TS ``ReadOperations``.
+
     """
 
     async def read_file(self, absolute_path: str) -> bytes:
@@ -76,7 +76,7 @@ class ReadOperations:
 
 
 class ReadToolOptions(BaseModel):
-    """Read tool options (corresponds to TS ``ReadToolOptions``)."""
+    """Read tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -94,7 +94,7 @@ def create_read_tool_definition(
 ) -> ToolDefinition[ReadToolDetails | None]:
     """Create a read tool definition.
 
-    Corresponds to TS ``createReadToolDefinition``.
+
     """
     ops = (
         options.operations
@@ -231,6 +231,5 @@ def create_read_tool(
 ) -> AgentTool:
     """Create a read tool (AgentTool).
 
-    Corresponds to TS ``createReadTool``.
     """
     return wrap_tool_definition(create_read_tool_definition(cwd, options))

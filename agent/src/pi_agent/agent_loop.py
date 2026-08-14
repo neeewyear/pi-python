@@ -1,4 +1,4 @@
-"""Agent 循环入口（对应 ``agent-loop.ts`` 入口函数）。
+"""Agent 循环入口。
 
 提供两个层次的 API：
 - **高层（EventStream）**：``agent_loop`` / ``agent_loop_continue`` — 返回 ``AgentEventStream``
@@ -33,7 +33,7 @@ from .types import (
 
 
 class AgentEventStream:
-    """agent 事件流（对应 TS ``EventStream<AgentEvent, AgentMessage[]>``）。
+    """agent 事件流。
 
     支持 push 生产和 async for 消费。``agent_end`` 事件自动触发内部 end。
     调用方通过 ``async for`` 消费事件，完成后通过 ``result()`` 获取最终消息列表。
@@ -68,7 +68,7 @@ class AgentEventStream:
             yield event
 
     async def result(self) -> list[AgentMessage]:
-        """返回最终消息列表（对应 TS ``response.result()``）。
+        """返回最终消息列表。
 
         流未结束时阻塞等待；已结束时立即返回。
         """
@@ -94,7 +94,7 @@ def agent_loop(
     signal: CancellationToken | None,
     stream_fn: StreamFn | None = None,
 ) -> AgentEventStream:
-    """启动新 agent 循环（带 prompt），返回 ``AgentEventStream``（对应 TS ``agentLoop``）。
+    """启动新 agent 循环（带 prompt），返回 ``AgentEventStream``。
 
     调用方通过 ``async for event in stream:`` 消费事件，
     完成后通过 ``await stream.result()`` 获取最终消息列表。
@@ -117,7 +117,7 @@ def agent_loop_continue(
     signal: CancellationToken | None,
     stream_fn: StreamFn | None = None,
 ) -> AgentEventStream:
-    """继续 agent 循环（无新 prompt），返回 ``AgentEventStream``（对应 TS ``agentLoopContinue``）。
+    """继续 agent 循环（无新 prompt），返回 ``AgentEventStream``。
 
     要求 context.messages 非空且最后一条不是 assistant。
     """
@@ -152,7 +152,7 @@ async def run_agent_loop(
     signal: CancellationToken | None,
     stream_fn: StreamFn | None = None,
 ) -> list[AgentMessage]:
-    """直接运行 agent 循环（不经过 EventStream），返回所有新消息（对应 TS ``runAgentLoop``）。"""
+    """直接运行 agent 循环（不经过 EventStream），返回所有新消息。"""
     new_messages: list[AgentMessage] = list(prompts)
     current_context = AgentContext(
         system_prompt=context.system_prompt,
@@ -185,7 +185,7 @@ async def run_agent_loop_continue(
     signal: CancellationToken | None,
     stream_fn: StreamFn | None = None,
 ) -> list[AgentMessage]:
-    """直接继续 agent 循环（对应 TS ``runAgentLoopContinue``）。"""
+    """直接继续 agent 循环（不经过 EventStream），返回所有新消息。"""
     if not context.messages:
         raise ValueError("Cannot continue: no messages in context")
 

@@ -1,4 +1,4 @@
-"""文件系统操作实现（对应 ``harness/env/nodejs.ts`` 的 FileSystem 部分）。
+"""文件系统操作实现。
 
 使用 ``aiofiles`` 实现异步文件 IO，所有方法返回 ``Result`` 包装。
 """
@@ -30,7 +30,7 @@ from ..types import (
 
 
 def _resolve_path(cwd: str, path: str) -> str:
-    """路径解析（对应 TS ``resolvePath``）。
+    """路径解析。   
 
     - ``~`` / ``~/...`` → 展开为用户目录
     - ``file://`` URL → 提取路径
@@ -59,7 +59,7 @@ def _resolve_path(cwd: str, path: str) -> str:
 
 
 def _to_file_error(error: object, path: str | None = None) -> FileError:
-    """将 Python 异常映射为 ``FileError``（对应 TS ``toFileError``）。"""
+    """将 Python 异常映射为 ``FileError``。"""
     if isinstance(error, FileError):
         return error
 
@@ -84,14 +84,14 @@ def _to_file_error(error: object, path: str | None = None) -> FileError:
 def _abort_result(
     token: CancellationToken | None, path: str | None = None
 ) -> Result[object, FileError] | None:
-    """检查令牌是否已取消（对应 TS ``abortResult``）。"""
+    """检查令牌是否已取消。"""
     if token is not None and token.aborted:
         return err(FileError("aborted", "aborted", path))
     return None
 
 
 def _file_info_from_stats(path: str, st: os.stat_result) -> Result[FileInfo, FileError]:
-    """从 ``os.stat_result`` 构造 ``FileInfo``（对应 TS ``fileInfoFromStats``）。"""
+    """从 ``os.stat_result`` 构造 ``FileInfo``。"""
     # 判断文件类型
     if stat.S_ISREG(st.st_mode):
         kind: FileKind = "file"
@@ -119,7 +119,7 @@ def _file_info_from_stats(path: str, st: os.stat_result) -> Result[FileInfo, Fil
 
 
 class NodeFileSystem:
-    """文件系统实现（对应 TS ``NodeExecutionEnv`` 的 FileSystem 部分）。
+    """文件系统实现。
 
     实现 ``FileSystem`` 协议，所有方法返回 ``Result`` 包装。
     """

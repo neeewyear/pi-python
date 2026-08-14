@@ -1,4 +1,4 @@
-"""取消信号工具（对应 TS ``utils/abort.ts``）。
+"""取消信号工具。
 
 提供 ``AbortError`` 自定义异常和 ``abort_with_timeout`` 超时包装函数。
 """
@@ -15,7 +15,6 @@ _T = TypeVar("_T")
 class AbortError(asyncio.TimeoutError):
     """操作被取消时抛出的自定义异常。
 
-    对应 TS 端的 ``AbortError``。
     """
 
     def __init__(self, message: str = "The operation was aborted") -> None:

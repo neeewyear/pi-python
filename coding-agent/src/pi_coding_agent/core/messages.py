@@ -1,4 +1,4 @@
-"""自定义消息类型与 LLM 转换（对应 TS ``core/messages.ts``）。
+"""自定义消息类型与 LLM 转换。
 
 从 ``pi_agent.types`` 和 ``pi_agent.harness.messages`` 再导出共享类型与函数。
 """

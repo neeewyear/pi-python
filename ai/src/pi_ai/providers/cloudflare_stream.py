@@ -1,4 +1,4 @@
-"""Cloudflare 流式传输封装（对应 ``cloudflare-stream.ts``）。"""
+"""Cloudflare 流式传输封装。"""
 
 from __future__ import annotations
 

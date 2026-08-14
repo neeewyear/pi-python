@@ -1,4 +1,4 @@
-"""ZAI Provider（对应 ``zai.ts``）。"""
+"""ZAI Provider。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Google Vertex AI Provider（对应 ``google-vertex.ts``）。"""
+"""Google Vertex AI Provider。"""
 
 from __future__ import annotations
 

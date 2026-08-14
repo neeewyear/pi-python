@@ -255,7 +255,7 @@ class Markdown:
         return fence_char is None
 
     def _trim_partial_closing_fences(self, tokens: list[dict], source: str) -> None:  # type: ignore[type-arg]
-        """对应 TS markdown.ts 的 trimPartialClosingFences（流式围栏防闪烁）。
+        """流式围栏防闪烁。
 
         递归定位最后一个代码块 token：若其 fenced 围栏在源码中尚未闭合（流式
         输入中常见），则把该块转为普通文本渲染，不显示代码块边框，避免输入
@@ -269,7 +269,7 @@ class Markdown:
         if t == "list":
             items = token.get("children", [])
             if items:
-                # 只处理最后一个列表项的 token（对应 TS token.items[last].tokens）
+                # 只处理最后一个列表项的 token
                 self._trim_partial_closing_fences(items[-1].get("children", []), source)
             return
         if t == "block_quote":

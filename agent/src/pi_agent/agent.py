@@ -1,4 +1,4 @@
-"""Agent 高层有状态封装（对应 ``agent.ts`` 的 ``Agent`` 类）。
+"""Agent 高层有状态封装。
 
 提供：
 - 消息队列：``steer`` / ``follow_up`` / ``clear_*_queue``
@@ -48,7 +48,7 @@ from .types import (
 
 
 class Agent:
-    """有状态 Agent 高层封装（对应 TS ``Agent``）。
+    """有状态 Agent 高层封装。
 
     包装低层 agent_loop，维护对话 transcript，发射生命周期事件，
     暴露 steering 和 follow-up 消息队列 API。
@@ -109,7 +109,7 @@ class Agent:
         self,
         listener: Callable[[AgentEvent, CancellationToken], Awaitable[None] | None],
     ) -> Callable[[], None]:
-        """订阅 agent 生命周期事件，返回取消订阅函数（对应 TS ``subscribe``）。"""
+        """订阅 agent 生命周期事件，返回取消订阅函数。"""
         self._listeners.add(listener)
 
         def _unsubscribe() -> None:
@@ -123,7 +123,7 @@ class Agent:
 
     @property
     def state(self) -> MutableAgentState:
-        """当前 agent 状态（对应 TS ``state`` getter）。"""
+        """当前 agent 状态。"""
         return self._state
 
     @property
@@ -149,28 +149,27 @@ class Agent:
     # ------------------------------------------------------------------
 
     def steer(self, message: AgentMessage) -> None:
-        """入队 steering 消息：在当前 assistant 回合结束后注入（对应 TS ``steer``）。"""
+        """入队 steering 消息：在当前 assistant 回合结束后注入。"""
         self._steering_queue.enqueue(message)
 
     def follow_up(self, message: AgentMessage) -> None:
-        """入队 follow-up 消息：在 agent 即将停止时注入（对应 TS ``followUp``）。"""
+        """入队 follow-up 消息：在 agent 即将停止时注入。"""
         self._follow_up_queue.enqueue(message)
 
     def clear_steering_queue(self) -> None:
-        """清空 steering 队列（对应 TS ``clearSteeringQueue``）。"""
+        """清空 steering 队列。"""
         self._steering_queue.clear()
 
     def clear_follow_up_queue(self) -> None:
-        """清空 follow-up 队列（对应 TS ``clearFollowUpQueue``）。"""
+        """清空 follow-up 队列。"""
         self._follow_up_queue.clear()
 
     def clear_all_queues(self) -> None:
-        """清空全部队列（对应 TS ``clearAllQueues``）。"""
+        """清空全部队列。"""
         self.clear_steering_queue()
         self.clear_follow_up_queue()
-
     def has_queued_messages(self) -> bool:
-        """是否有待处理的消息（对应 TS ``hasQueuedMessages``）。"""
+        """是否有待处理的消息。"""
         return self._steering_queue.has_items() or self._follow_up_queue.has_items()
 
     # ------------------------------------------------------------------
@@ -179,23 +178,23 @@ class Agent:
 
     @property
     def signal(self) -> CancellationToken | None:
-        """当前运行的取消令牌（对应 TS ``signal`` getter）。"""
+        """当前运行的取消令牌。"""
         if self._active_run is None:
             return None
         return self._active_run.cancellation_token
 
     def abort(self) -> None:
-        """中止当前运行（对应 TS ``abort``）。"""
+        """中止当前运行。"""
         if self._active_run is not None:
             self._active_run.cancellation_token.cancel()
 
     async def wait_for_idle(self) -> None:
-        """等待当前运行完成（对应 TS ``waitForIdle``）。"""
+        """等待当前运行完成。"""
         if self._active_run is not None:
             await self._active_run.completion_event.wait()
 
     def reset(self) -> None:
-        """重置状态和队列（对应 TS ``reset``）。"""
+        """重置状态和队列。"""
         self._state.messages = []
         self._state.is_streaming = False
         self._state.streaming_message = None
@@ -224,7 +223,7 @@ class Agent:
         input: str | AgentMessage | list[AgentMessage],
         images: list[ImageContent] | None = None,
     ) -> None:
-        """启动新 prompt（对应 TS ``prompt``）。
+        """启动新 prompt。
 
         支持三种输入形式：
         - ``str``：纯文本，自动包装为 ``UserMessage``
@@ -244,7 +243,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     async def continue_(self) -> None:
-        """从当前 transcript 继续（对应 TS ``continue``）。
+        """从当前 transcript 继续。
 
         最后一条消息必须是 user 或 toolResult。
         """
@@ -285,7 +284,7 @@ class Agent:
         input: str | AgentMessage | list[AgentMessage],
         images: list[ImageContent] | None = None,
     ) -> list[AgentMessage]:
-        """标准化 prompt 输入为消息列表（对应 TS ``normalizePromptInput``）。"""
+        """标准化 prompt 输入为消息列表。"""
         if isinstance(input, list):
             return input
 
@@ -307,8 +306,8 @@ class Agent:
         messages: list[AgentMessage],
         *,
         skip_initial_steering_poll: bool = False,
-    ) -> None:
-        """执行 prompt 消息（对应 TS ``runPromptMessages``）。"""
+        ) -> None:
+        """执行 prompt 消息。"""
         skip_flag = skip_initial_steering_poll
 
         async def _executor(signal: CancellationToken) -> None:
@@ -329,7 +328,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     async def _run_continuation(self) -> None:
-        """执行 continue（对应 TS ``runContinuation``）。"""
+        """执行 continue。"""
 
         async def _executor(signal: CancellationToken) -> None:
             stream_fn = self._resolve_stream_fn()
@@ -348,7 +347,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     def _create_context_snapshot(self) -> AgentContext:
-        """创建上下文快照（对应 TS ``createContextSnapshot``）。"""
+        """创建上下文快照。"""
         return AgentContext(
             system_prompt=self._state.system_prompt,
             messages=list(self._state.messages),
@@ -364,7 +363,7 @@ class Agent:
         *,
         skip_initial_steering_poll: bool = False,
     ) -> AgentLoopConfig:
-        """创建低层循环配置（对应 TS ``createLoopConfig``）。"""
+        """创建低层循环配置。"""
         skip_flag = skip_initial_steering_poll
 
         # prepare_next_turn 适配：优先使用 with_context 版本
@@ -437,7 +436,7 @@ class Agent:
         self,
         executor: Callable[[CancellationToken], Awaitable[None]],
     ) -> None:
-        """生命周期包装（对应 TS ``runWithLifecycle``）。"""
+        """生命周期包装。"""
         if self._active_run is not None:
             raise RuntimeError("Agent is already processing.")
 
@@ -460,7 +459,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     async def _handle_run_failure(self, error: Exception, aborted: bool) -> None:
-        """失败处理：注入错误 assistant 消息（对应 TS ``handleRunFailure``）。"""
+        """失败处理：注入错误 assistant 消息。"""
         error_message_text = str(error) if str(error) else "Unknown error"
         failure_message = AssistantMessage(
             content=[TextContent(text="")],
@@ -491,7 +490,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     def _finish_run(self) -> None:
-        """结束运行（对应 TS ``finishRun``）。"""
+        """结束运行。"""
         self._state.is_streaming = False
         self._state.streaming_message = None
         self._state.pending_tool_calls = set()
@@ -504,7 +503,7 @@ class Agent:
     # ------------------------------------------------------------------
 
     async def _process_events(self, event: AgentEvent) -> None:
-        """处理循环事件并分发给监听器（对应 TS ``processEvents``）。"""
+        """处理循环事件并分发给监听器。"""      
         event_type = (
             event["type"] if isinstance(event, dict) else getattr(event, "type", None)
         )

@@ -1,4 +1,4 @@
-"""兼容层（对应 ``compat.ts`` + ``compat/extension-oauth-types.ts``）。
+"""兼容层。
 
 保留旧版 pi-ai API 表面：API 分发 ``stream()``/``complete()`` 与 env API Key 注入、
 API 注册表、已生成目录读取（``getModel``/``getModels``/``getProviders``）、
@@ -28,7 +28,7 @@ from .utils.event_stream import AssistantMessageEventStream
 StreamFunction = Any
 
 # ---------------------------------------------------------------------------
-# Extension OAuth 类型（对应 ``compat/extension-oauth-types.ts``）
+# Extension OAuth 类型。
 # ---------------------------------------------------------------------------
 
 

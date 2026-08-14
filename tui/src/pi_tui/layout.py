@@ -101,7 +101,7 @@ class _LayoutContext:
 
 
 def _intersect(a: LayoutRect, b: LayoutRect) -> LayoutRect:
-    """求两个矩形相交区域（无交集时宽高为 0）。对应 layout.ts 的 intersect()。"""
+    """求两个矩形相交区域（无交集时宽高为 0）。"""
     x = max(a.x, b.x)
     y = max(a.y, b.y)
     right = min(a.x + a.width, b.x + b.width)
@@ -114,7 +114,7 @@ def _render_cached(
     component: Component,
     width: int,
 ) -> list[str]:
-    """带每帧缓存的组件渲染。对应 layout.ts 的 renderCached()。"""
+    """带每帧缓存的组件渲染。"""    
     safe_width = max(1, math.floor(width))
     widths = context.render_cache.get(component)
     if widths is None:
@@ -152,14 +152,14 @@ def _with_parent(box: LayoutBox, parent: LayoutBox) -> LayoutBox:
 
 
 def _translate_box(box: LayoutBox, delta_y: int) -> None:
-    """递归平移盒子的 y 坐标。对应 layout.ts 的 translateBox()。"""
+    """递归平移盒子的 y 坐标。"""
     box.rect.y += delta_y
     for child in box.children:
         _translate_box(child, delta_y)
 
 
 def _update_clips(box: LayoutBox, parent_clip: LayoutRect) -> None:
-    """递归更新 clip（与父 clip 求交）。对应 layout.ts 的 updateClips()。"""
+    """递归更新 clip（与父 clip 求交）。"""
     box.clip = _intersect(parent_clip, box.rect)
     for child in box.children:
         _update_clips(child, box.clip)
@@ -463,9 +463,7 @@ def _style_scrollbar_cell(
     style: Callable[[str], str],
 ) -> str:
     """对指定列单元应用滚动条样式。
-
-    对应 layout.ts 的 styleScrollbarCell()。简化说明：TS 用 grapheme 单元范围
-    处理宽字符场景；Python 端无 getGraphemeCellRange 工具，按 1 个单元宽度
+    Python 端无 getGraphemeCellRange 工具，按 1 个单元宽度
     切片近似处理（宽字符落在滚动条列时以样式空格覆盖）。
     """
     if is_image_line(line):
@@ -474,7 +472,7 @@ def _style_scrollbar_cell(
     target = slice_by_column(line, column, 1, True)
     after = slice_by_column(line, column + 1, max(0, total_width - column - 1), True)
     before_padding = " " * max(0, column - visible_width(before))
-    # 提取 target 前缀的 ANSI 代码，使样式只包裹纯文本部分（对应 TS 的 targetPrefix）
+    # 提取 target 前缀的 ANSI 代码，使样式只包裹纯文本部分
     target_prefix = ""
     target_index = 0
     while target_index < len(target):
@@ -594,7 +592,7 @@ def _paint_box(box: LayoutBox, screen: list[str], total_width: int) -> None:
     for child in box.children:
         _paint_box(child, screen, total_width)
 
-    # 滚动视图滚出内容中 Kitty 图像行的处理（对应 layout.ts paintBox 的图片块）。
+    # 滚动视图滚出内容中 Kitty 图像行的处理
     # 说明：Python 端 terminal_image 尚无图像注册机制，注册表默认为空，此块
     # 在图像功能接入后生效。
     if (

@@ -1,4 +1,4 @@
-"""ZAI Coding CN Provider（对应 ``zai-coding-cn.ts``）。"""
+"""ZAI Coding CN Provider。"""
 
 from __future__ import annotations
 

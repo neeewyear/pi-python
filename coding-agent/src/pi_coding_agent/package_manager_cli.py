@@ -1,4 +1,4 @@
-"""包管理器 CLI（对应 TS ``package-manager-cli.ts``）。
+"""包管理器 CLI。
 
 提供安装/更新/卸载扩展包的 CLI 入口。
 """

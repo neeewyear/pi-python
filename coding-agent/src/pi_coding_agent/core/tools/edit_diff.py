@@ -15,16 +15,15 @@ from pydantic import BaseModel
 # Types
 # ---------------------------------------------------------------------------
 
-
 class Edit(BaseModel):
-    """A single edit operation (corresponds to TS ``Edit``)."""
+    """A single edit operation."""
 
     old_text: str
     new_text: str
 
 
 class FuzzyMatchResult(BaseModel):
-    """Fuzzy match result (corresponds to TS ``FuzzyMatchResult``)."""
+    """Fuzzy match result."""
 
     found: bool
     index: int
@@ -34,21 +33,21 @@ class FuzzyMatchResult(BaseModel):
 
 
 class AppliedEditsResult(BaseModel):
-    """Result of applying edits (corresponds to TS ``AppliedEditsResult``)."""
+    """Result of applying edits."""
 
     base_content: str
     new_content: str
 
 
 class EditDiffResult(BaseModel):
-    """Edit diff result (corresponds to TS ``EditDiffResult``)."""
+    """Edit diff result."""
 
     diff: str
     first_changed_line: int | None = None
 
 
 class EditDiffError(BaseModel):
-    """Edit diff error (corresponds to TS ``EditDiffError``)."""
+    """Edit diff error."""
 
     error: str
 
@@ -59,7 +58,7 @@ class EditDiffError(BaseModel):
 
 
 def detect_line_ending(content: str) -> Literal["\r\n", "\n"]:
-    """Detect line ending style (corresponds to TS ``detectLineEnding``)."""
+    """Detect line ending style."""
     crlf_idx = content.find("\r\n")
     lf_idx = content.find("\n")
     if lf_idx == -1:
@@ -70,12 +69,12 @@ def detect_line_ending(content: str) -> Literal["\r\n", "\n"]:
 
 
 def normalize_to_lf(text: str) -> str:
-    """Normalize to LF line endings (corresponds to TS ``normalizeToLF``)."""
+    """Normalize to LF line endings."""
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def restore_line_endings(text: str, ending: Literal["\r\n", "\n"]) -> str:
-    """Restore original line endings (corresponds to TS ``restoreLineEndings``)."""
+    """Restore original line endings."""
     return text.replace("\n", "\r\n") if ending == "\r\n" else text
 
 
@@ -85,7 +84,7 @@ def restore_line_endings(text: str, ending: Literal["\r\n", "\n"]) -> str:
 
 
 def normalize_for_fuzzy_match(text: str) -> str:
-    """Normalize text for fuzzy matching (corresponds to TS ``normalizeForFuzzyMatch``).
+    """Normalize text for fuzzy matching.
 
     Progressive transformations:
     - Strip trailing whitespace from each line
@@ -197,7 +196,7 @@ def apply_replacements_preserving_unchanged_lines(
 ) -> str:
     """Apply replacements while preserving unchanged lines.
 
-    Corresponds to TS ``applyReplacementsPreservingUnchangedLines``.
+
     """
     original_lines = _split_lines_with_endings(original_content)
     base_line_spans = _get_line_spans(base_content)
@@ -244,7 +243,6 @@ def apply_replacements_preserving_unchanged_lines(
 def fuzzy_find_text(content: str, old_text: str) -> FuzzyMatchResult:
     """Find old_text in content, trying exact match first, then fuzzy match.
 
-    Corresponds to TS ``fuzzyFindText``.
     """
     # Try exact match first
     exact_index = content.find(old_text)
@@ -289,7 +287,7 @@ def strip_bom(content: str) -> dict[str, str]:
     """Strip UTF-8 BOM if present.
 
     Returns both the BOM (if any) and the text without it.
-    Corresponds to TS ``stripBom``.
+
     """
     if content.startswith("\ufeff"):
         return {"bom": "\ufeff", "text": content[1:]}

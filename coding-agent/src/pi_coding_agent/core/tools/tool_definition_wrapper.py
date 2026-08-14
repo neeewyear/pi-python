@@ -16,7 +16,7 @@ TDetails = TypeVar("TDetails")
 
 
 class ToolDefinition(BaseModel, Generic[TDetails]):
-    """Tool definition (corresponds to TS ``ToolDefinition``).
+    """Tool definition.
 
     Captures the full definition of a tool including its parameters schema,
     execute function, and optional metadata.
@@ -45,7 +45,6 @@ def wrap_tool_definition(
 ) -> AgentTool:
     """Wrap a ToolDefinition into an AgentTool for the core runtime.
 
-    Corresponds to TS ``wrapToolDefinition``.
     """
     return AgentTool(
         name=definition.name,
@@ -61,18 +60,12 @@ def wrap_tool_definition(
 def wrap_tool_definitions(
     definitions: list[ToolDefinition[object]],
 ) -> list[AgentTool]:
-    """Wrap multiple ToolDefinitions into AgentTools.
-
-    Corresponds to TS ``wrapToolDefinitions``.
-    """
+    """Wrap multiple ToolDefinitions into AgentTools."""
     return [wrap_tool_definition(d) for d in definitions]
 
 
 def create_tool_definition_from_agent_tool(tool: AgentTool) -> ToolDefinition[object]:
-    """Synthesize a minimal ToolDefinition from an AgentTool.
-
-    Corresponds to TS ``createToolDefinitionFromAgentTool``.
-    """
+    """Synthesize a minimal ToolDefinition from an AgentTool."""
     return ToolDefinition(
         name=tool.name,
         label=tool.label,

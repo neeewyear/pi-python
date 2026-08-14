@@ -1,4 +1,4 @@
-"""分支摘要（对应 ``harness/compaction/branch-summarization.ts``）。
+"""分支摘要。
 
 包含：
 - ``collect_entries_for_branch_summary`` / ``prepare_branch_entries``
@@ -45,14 +45,14 @@ from .utils import (
 
 
 class BranchSummaryDetails(BaseModel):
-    """分支摘要详情（对应 TS ``BranchSummaryDetails``）。"""
+    """分支摘要详情"""
 
     read_files: list[str] = []
     modified_files: list[str] = []
 
 
 class BranchSummaryResult(BaseModel):
-    """分支摘要结果（对应 TS ``BranchSummaryResult``）。"""
+    """分支摘要结果"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -63,7 +63,7 @@ class BranchSummaryResult(BaseModel):
 
 
 class BranchPreparation(BaseModel):
-    """分支准备数据（对应 TS ``BranchPreparation``）。"""
+    """分支准备数据"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -73,14 +73,14 @@ class BranchPreparation(BaseModel):
 
 
 class CollectEntriesResult(BaseModel):
-    """收集条目结果（对应 TS ``CollectEntriesResult``）。"""
+    """收集条目结果"""
 
     entries: list[Entry] = []
     common_ancestor_id: str | None = None
 
 
 class GenerateBranchSummaryOptions(BaseModel):
-    """分支摘要选项（对应 TS ``GenerateBranchSummaryOptions``）。"""
+    """分支摘要选项"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -139,7 +139,7 @@ async def collect_entries_for_branch_summary(
     old_leaf_id: str | None,
     target_id: str,
 ) -> CollectEntriesResult:
-    """收集分支摘要条目（对应 TS ``collectEntriesForBranchSummary``）。"""
+    """收集分支摘要条目"""
     if old_leaf_id is None:
         return CollectEntriesResult()
 
@@ -175,7 +175,7 @@ async def collect_entries_for_branch_summary(
 
 
 def _get_message_from_entry(entry: Entry) -> AgentMessage | None:
-    """从条目获取消息（对应 TS ``getMessageFromEntry``（分支版本））。"""
+    """从条目获取消息"""
     if entry.type == "message":
         if entry.message.role == "toolResult":
             return None
@@ -197,7 +197,7 @@ def prepare_branch_entries(
     entries: list[Entry],
     token_budget: int = 0,
 ) -> BranchPreparation:
-    """准备分支条目（对应 TS ``prepareBranchEntries``）。"""
+    """准备分支条目"""
     messages: list[AgentMessage] = []
     file_ops = create_file_ops()
     total_tokens = 0
@@ -263,7 +263,7 @@ async def generate_branch_summary(
     entries: list[Entry],
     options: GenerateBranchSummaryOptions,
 ) -> Result[BranchSummaryResult, BranchSummaryError]:
-    """生成分支摘要（对应 TS ``generateBranchSummary``）。"""
+    """生成分支摘要"""
     model = options.model
     if model is None:
         return err(BranchSummaryError("No model provided"))

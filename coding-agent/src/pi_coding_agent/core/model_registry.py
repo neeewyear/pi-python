@@ -1,4 +1,4 @@
-"""模型注册表（对应 TS ``model-registry.ts``）。
+"""模型注册表。
 
 ``ModelRegistry`` 是编码代理扩展公开的同步兼容门面。
 coding-agent 内部直接使用 ``ModelRuntime``。

@@ -1,4 +1,4 @@
-"""Radius 配置工具（对应 ``radius-config.ts``）。"""
+"""Radius 配置工具。"""
 
 from __future__ import annotations
 

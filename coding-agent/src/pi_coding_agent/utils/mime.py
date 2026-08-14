@@ -1,4 +1,4 @@
-"""MIME 类型工具（对应 TS ``utils/mime.ts``）。
+"""MIME 类型工具。
 
 提供 ``get_mime_type`` 函数，用于获取文件的 MIME 类型。
 """

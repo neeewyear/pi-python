@@ -1,4 +1,4 @@
-"""harness 层（对应 ``harness/`` 目录的导出面）。
+"""harness 层。
 
 已实现：``agent_harness`` / ``agent_harness_types`` / ``compaction`` / ``env`` /
 ``messages`` / ``skills`` / ``system_prompt`` / ``prompt_templates`` / ``types`` /

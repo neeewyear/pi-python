@@ -1,4 +1,4 @@
-"""Node 顶层入口（对应 ``src/node.ts``）。
+"""Node 顶层入口。
 
 re-export NodeExecutionEnv 以及全量公共 API。
 """

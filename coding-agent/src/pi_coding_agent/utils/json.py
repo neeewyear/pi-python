@@ -1,4 +1,4 @@
-"""JSON 工具（对应 TS ``utils/json.ts``）。
+"""JSON 工具。
 
 提供 ``safe_json_parse`` 函数，用于安全解析 JSON 字符串。
 """

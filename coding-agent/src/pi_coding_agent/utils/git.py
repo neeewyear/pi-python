@@ -1,4 +1,4 @@
-"""Git 工具（对应 TS ``utils/git.ts``）。
+"""Git 工具。
 
 提供 Git 仓库 URL 解析和操作。
 """

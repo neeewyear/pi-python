@@ -1,4 +1,4 @@
-"""配置选择器（对应 TS ``cli/config-selector.ts``）。
+"""配置选择器。
 
 非 TUI 版本：使用 stdin 交互式选择配置。
 由于 TUI 组件尚未移植到 Python，此版本提供简单的文本选择界面。

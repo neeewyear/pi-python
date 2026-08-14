@@ -1,4 +1,4 @@
-"""默认配置常量（对应 TS ``core/defaults.ts``）。
+"""默认配置常量。
 
 从 ``pi_agent.types`` 导入共享类型，提供 agent 默认值。
 """

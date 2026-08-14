@@ -1,4 +1,4 @@
-"""OAuth 类型兼容入口（对应 ``oauth.ts``）。
+"""OAuth 类型兼容入口。
 
 仅用于 coding-agent 扩展 OAuth 声明兼容。
 """

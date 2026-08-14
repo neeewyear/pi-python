@@ -1,4 +1,4 @@
-"""模型目录数据（对应 ``models.generated.ts`` + ``image-models.generated.ts``）。
+"""模型目录数据。
 
 TS 侧由 ``scripts/generate-models.ts`` 自动生成，Python 侧在 Provider 迁移
 （15.6 阶段）后使用占位数据。模型数据需从 JSON 数据文件加载后填充。
@@ -19,7 +19,7 @@ ProviderModelsDict = dict[str, dict[str, Any]]
 ModelsCatalog = dict[str, ProviderModelsDict]
 
 # ---------------------------------------------------------------------------
-# 模型目录（对应 TS ``MODELS`` 常量）
+# 模型目录
 # ---------------------------------------------------------------------------
 
 # TODO: 从各 provider 的 .models.py 模块导入实际模型数据
@@ -104,17 +104,17 @@ MODELS: ModelsCatalog = {
     "zai": ZAI_MODELS,
     "zai-coding-cn": ZAI_CODING_CN_MODELS,
 }
-"""聚合模型目录（对应 TS ``MODELS``）。
+"""聚合模型目录。
 
 键为 provider ID，值为 {model_id: model_record_dict}。
 """
 
 # ---------------------------------------------------------------------------
-# 图片模型目录（对应 TS ``IMAGE_MODELS`` 常量）
+# 图片模型目录
 # ---------------------------------------------------------------------------
 
 IMAGE_MODELS: ModelsCatalog = {}
-"""图片生成模型目录（对应 TS ``IMAGE_MODELS``）。
+"""图片生成模型目录。
 
 当前仅 ``openrouter`` 一个 provider，约 50 个模型。
 """

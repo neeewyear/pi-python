@@ -1,4 +1,4 @@
-"""摘要生成（对应 ``compaction.ts`` 的摘要生成 + LLM 提示词）。
+"""摘要生成+LLM 提示词。
 
 包含：
 - 4 组内置提示词模板
@@ -130,7 +130,7 @@ async def complete_simple_with_retries(
     system_prompt: str,
     max_tokens: int,
 ) -> AssistantMessage:
-    """LLM 调用包装（对应 TS ``completeSimpleWithRetries``）。
+    """LLM 调用包装。
 
     TODO：当前为占位实现，待 pi-ai Python 层就绪后对接真实的
     ``models.completeSimple`` + ``retryAssistantCall``。
@@ -169,7 +169,7 @@ async def generate_summary_with_usage(
     custom_instructions: str | None = None,
     thinking_level: ThinkingLevel | None = None,
 ) -> Result[tuple[str, Usage], CompactionError]:
-    """生成摘要并返回 usage（对应 TS ``generateSummaryWithUsage``）。
+    """生成摘要并返回 usage。
 
     TODO：当前为占位实现，待 pi-ai Python 层就绪后对接。
     """
@@ -231,7 +231,7 @@ async def generate_summary(
     custom_instructions: str | None = None,
     thinking_level: ThinkingLevel | None = None,
 ) -> Result[str, CompactionError]:
-    """生成摘要文本（对应 TS ``generateSummary``）。"""
+    """生成摘要文本"""
     result = await generate_summary_with_usage(
         current_messages,
         model,

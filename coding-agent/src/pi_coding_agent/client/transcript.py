@@ -1,4 +1,4 @@
-"""会话记录（对应 TS ``client/transcript.ts``）。
+"""会话记录。
 
 管理会话记录状态，包括快照、进度条目和工具调用缓冲区。
 """
@@ -17,11 +17,11 @@ from pydantic import BaseModel
 JsonValue: TypeAlias = (
     str | int | float | bool | None | list["JsonValue"] | dict[str, "JsonValue"]
 )
-"""JSON 值类型（对应 TS ``JsonValue``）。"""
+"""JSON 值类型。"""
 
 
 class TranscriptState(BaseModel):
-    """会话记录状态（对应 TS ``TranscriptState``）。
+    """会话记录状态。
 
     管理会话快照和流式进度条目。
     """
@@ -77,7 +77,7 @@ def _parse_partial_tool_input(value: str) -> JsonValue:
 
 
 def create_transcript_state(snapshot: dict[str, Any]) -> TranscriptState:
-    """创建初始会话记录状态（对应 TS ``createTranscriptState``）。"""
+    """创建初始会话记录状态。"""
     return TranscriptState(
         snapshot=deepcopy(snapshot),
         progress_items={},
@@ -89,7 +89,7 @@ def create_transcript_state(snapshot: dict[str, Any]) -> TranscriptState:
 def apply_transcript_snapshot(
     state: TranscriptState, snapshot: dict[str, Any]
 ) -> TranscriptState:
-    """应用会话快照更新（对应 TS ``applyTranscriptSnapshot``）。"""
+    """应用会话快照更新。"""    
     if state.snapshot.get("id") == snapshot.get("id") and snapshot.get(
         "revision", -1
     ) < state.snapshot.get("revision", 0):
@@ -117,7 +117,7 @@ def _set_progress_item(state: TranscriptState, item: dict[str, Any]) -> Transcri
 def apply_transcript_progress(
     state: TranscriptState, progress: dict[str, Any]
 ) -> TranscriptState:
-    """应用进度更新（对应 TS ``applyTranscriptProgress``）。"""
+    """应用进度更新。"""
     progress_type = progress.get("type")
 
     if progress_type in ("item_started", "item_updated"):
@@ -190,7 +190,7 @@ def apply_transcript_progress(
 def select_transcript(
     state: TranscriptState,
 ) -> list[dict[str, Any]]:
-    """选择最终转录条目（对应 TS ``selectTranscript``）。"""
+    """选择最终转录条目。"""
     transcript: list[dict[str, Any]] = [
         state.progress_items.get(item["id"], item)
         for item in state.snapshot.get("transcript", [])

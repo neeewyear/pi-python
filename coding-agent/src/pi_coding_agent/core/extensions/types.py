@@ -1,4 +1,4 @@
-"""扩展系统类型（对应 TS ``core/extensions/types.ts``）。
+"""扩展系统类型。
 
 扩展是 Python 模块，可以：
 - 订阅 agent 生命周期事件
@@ -56,43 +56,43 @@ from ..system_prompt import BuildSystemPromptOptions
 # AgentToolResult, AgentToolUpdateCallback, ToolExecutionMode from pi_agent.types.
 
 # ============================================================================
-# 常量（对应 TS 中引用但不在此文件定义的类型）
+# 常量
 # ============================================================================
 
 # ---------------------------------------------------------------------------
-# 占位 Protocol（对应 TS 中未在 Python 侧实现的类型）
+# 占位 Protocol
 # ---------------------------------------------------------------------------
 
 
 @runtime_checkable
 class Component(Protocol):
-    """TUI 组件（对应 TS ``Component``）。"""
+    """TUI 组件。"""
 
     def dispose(self) -> None: ...
 
 
 @runtime_checkable
 class TUI(Protocol):
-    """TUI 实例（对应 TS ``TUI``）。"""
+    """TUI 实例。"""
 
 
 @runtime_checkable
 class EditorTheme(Protocol):
-    """编辑器主题（对应 TS ``EditorTheme``）。"""
+    """编辑器主题。"""
 
 
 @runtime_checkable
 class EditorComponent(Protocol):
-    """编辑器组件（对应 TS ``EditorComponent``）。"""
+    """编辑器组件。"""  
 
 
 @runtime_checkable
 class AutocompleteProvider(Protocol):
-    """自动补全提供者（对应 TS ``AutocompleteProvider``）。"""
+    """自动补全提供者。"""
 
 
 class AutocompleteItem(BaseModel):
-    """自动补全条目（对应 TS ``AutocompleteItem``）。"""
+    """自动补全条目。"""
 
     label: str
     insert_text: str | None = None
@@ -100,16 +100,16 @@ class AutocompleteItem(BaseModel):
 
 
 KeyId: TypeAlias = str
-"""快捷键标识符（对应 TS ``KeyId``）。"""
+"""快捷键标识符。"""
 
 
 @runtime_checkable
 class OverlayHandle(Protocol):
-    """浮层句柄（对应 TS ``OverlayHandle``）。"""
+    """浮层句柄。"""
 
 
 class OverlayOptions(BaseModel):
-    """浮层定位/尺寸选项（对应 TS ``OverlayOptions``）。"""
+    """浮层定位/尺寸选项。"""
 
     width: int | None = None
     height: int | None = None
@@ -119,32 +119,32 @@ class OverlayOptions(BaseModel):
 
 @runtime_checkable
 class Theme(Protocol):
-    """主题对象（对应 TS ``Theme``）。"""
+    """主题对象。"""
 
 
 @runtime_checkable
 class ReadonlyFooterDataProvider(Protocol):
-    """只读页脚数据提供者（对应 TS ``ReadonlyFooterDataProvider``）。"""
+    """只读页脚数据提供者。"""  
 
 
 @runtime_checkable
 class AppKeybinding(Protocol):
-    """应用级快捷键（对应 TS ``AppKeybinding``）。"""
+    """应用级快捷键。"""
 
 
 @runtime_checkable
 class KeybindingsManager(Protocol):
-    """快捷键管理器（对应 TS ``KeybindingsManager``）。"""
+    """快捷键管理器。"""
 
 
 @runtime_checkable
 class ReadonlySessionManager(Protocol):
-    """只读会话管理器（对应 TS ``ReadonlySessionManager``）。"""
+    """只读会话管理器。"""
 
 
 @runtime_checkable
 class SlashCommandInfo(Protocol):
-    """斜杠命令信息（对应 TS ``SlashCommandInfo``）。"""
+    """斜杠命令信息。"""
 
 
 # ============================================================================
@@ -153,7 +153,7 @@ class SlashCommandInfo(Protocol):
 
 
 class ExtensionUIDialogOptions(BaseModel):
-    """扩展 UI 对话框选项（对应 TS ``ExtensionUIDialogOptions``）。"""
+    """扩展 UI 对话框选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -164,22 +164,22 @@ class ExtensionUIDialogOptions(BaseModel):
 
 
 WidgetPlacement: TypeAlias = Literal["aboveEditor", "belowEditor"]
-"""扩展 widget 放置位置（对应 TS ``WidgetPlacement``）。"""
+"""扩展 widget 放置位置。"""
 
 
 class ExtensionWidgetOptions(BaseModel):
-    """扩展 widget 选项（对应 TS ``ExtensionWidgetOptions``）。"""
+    """扩展 widget 选项。"""
 
     placement: WidgetPlacement = "aboveEditor"
     """widget 渲染位置。默认 ``aboveEditor``。"""
 
 
 TerminalInputHandler: TypeAlias = Callable[[str], dict[str, bool | str] | None]
-"""原始终端输入监听器（对应 TS ``TerminalInputHandler``）。"""
+"""原始终端输入监听器。"""
 
 
 class WorkingIndicatorOptions(BaseModel):
-    """工作指示器配置（对应 TS ``WorkingIndicatorOptions``）。"""
+    """工作指示器配置。"""
 
     frames: list[str] | None = None
     """动画帧。空数组隐藏指示器。自定义帧原样渲染。"""
@@ -190,16 +190,16 @@ class WorkingIndicatorOptions(BaseModel):
 AutocompleteProviderFactory: TypeAlias = Callable[
     [AutocompleteProvider], AutocompleteProvider
 ]
-"""自动补全提供者工厂（对应 TS ``AutocompleteProviderFactory``）。"""
+"""自动补全提供者工厂。"""
 
 EditorFactory: TypeAlias = Callable[
     [TUI, EditorTheme, KeybindingsManager], EditorComponent
 ]
-"""编辑器工厂（对应 TS ``EditorFactory``）。"""
+"""编辑器工厂。"""
 
 
 class ExtensionUIContext(BaseModel):
-    """扩展 UI 上下文（对应 TS ``ExtensionUIContext``）。
+    """扩展 UI 上下文。
 
     每个模式（interactive、RPC、print）提供自己的实现。
     """
@@ -298,7 +298,7 @@ class ExtensionUIContext(BaseModel):
 
 
 class ContextUsage(BaseModel):
-    """上下文使用量（对应 TS ``ContextUsage``）。"""
+    """上下文使用量。"""
 
     tokens: int | None = None
     """估计的上下文 token 数，未知时为 None。"""
@@ -309,7 +309,7 @@ class ContextUsage(BaseModel):
 
 
 class CompactOptions(BaseModel):
-    """压缩选项（对应 TS ``CompactOptions``）。"""
+    """压缩选项。"""
 
     custom_instructions: str | None = None
     on_complete: Callable[[Any], None] | None = None
@@ -317,11 +317,11 @@ class CompactOptions(BaseModel):
 
 
 ExtensionMode: TypeAlias = Literal["tui", "rpc", "json", "print"]
-"""扩展运行模式（对应 TS ``ExtensionMode``）。"""
+"""扩展运行模式。"""
 
 
 class ExtensionContext(BaseModel):
-    """传递给扩展事件处理器的上下文（对应 TS ``ExtensionContext``）。"""
+    """传递给扩展事件处理器的上下文。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -364,7 +364,7 @@ class ExtensionContext(BaseModel):
 
 
 class ExtensionCommandContext(ExtensionContext):
-    """命令处理器的扩展上下文（对应 TS ``ExtensionCommandContext``）。"""
+    """命令处理器的扩展上下文。"""
 
     get_system_prompt_options: Callable[[], BuildSystemPromptOptions]
     """获取当前基础系统提示词构建选项。"""
@@ -395,7 +395,7 @@ class ExtensionCommandContext(ExtensionContext):
 
 
 class ReplacedSessionContext(ExtensionCommandContext):
-    """替换会话后的命令上下文（对应 TS ``ReplacedSessionContext``）。"""
+    """替换会话后的命令上下文。"""
 
     send_message: Callable[
         [
@@ -421,7 +421,7 @@ class ReplacedSessionContext(ExtensionCommandContext):
 
 
 class ToolRenderResultOptions(BaseModel):
-    """工具结果渲染选项（对应 TS ``ToolRenderResultOptions``）。"""
+    """工具结果渲染选项。"""
 
     expanded: bool
     """结果视图是否展开。"""
@@ -430,7 +430,7 @@ class ToolRenderResultOptions(BaseModel):
 
 
 class ToolRenderContext(BaseModel):
-    """传递给工具渲染器的上下文（对应 TS ``ToolRenderContext``）。"""
+    """传递给工具渲染器的上下文。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -461,7 +461,7 @@ class ToolRenderContext(BaseModel):
 
 
 class ToolDefinition(BaseModel):
-    """工具定义（对应 TS ``ToolDefinition``）。
+    """工具定义。
 
     注意：TS 版本使用 TypeBox 的 ``TSchema``/``Static`` 进行参数类型推断。
     Python 版本使用 ``dict[str, object]`` 作为参数 schema。
@@ -507,11 +507,11 @@ class ToolDefinition(BaseModel):
 
 
 AnyToolDefinition: TypeAlias = ToolDefinition
-"""任意工具定义（对应 TS ``AnyToolDefinition``）。"""
+"""任意工具定义。"""
 
 
 def define_tool(tool: ToolDefinition) -> ToolDefinition:
-    """定义工具，保留参数推断（对应 TS ``defineTool``）。"""
+    """定义工具，保留参数推断。"""
     return tool
 
 
@@ -521,25 +521,25 @@ def define_tool(tool: ToolDefinition) -> ToolDefinition:
 
 
 class ProjectTrustEvent(BaseModel):
-    """项目信任事件（对应 TS ``ProjectTrustEvent``）。"""
+    """项目信任事件。"""
 
     type: Literal["project_trust"] = "project_trust"
     cwd: str
 
 
 ProjectTrustEventDecision: TypeAlias = Literal["yes", "no", "undecided"]
-"""项目信任决策（对应 TS ``ProjectTrustEventDecision``）。"""
+"""项目信任决策。"""
 
 
 class ProjectTrustEventResult(BaseModel):
-    """项目信任事件结果（对应 TS ``ProjectTrustEventResult``）。"""
+    """项目信任事件结果。"""
 
     trusted: ProjectTrustEventDecision
     remember: bool | None = None
 
 
 class ProjectTrustContext(BaseModel):
-    """项目信任上下文（对应 TS ``ProjectTrustContext``）。"""
+    """项目信任上下文。"""
 
     cwd: str
     mode: ExtensionMode
@@ -551,11 +551,11 @@ ProjectTrustHandler: TypeAlias = Callable[
     [ProjectTrustEvent, ProjectTrustContext],
     Awaitable[ProjectTrustEventResult] | ProjectTrustEventResult,
 ]
-"""项目信任处理器（对应 TS ``ProjectTrustHandler``）。"""
+"""项目信任处理器。"""
 
 
 class ResourcesDiscoverEvent(BaseModel):
-    """资源发现事件（对应 TS ``ResourcesDiscoverEvent``）。"""
+    """资源发现事件。"""
 
     type: Literal["resources_discover"] = "resources_discover"
     cwd: str
@@ -563,7 +563,7 @@ class ResourcesDiscoverEvent(BaseModel):
 
 
 class ResourcesDiscoverResult(BaseModel):
-    """资源发现事件结果（对应 TS ``ResourcesDiscoverResult``）。"""
+    """资源发现事件结果。"""
 
     skill_paths: list[str] | None = None
     prompt_paths: list[str] | None = None
@@ -576,7 +576,7 @@ class ResourcesDiscoverResult(BaseModel):
 
 
 class SessionStartEvent(BaseModel):
-    """会话启动事件（对应 TS ``SessionStartEvent``）。"""
+    """会话启动事件。"""
 
     type: Literal["session_start"] = "session_start"
     reason: Literal["startup", "reload", "new", "resume", "fork"]
@@ -584,14 +584,14 @@ class SessionStartEvent(BaseModel):
 
 
 class SessionInfoChangedEvent(BaseModel):
-    """会话信息变更事件（对应 TS ``SessionInfoChangedEvent``）。"""
+    """会话信息变更事件。"""
 
     type: Literal["session_info_changed"] = "session_info_changed"
     name: str | None = None
 
 
 class SessionBeforeSwitchEvent(BaseModel):
-    """会话切换前事件（对应 TS ``SessionBeforeSwitchEvent``）。"""
+    """会话切换前事件。"""
 
     type: Literal["session_before_switch"] = "session_before_switch"
     reason: Literal["new", "resume"]
@@ -599,7 +599,7 @@ class SessionBeforeSwitchEvent(BaseModel):
 
 
 class SessionBeforeForkEvent(BaseModel):
-    """会话 fork 前事件（对应 TS ``SessionBeforeForkEvent``）。"""
+    """会话 fork 前事件。"""
 
     type: Literal["session_before_fork"] = "session_before_fork"
     entry_id: str
@@ -607,7 +607,7 @@ class SessionBeforeForkEvent(BaseModel):
 
 
 class SessionBeforeCompactEvent(BaseModel):
-    """会话压缩前事件（对应 TS ``SessionBeforeCompactEvent``）。"""
+    """会话压缩前事件。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -622,7 +622,7 @@ class SessionBeforeCompactEvent(BaseModel):
 
 
 class SessionCompactEvent(BaseModel):
-    """会话压缩事件（对应 TS ``SessionCompactEvent``）。"""
+    """会话压缩事件。"""
 
     type: Literal["session_compact"] = "session_compact"
     compaction_entry: CompactionEntry[object]
@@ -632,7 +632,7 @@ class SessionCompactEvent(BaseModel):
 
 
 class SessionShutdownEvent(BaseModel):
-    """会话关闭事件（对应 TS ``SessionShutdownEvent``）。"""
+    """会话关闭事件。"""
 
     type: Literal["session_shutdown"] = "session_shutdown"
     reason: Literal["quit", "reload", "new", "resume", "fork"]
@@ -640,7 +640,7 @@ class SessionShutdownEvent(BaseModel):
 
 
 class TreePreparation(BaseModel):
-    """树导航准备数据（对应 TS ``TreePreparation``）。"""
+    """树导航准备数据。"""  
 
     target_id: str
     old_leaf_id: str | None = None
@@ -653,7 +653,7 @@ class TreePreparation(BaseModel):
 
 
 class SessionBeforeTreeEvent(BaseModel):
-    """树导航前事件（对应 TS ``SessionBeforeTreeEvent``）。"""
+    """树导航前事件。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -663,7 +663,7 @@ class SessionBeforeTreeEvent(BaseModel):
 
 
 class SessionTreeEvent(BaseModel):
-    """树导航后事件（对应 TS ``SessionTreeEvent``）。"""
+    """树导航后事件。"""
 
     type: Literal["session_tree"] = "session_tree"
     new_leaf_id: str | None = None
@@ -683,7 +683,7 @@ SessionEvent: TypeAlias = (
     | SessionBeforeTreeEvent
     | SessionTreeEvent
 )
-"""会话事件联合（对应 TS ``SessionEvent``）。"""
+"""会话事件联合。"""
 
 
 # ============================================================================
@@ -692,28 +692,28 @@ SessionEvent: TypeAlias = (
 
 
 class ContextEvent(BaseModel):
-    """上下文事件（每次 LLM 调用前触发，对应 TS ``ContextEvent``）。"""
+    """上下文事件。"""
 
     type: Literal["context"] = "context"
     messages: list[AgentMessage]
 
 
 class BeforeProviderRequestEvent(BaseModel):
-    """提供者请求前事件（对应 TS ``BeforeProviderRequestEvent``）。"""
+    """提供者请求前事件。"""
 
     type: Literal["before_provider_request"] = "before_provider_request"
     payload: Any
 
 
 class BeforeProviderHeadersEvent(BaseModel):
-    """提供者请求头前事件（对应 TS ``BeforeProviderHeadersEvent``）。"""
+    """提供者请求头前事件。"""
 
     type: Literal["before_provider_headers"] = "before_provider_headers"
     headers: ProviderHeaders
 
 
 class AfterProviderResponseEvent(BaseModel):
-    """提供者响应后事件（对应 TS ``AfterProviderResponseEvent``）。"""
+    """提供者响应后事件。"""
 
     type: Literal["after_provider_response"] = "after_provider_response"
     status: int
@@ -721,7 +721,7 @@ class AfterProviderResponseEvent(BaseModel):
 
 
 class BeforeAgentStartEvent(BaseModel):
-    """Agent 启动前事件（对应 TS ``BeforeAgentStartEvent``）。"""
+    """Agent 启动前事件。"""
 
     type: Literal["before_agent_start"] = "before_agent_start"
     prompt: str
@@ -731,26 +731,26 @@ class BeforeAgentStartEvent(BaseModel):
 
 
 class AgentStartEvent(BaseModel):
-    """Agent 启动事件（对应 TS ``AgentStartEvent``）。"""
+    """Agent 启动事件。"""
 
     type: Literal["agent_start"] = "agent_start"
 
 
 class AgentEndEvent(BaseModel):
-    """Agent 结束事件（对应 TS ``AgentEndEvent``）。"""
+    """Agent 结束事件。"""
 
     type: Literal["agent_end"] = "agent_end"
     messages: list[AgentMessage]
 
 
 class AgentSettledEvent(BaseModel):
-    """Agent 稳定事件（对应 TS ``AgentSettledEvent``）。"""
+    """Agent 稳定事件。"""
 
     type: Literal["agent_settled"] = "agent_settled"
 
 
 class TurnStartEvent(BaseModel):
-    """回合开始事件（对应 TS ``TurnStartEvent``）。"""
+    """回合开始事件。"""
 
     type: Literal["turn_start"] = "turn_start"
     turn_index: int
@@ -758,7 +758,7 @@ class TurnStartEvent(BaseModel):
 
 
 class TurnEndEvent(BaseModel):
-    """回合结束事件（对应 TS ``TurnEndEvent``）。"""
+    """回合结束事件。"""
 
     type: Literal["turn_end"] = "turn_end"
     turn_index: int
@@ -767,14 +767,14 @@ class TurnEndEvent(BaseModel):
 
 
 class MessageStartEvent(BaseModel):
-    """消息开始事件（对应 TS ``MessageStartEvent``）。"""
+    """消息开始事件。"""
 
     type: Literal["message_start"] = "message_start"
     message: AgentMessage
 
 
 class MessageUpdateEvent(BaseModel):
-    """消息更新事件（对应 TS ``MessageUpdateEvent``）。"""
+    """消息更新事件。"""
 
     type: Literal["message_update"] = "message_update"
     message: AgentMessage
@@ -782,14 +782,14 @@ class MessageUpdateEvent(BaseModel):
 
 
 class MessageEndEvent(BaseModel):
-    """消息结束事件（对应 TS ``MessageEndEvent``）。"""
+    """消息结束事件。"""    
 
     type: Literal["message_end"] = "message_end"
     message: AgentMessage
 
 
 class ToolExecutionStartEvent(BaseModel):
-    """工具执行开始事件（对应 TS ``ToolExecutionStartEvent``）。"""
+    """工具执行开始事件。"""
 
     type: Literal["tool_execution_start"] = "tool_execution_start"
     tool_call_id: str
@@ -798,7 +798,7 @@ class ToolExecutionStartEvent(BaseModel):
 
 
 class ToolExecutionUpdateEvent(BaseModel):
-    """工具执行更新事件（对应 TS ``ToolExecutionUpdateEvent``）。"""
+    """工具执行更新事件。"""
 
     type: Literal["tool_execution_update"] = "tool_execution_update"
     tool_call_id: str
@@ -808,7 +808,7 @@ class ToolExecutionUpdateEvent(BaseModel):
 
 
 class ToolExecutionEndEvent(BaseModel):
-    """工具执行结束事件（对应 TS ``ToolExecutionEndEvent``）。"""
+    """工具执行结束事件。"""
 
     type: Literal["tool_execution_end"] = "tool_execution_end"
     tool_call_id: str
@@ -823,11 +823,11 @@ class ToolExecutionEndEvent(BaseModel):
 
 
 ModelSelectSource: TypeAlias = Literal["set", "cycle", "restore"]
-"""模型选择来源（对应 TS ``ModelSelectSource``）。"""
+"""模型选择来源。"""
 
 
 class ModelSelectEvent(BaseModel):
-    """模型选择事件（对应 TS ``ModelSelectEvent``）。"""
+    """模型选择事件。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -838,7 +838,7 @@ class ModelSelectEvent(BaseModel):
 
 
 class ThinkingLevelSelectEvent(BaseModel):
-    """思考级别选择事件（对应 TS ``ThinkingLevelSelectEvent``）。"""
+    """思考级别选择事件。"""    
 
     type: Literal["thinking_level_select"] = "thinking_level_select"
     level: ThinkingLevel
@@ -851,7 +851,7 @@ class ThinkingLevelSelectEvent(BaseModel):
 
 
 class UserBashEvent(BaseModel):
-    """用户 Bash 事件（对应 TS ``UserBashEvent``）。"""
+    """用户 Bash 事件。"""
 
     type: Literal["user_bash"] = "user_bash"
     command: str
@@ -865,11 +865,11 @@ class UserBashEvent(BaseModel):
 
 
 InputSource: TypeAlias = Literal["interactive", "rpc", "extension"]
-"""输入来源（对应 TS ``InputSource``）。"""
+"""输入来源。"""
 
 
 class InputEvent(BaseModel):
-    """输入事件（对应 TS ``InputEvent``）。"""
+    """输入事件。"""
 
     type: Literal["input"] = "input"
     text: str
@@ -902,7 +902,7 @@ InputEventResult: TypeAlias = Annotated[
     InputContinueResult | InputTransformResult | InputHandledResult,
     Field(discriminator="action"),
 ]
-"""输入事件结果（对应 TS ``InputEventResult``）。"""
+"""输入事件结果。"""
 
 
 # ============================================================================
@@ -911,63 +911,63 @@ InputEventResult: TypeAlias = Annotated[
 
 
 class ToolCallEventBase(BaseModel):
-    """工具调用事件基类（对应 TS ``ToolCallEventBase``）。"""
+    """工具调用事件基类。"""
 
     type: Literal["tool_call"] = "tool_call"
     tool_call_id: str
 
 
 class BashToolCallEvent(ToolCallEventBase):
-    """Bash 工具调用事件（对应 TS ``BashToolCallEvent``）。"""
+    """Bash 工具调用事件。"""
 
     tool_name: Literal["bash"] = "bash"
     input: Any
 
 
 class ReadToolCallEvent(ToolCallEventBase):
-    """Read 工具调用事件（对应 TS ``ReadToolCallEvent``）。"""
+    """Read 工具调用事件。"""
 
     tool_name: Literal["read"] = "read"
     input: Any
 
 
 class EditToolCallEvent(ToolCallEventBase):
-    """Edit 工具调用事件（对应 TS ``EditToolCallEvent``）。"""
+    """Edit 工具调用事件。"""
 
     tool_name: Literal["edit"] = "edit"
     input: Any
 
 
 class WriteToolCallEvent(ToolCallEventBase):
-    """Write 工具调用事件（对应 TS ``WriteToolCallEvent``）。"""
+    """Write 工具调用事件。"""
 
     tool_name: Literal["write"] = "write"
     input: Any
 
 
 class GrepToolCallEvent(ToolCallEventBase):
-    """Grep 工具调用事件（对应 TS ``GrepToolCallEvent``）。"""
+    """Grep 工具调用事件。"""
 
     tool_name: Literal["grep"] = "grep"
     input: Any
 
 
 class FindToolCallEvent(ToolCallEventBase):
-    """Find 工具调用事件（对应 TS ``FindToolCallEvent``）。"""
+    """Find 工具调用事件。"""   
 
     tool_name: Literal["find"] = "find"
     input: Any
 
 
 class LsToolCallEvent(ToolCallEventBase):
-    """Ls 工具调用事件（对应 TS ``LsToolCallEvent``）。"""
+    """Ls 工具调用事件。"""
 
     tool_name: Literal["ls"] = "ls"
     input: Any
 
 
 class CustomToolCallEvent(ToolCallEventBase):
-    """自定义工具调用事件（对应 TS ``CustomToolCallEvent``）。"""
+    """自定义工具调用事件。"""
 
     tool_name: str
     input: dict[str, Any]
@@ -983,11 +983,11 @@ ToolCallEvent: TypeAlias = (
     | LsToolCallEvent
     | CustomToolCallEvent
 )
-"""工具调用事件联合（对应 TS ``ToolCallEvent``）。"""
+"""工具调用事件联合。"""
 
 
 class ToolResultEventBase(BaseModel):
-    """工具结果事件基类（对应 TS ``ToolResultEventBase``）。"""
+    """工具结果事件基类。"""
 
     type: Literal["tool_result"] = "tool_result"
     tool_call_id: str
@@ -998,56 +998,56 @@ class ToolResultEventBase(BaseModel):
 
 
 class BashToolResultEvent(ToolResultEventBase):
-    """Bash 工具结果事件（对应 TS ``BashToolResultEvent``）。"""
+    """Bash 工具结果事件。"""
 
     tool_name: Literal["bash"] = "bash"
     details: Any = None
 
 
 class ReadToolResultEvent(ToolResultEventBase):
-    """Read 工具结果事件（对应 TS ``ReadToolResultEvent``）。"""
+    """Read 工具结果事件。"""
 
     tool_name: Literal["read"] = "read"
     details: Any = None
 
 
 class EditToolResultEvent(ToolResultEventBase):
-    """Edit 工具结果事件（对应 TS ``EditToolResultEvent``）。"""
+    """Edit 工具结果事件。"""   
 
     tool_name: Literal["edit"] = "edit"
     details: Any = None
 
 
 class WriteToolResultEvent(ToolResultEventBase):
-    """Write 工具结果事件（对应 TS ``WriteToolResultEvent``）。"""
+    """Write 工具结果事件。"""
 
     tool_name: Literal["write"] = "write"
     details: None = None
 
 
 class GrepToolResultEvent(ToolResultEventBase):
-    """Grep 工具结果事件（对应 TS ``GrepToolResultEvent``）。"""
+    """Grep 工具结果事件。"""
 
     tool_name: Literal["grep"] = "grep"
     details: Any = None
 
 
 class FindToolResultEvent(ToolResultEventBase):
-    """Find 工具结果事件（对应 TS ``FindToolResultEvent``）。"""
+    """Find 工具结果事件。"""
 
     tool_name: Literal["find"] = "find"
     details: Any = None
 
 
 class LsToolResultEvent(ToolResultEventBase):
-    """Ls 工具结果事件（对应 TS ``LsToolResultEvent``）。"""
+    """Ls 工具结果事件。"""
 
     tool_name: Literal["ls"] = "ls"
     details: Any = None
 
 
 class CustomToolResultEvent(ToolResultEventBase):
-    """自定义工具结果事件（对应 TS ``CustomToolResultEvent``）。"""
+    """自定义工具结果事件。"""
 
     tool_name: str
     details: Any = None
@@ -1063,7 +1063,7 @@ ToolResultEvent: TypeAlias = (
     | LsToolResultEvent
     | CustomToolResultEvent
 )
-"""工具结果事件联合（对应 TS ``ToolResultEvent``）。"""
+"""工具结果事件联合。"""
 
 
 def is_bash_tool_result(e: ToolResultEvent) -> bool:
@@ -1102,7 +1102,7 @@ def is_ls_tool_result(e: ToolResultEvent) -> bool:
 
 
 def is_tool_call_event_type(tool_name: str, event: ToolCallEvent) -> bool:
-    """工具调用事件类型守卫（对应 TS ``isToolCallEventType``）。"""
+    """工具调用事件类型守卫。"""
     return event.tool_name == tool_name
 
 
@@ -1137,7 +1137,7 @@ ExtensionEvent: TypeAlias = (
     | ToolCallEvent
     | ToolResultEvent
 )
-"""扩展事件联合（对应 TS ``ExtensionEvent``）。"""
+"""扩展事件联合。"""
 
 
 # ============================================================================
@@ -1146,24 +1146,24 @@ ExtensionEvent: TypeAlias = (
 
 
 class ContextEventResult(BaseModel):
-    """上下文事件结果（对应 TS ``ContextEventResult``）。"""
+    """上下文事件结果。"""
 
     messages: list[AgentMessage] | None = None
 
 
 BeforeProviderRequestEventResult: TypeAlias = Any
-"""提供者请求前事件结果（对应 TS ``BeforeProviderRequestEventResult``）。"""
+"""提供者请求前事件结果。"""
 
 
 class ToolCallEventResult(BaseModel):
-    """工具调用事件结果（对应 TS ``ToolCallEventResult``）。"""
+    """工具调用事件结果。"""
 
     block: bool | None = None
     reason: str | None = None
 
 
 class UserBashEventResult(BaseModel):
-    """用户 Bash 事件结果（对应 TS ``UserBashEventResult``）。"""
+    """用户 Bash 事件结果。"""
 
     operations: Any | None = None
     """BashOperations。"""
@@ -1172,7 +1172,7 @@ class UserBashEventResult(BaseModel):
 
 
 class ToolResultEventResult(BaseModel):
-    """工具结果事件结果（对应 TS ``ToolResultEventResult``）。"""
+    """工具结果事件结果。"""
 
     content: list[TextContent | ImageContent] | None = None
     details: Any = None
@@ -1181,33 +1181,33 @@ class ToolResultEventResult(BaseModel):
 
 
 class MessageEndEventResult(BaseModel):
-    """消息结束事件结果（对应 TS ``MessageEndEventResult``）。"""
+    """消息结束事件结果。"""
 
     message: AgentMessage | None = None
 
 
 class BeforeAgentStartEventResult(BaseModel):
-    """Agent 启动前事件结果（对应 TS ``BeforeAgentStartEventResult``）。"""
+    """Agent 启动前事件结果。"""
 
     message: dict[str, Any] | None = None
     system_prompt: str | None = None
 
 
 class SessionBeforeSwitchResult(BaseModel):
-    """会话切换前结果（对应 TS ``SessionBeforeSwitchResult``）。"""
+    """会话切换前结果。"""
 
     cancel: bool | None = None
 
 
 class SessionBeforeForkResult(BaseModel):
-    """会话 fork 前结果（对应 TS ``SessionBeforeForkResult``）。"""
+    """会话 fork 前结果。"""
 
     cancel: bool | None = None
     skip_conversation_restore: bool | None = None
 
 
 class SessionBeforeCompactResult(BaseModel):
-    """会话压缩前结果（对应 TS ``SessionBeforeCompactResult``）。"""
+    """会话压缩前结果。"""
 
     cancel: bool | None = None
     compaction: Any | None = None
@@ -1215,7 +1215,7 @@ class SessionBeforeCompactResult(BaseModel):
 
 
 class SessionBeforeTreeResult(BaseModel):
-    """树导航前结果（对应 TS ``SessionBeforeTreeResult``）。"""
+    """树导航前结果。"""
 
     cancel: bool | None = None
     summary: dict[str, Any] | None = None
@@ -1230,14 +1230,14 @@ class SessionBeforeTreeResult(BaseModel):
 
 
 class MessageRenderOptions(BaseModel):
-    """消息渲染选项（对应 TS ``MessageRenderOptions``）。"""
+    """消息渲染选项。"""
 
     expanded: bool
     output_pad: int
 
 
 class MarkdownTransformContext(BaseModel):
-    """Markdown 转换上下文（对应 TS ``MarkdownTransformContext``）。"""
+    """Markdown 转换上下文。"""
 
     message_type: Literal["user", "assistant", "assistant-thinking"]
     is_streaming: bool
@@ -1245,11 +1245,11 @@ class MarkdownTransformContext(BaseModel):
 
 
 MarkdownTransformer: TypeAlias = Callable[[str, MarkdownTransformContext], str]
-"""Markdown 转换器（对应 TS ``MarkdownTransformer``）。"""
+"""Markdown 转换器。"""
 
 
 class EntryRenderOptions(BaseModel):
-    """条目渲染选项（对应 TS ``EntryRenderOptions``）。"""
+    """条目渲染选项。"""
 
     expanded: bool
 
@@ -1257,12 +1257,12 @@ class EntryRenderOptions(BaseModel):
 MessageRenderer: TypeAlias = Callable[
     [CustomMessage, MessageRenderOptions, Theme], Component | None
 ]
-"""消息渲染器（对应 TS ``MessageRenderer``）。"""
+"""消息渲染器。"""
 
 EntryRenderer: TypeAlias = Callable[
     [CustomEntry[object], EntryRenderOptions, Theme], Component | None
 ]
-"""条目渲染器（对应 TS ``EntryRenderer``）。"""
+"""条目渲染器。"""
 
 
 # ============================================================================
@@ -1271,7 +1271,7 @@ EntryRenderer: TypeAlias = Callable[
 
 
 class RegisteredCommand(BaseModel):
-    """已注册命令（对应 TS ``RegisteredCommand``）。"""
+    """已注册命令。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1284,7 +1284,7 @@ class RegisteredCommand(BaseModel):
 
 
 class ResolvedCommand(RegisteredCommand):
-    """已解析命令（对应 TS ``ResolvedCommand``）。"""
+    """已解析命令。"""  
 
     invocation_name: str
 
@@ -1295,12 +1295,12 @@ class ResolvedCommand(RegisteredCommand):
 
 
 ExtensionHandler: TypeAlias = Callable[[Any, ExtensionContext], Awaitable[Any] | Any]
-"""扩展事件处理器（对应 TS ``ExtensionHandler``）。"""
+"""扩展事件处理器。"""
 
 
 @runtime_checkable
 class ExtensionAPI(Protocol):
-    """扩展 API 接口（对应 TS ``ExtensionAPI``）。
+    """扩展 API 接口。
 
     扩展工厂函数接收此接口的实例。
     """
@@ -1403,7 +1403,7 @@ class ExtensionAPI(Protocol):
 
 
 class ProviderConfig(BaseModel):
-    """Provider 配置（对应 TS ``ProviderConfig``）。"""
+    """Provider 配置。"""   
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1427,7 +1427,7 @@ class ProviderConfig(BaseModel):
 
 
 class ProviderModelConfig(BaseModel):
-    """Provider 模型配置（对应 TS ``ProviderModelConfig``）。"""
+    """Provider 模型配置。"""   
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1447,11 +1447,11 @@ class ProviderModelConfig(BaseModel):
 
 
 ExtensionFactory: TypeAlias = Callable[[ExtensionAPI], Awaitable[None] | None]
-"""扩展工厂函数（对应 TS ``ExtensionFactory``）。"""
+"""扩展工厂函数。"""
 
 
 class InlineExtension(BaseModel):
-    """内联扩展（对应 TS ``InlineExtension``）。"""
+    """内联扩展。"""
 
     name: str | None = None
     factory: ExtensionFactory | None = None
@@ -1464,7 +1464,7 @@ class InlineExtension(BaseModel):
 
 
 class RegisteredTool(BaseModel):
-    """已注册工具（对应 TS ``RegisteredTool``）。"""
+    """已注册工具。"""
 
     definition: ToolDefinition
     source_info: Any
@@ -1472,7 +1472,7 @@ class RegisteredTool(BaseModel):
 
 
 class ExtensionFlag(BaseModel):
-    """扩展标志（对应 TS ``ExtensionFlag``）。"""
+    """扩展标志。"""
 
     name: str
     description: str | None = None
@@ -1482,7 +1482,7 @@ class ExtensionFlag(BaseModel):
 
 
 class ExtensionShortcut(BaseModel):
-    """扩展快捷键（对应 TS ``ExtensionShortcut``）。"""
+    """扩展快捷键。"""
 
     shortcut: KeyId
     description: str | None = None
@@ -1491,32 +1491,32 @@ class ExtensionShortcut(BaseModel):
 
 
 HandlerFn: TypeAlias = Callable[..., Awaitable[Any]]
-"""处理器函数（对应 TS ``HandlerFn``）。"""
+"""处理器函数。"""
 
 SendMessageHandler: TypeAlias = Callable[[dict[str, Any], dict[str, Any] | None], None]
-"""发送消息处理器（对应 TS ``SendMessageHandler``）。"""
+"""发送消息处理器。"""
 
 SendUserMessageHandler: TypeAlias = Callable[
     [str | list[TextContent | ImageContent], dict[str, Any] | None],
     None,
 ]
-"""发送用户消息处理器（对应 TS ``SendUserMessageHandler``）。"""
+"""发送用户消息处理器。"""
 
 AppendEntryHandler: TypeAlias = Callable[[str, Any], None]
-"""追加条目处理器（对应 TS ``AppendEntryHandler``）。"""
+"""追加条目处理器。"""
 
 SetSessionNameHandler: TypeAlias = Callable[[str], None]
-"""设置会话名称处理器（对应 TS ``SetSessionNameHandler``）。"""
+"""设置会话名称处理器。"""
 
 GetSessionNameHandler: TypeAlias = Callable[[], str | None]
-"""获取会话名称处理器（对应 TS ``GetSessionNameHandler``）。"""
+"""获取会话名称处理器。"""  
 
 GetActiveToolsHandler: TypeAlias = Callable[[], list[str]]
-"""获取活跃工具处理器（对应 TS ``GetActiveToolsHandler``）。"""
+"""获取活跃工具处理器。"""
 
 
 class ToolInfo(BaseModel):
-    """工具信息（对应 TS ``ToolInfo``）。"""
+    """工具信息。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1529,32 +1529,32 @@ class ToolInfo(BaseModel):
 
 
 GetAllToolsHandler: TypeAlias = Callable[[], list[ToolInfo]]
-"""获取所有工具处理器（对应 TS ``GetAllToolsHandler``）。"""
+"""获取所有工具处理器。"""
 
 GetCommandsHandler: TypeAlias = Callable[[], list[Any]]
-"""获取命令处理器（对应 TS ``GetCommandsHandler``）。"""
+"""获取命令处理器。"""
 
 SetActiveToolsHandler: TypeAlias = Callable[[list[str]], None]
-"""设置活跃工具处理器（对应 TS ``SetActiveToolsHandler``）。"""
+"""设置活跃工具处理器。"""
 
 RefreshToolsHandler: TypeAlias = Callable[[], None]
-"""刷新工具处理器（对应 TS ``RefreshToolsHandler``）。"""
+"""刷新工具处理器。"""
 
 SetModelHandler: TypeAlias = Callable[[Model], Awaitable[bool]]
-"""设置模型处理器（对应 TS ``SetModelHandler``）。"""
+"""设置模型处理器。"""
 
 GetThinkingLevelHandler: TypeAlias = Callable[[], ThinkingLevel]
-"""获取思考级别处理器（对应 TS ``GetThinkingLevelHandler``）。"""
+"""获取思考级别处理器。"""
 
 SetThinkingLevelHandler: TypeAlias = Callable[[ThinkingLevel], None]
-"""设置思考级别处理器（对应 TS ``SetThinkingLevelHandler``）。"""
+"""设置思考级别处理器。"""
 
 SetLabelHandler: TypeAlias = Callable[[str, str | None], None]
-"""设置标签处理器（对应 TS ``SetLabelHandler``）。"""
+"""设置标签处理器。"""
 
 
 class ExtensionRuntimeState(BaseModel):
-    """扩展运行时状态（对应 TS ``ExtensionRuntimeState``）。"""
+    """扩展运行时状态。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1569,7 +1569,7 @@ class ExtensionRuntimeState(BaseModel):
 
 
 class ExtensionActions(BaseModel):
-    """扩展操作（对应 TS ``ExtensionActions``）。"""
+    """扩展操作。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1590,7 +1590,7 @@ class ExtensionActions(BaseModel):
 
 
 class ExtensionContextActions(BaseModel):
-    """扩展上下文操作（对应 TS ``ExtensionContextActions``）。"""
+    """扩展上下文操作。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1609,7 +1609,7 @@ class ExtensionContextActions(BaseModel):
 
 
 class ExtensionCommandContextActions(BaseModel):
-    """扩展命令上下文操作（对应 TS ``ExtensionCommandContextActions``）。"""
+    """扩展命令上下文操作。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1622,13 +1622,13 @@ class ExtensionCommandContextActions(BaseModel):
 
 
 class ExtensionRuntime(BaseModel):
-    """完整运行时 = 状态 + 操作（对应 TS ``ExtensionRuntime``）。"""
+    """完整运行时 = 状态 + 操作。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class Extension(BaseModel):
-    """已加载扩展（对应 TS ``Extension``）。"""
+    """已加载扩展。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1648,7 +1648,7 @@ class Extension(BaseModel):
 
 
 class LoadExtensionsResult(BaseModel):
-    """扩展加载结果（对应 TS ``LoadExtensionsResult``）。"""
+    """扩展加载结果。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -1663,7 +1663,7 @@ class LoadExtensionsResult(BaseModel):
 
 
 class ExtensionError(BaseModel):
-    """扩展错误（对应 TS ``ExtensionError``）。"""
+    """扩展错误。"""
 
     extension_path: str
     event: str

@@ -1,4 +1,4 @@
-"""事件流工具（对应 ``utils/event-stream.ts``）。
+"""事件流工具。
 
 提供 ``EventStream`` 通用异步可迭代类，以及 ``AssistantMessageEventStream``。
 """
@@ -15,7 +15,7 @@ R = TypeVar("R")
 
 
 class EventStream(Generic[T, R], AsyncIterator[T]):
-    """通用事件流类（对应 TS ``EventStream``）。
+    """通用事件流类。
 
     支持 producer-consumer 模式：生产者 ``push``/``end``，消费者 ``async for``。
     """
@@ -82,7 +82,7 @@ class EventStream(Generic[T, R], AsyncIterator[T]):
 
 
 class AssistantMessageEventStream(EventStream[AssistantMessageEvent, AssistantMessage]):
-    """Assistant 消息事件流（对应 TS ``AssistantMessageEventStream``）。"""
+    """Assistant 消息事件流。"""
 
     def __init__(self) -> None:
         def _is_complete(event: AssistantMessageEvent) -> bool:

@@ -1,4 +1,4 @@
-"""系统提示词构建（对应 TS ``core/system-prompt.ts``）。
+"""系统提示词构建。
 
 提供 ``build_system_prompt`` 函数，用于构建包含工具列表、指南和项目上下文的
 系统提示词。
@@ -13,7 +13,7 @@ from .skills import Skill, format_skills_for_prompt
 
 
 class BuildSystemPromptOptions(BaseModel):
-    """系统提示词构建选项（对应 TS ``BuildSystemPromptOptions``）。"""
+    """系统提示词构建选项。"""
 
     custom_prompt: str | None = None
     selected_tools: list[str] | None = None
@@ -26,7 +26,7 @@ class BuildSystemPromptOptions(BaseModel):
 
 
 def build_system_prompt(options: BuildSystemPromptOptions) -> str:
-    """构建系统提示词（对应 TS ``buildSystemPrompt``）。
+    """构建系统提示词。
 
     包含工具列表、操作指南、Pi 文档路径、项目上下文和技能信息。
     """

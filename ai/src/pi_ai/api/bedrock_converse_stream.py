@@ -1,4 +1,4 @@
-"""Bedrock Converse API 流式传输（对应 ``bedrock-converse-stream.ts``）。
+"""Bedrock Converse API 流式传输。
 
 使用 ``aioboto3`` 实现异步 Bedrock Converse Stream 调用。
 """
@@ -88,7 +88,7 @@ BedrockThinkingDisplay = Literal["summarized", "omitted"]
 
 
 class BedrockOptions(StreamOptions):
-    """Bedrock Converse API 流式选项（对应 TS ``BedrockOptions``）。"""
+    """Bedrock Converse API 流式选项。"""
 
     tool_choice: Literal["auto", "none", "any"] | None = None
     reasoning: ThinkingLevel | None = None
@@ -142,7 +142,7 @@ class _Block(BaseModel):
 
 
 def _format_bedrock_error(error: object) -> str:
-    """格式化 Bedrock 错误（对应 TS ``formatBedrockError``）。"""
+    """格式化 Bedrock 错误。"""
     norm = normalize_provider_error(error)
     # 当 SDK 未将 body 并入消息时，优先使用原始 HTTP body
     core: str
@@ -177,7 +177,7 @@ def _format_bedrock_error(error: object) -> str:
 
 
 def _normalize_diagnostic_value(value: object) -> str | None:
-    """归一化诊断值（对应 TS ``normalizeDiagnosticValue``）。"""
+    """归一化诊断值。"""
     if not isinstance(value, str):
         return None
     trimmed = value.strip()
@@ -187,7 +187,7 @@ def _normalize_diagnostic_value(value: object) -> str | None:
 
 
 def _extract_bedrock_error_code(error: object) -> str | None:
-    """提取 Bedrock 错误码（对应 TS ``extractBedrockErrorCode``）。"""
+    """提取 Bedrock 错误码。"""
     if not isinstance(error, BaseException):
         return None
     error_name = type(error).__name__
@@ -201,7 +201,7 @@ def _append_bedrock_failure_diagnostic(
     error: object,
     fallback_request_id: str | None,
 ) -> None:
-    """追加 Bedrock 失败诊断（对应 TS ``appendBedrockFailureDiagnostic``）。"""
+    """追加 Bedrock 失败诊断。"""
     metadata = getattr(error, "$metadata", None) or getattr(
         error, "response_metadata", None
     )
@@ -248,7 +248,7 @@ def _append_bedrock_failure_diagnostic(
 
 
 def _is_reserved_header(key: str) -> bool:
-    """检查是否为保留请求头（对应 TS ``isReservedHeader``）。"""
+    """检查是否为保留请求头。"""
     lower = key.lower()
     if lower.startswith("x-amz-"):
         return True
@@ -256,7 +256,7 @@ def _is_reserved_header(key: str) -> bool:
 
 
 def _add_custom_headers(client: Any, headers: dict[str, str]) -> None:
-    """通过 boto3 事件系统添加自定义请求头（对应 TS ``addCustomHeadersMiddleware``）。"""
+    """通过 boto3 事件系统添加自定义请求头。"""
 
     def _before_send(request: Any, **kwargs: Any) -> None:
         for key, value in headers.items():
@@ -280,7 +280,7 @@ def _handle_content_block_start(
     output: AssistantMessage,
     event_stream: AssistantMessageEventStream,
 ) -> None:
-    """处理 content_block_start 事件（对应 TS ``handleContentBlockStart``）。"""
+    """处理 content_block_start 事件。"""
     index = event.get("contentBlockIndex", 0)
     start = event.get("start", {})
 
@@ -318,7 +318,7 @@ def _handle_content_block_delta(
     output: AssistantMessage,
     event_stream: AssistantMessageEventStream,
 ) -> None:
-    """处理 content_block_delta 事件（对应 TS ``handleContentBlockDelta``）。"""
+    """处理 content_block_delta 事件。"""
     content_block_index = event.get("contentBlockIndex", 0)
     delta = event.get("delta", {})
 
@@ -388,7 +388,7 @@ def _handle_content_block_stop(
     output: AssistantMessage,
     event_stream: AssistantMessageEventStream,
 ) -> None:
-    """处理 content_block_stop 事件（对应 TS ``handleContentBlockStop``）。"""
+    """处理 content_block_stop 事件。"""
     content_block_index = event.get("contentBlockIndex", 0)
 
     # Check text/toolCall blocks
@@ -429,7 +429,7 @@ def _handle_metadata(
     model: Any,
     output: AssistantMessage,
 ) -> None:
-    """处理 metadata 事件（对应 TS ``handleMetadata``）。"""
+    """处理 metadata 事件。"""
     usage = event.get("usage", {})
     if usage:
         output_usage = output.usage
@@ -533,7 +533,7 @@ def _pop_thinking_tracking(
 def _get_model_match_candidates(
     model_id: str, model_name: str | None = None
 ) -> list[str]:
-    """获取模型匹配候选列表（对应 TS ``getModelMatchCandidates``）。"""
+    """获取模型匹配候选列表。"""
     values = [model_id]
     if model_name:
         values.append(model_name)
@@ -546,7 +546,7 @@ def _get_model_match_candidates(
 
 
 def _supports_adaptive_thinking(model_id: str, model_name: str | None = None) -> bool:
-    """检查是否支持自适应思考（对应 TS ``supportsAdaptiveThinking``）。"""
+    """检查是否支持自适应思考。"""  
     candidates = _get_model_match_candidates(model_id, model_name)
     return any(
         "opus-4-6" in c
@@ -561,7 +561,7 @@ def _supports_adaptive_thinking(model_id: str, model_name: str | None = None) ->
 
 
 def _supports_native_xhigh_effort(model: Any) -> bool:
-    """检查是否支持原生 xhigh effort（对应 TS ``supportsNativeXhighEffort``）。"""
+    """检查是否支持原生 xhigh effort。"""
     model_id = getattr(model, "model_id", "") or getattr(model, "id", "")
     model_name = getattr(model, "name", None)
     candidates = _get_model_match_candidates(model_id, model_name)
@@ -579,7 +579,7 @@ def _map_thinking_level_to_effort(
     model: Any,
     level: str | None,
 ) -> str:
-    """映射思考级别到 effort（对应 TS ``mapThinkingLevelToEffort``）。"""
+    """映射思考级别到 effort。"""
     if level == "xhigh" and _supports_native_xhigh_effort(model):
         return "xhigh"
 
@@ -598,7 +598,7 @@ def _map_thinking_level_to_effort(
 
 
 def _is_anthropic_claude_model(model: Any) -> bool:
-    """检查是否为 Anthropic Claude 模型（对应 TS ``isAnthropicClaudeModel``）。"""
+    """检查是否为 Anthropic Claude 模型。"""
     model_id = (getattr(model, "model_id", "") or getattr(model, "id", "")).lower()
     model_name = (getattr(model, "name", "") or "").lower()
     return (
@@ -611,7 +611,7 @@ def _is_anthropic_claude_model(model: Any) -> bool:
 
 
 def _supports_prompt_caching(model: Any, env: Any = None) -> bool:
-    """检查是否支持提示缓存（对应 TS ``supportsPromptCaching``）。"""
+    """检查是否支持提示缓存。"""
     model_id = getattr(model, "model_id", "") or getattr(model, "id", "")
     model_name = getattr(model, "name", None)
     candidates = _get_model_match_candidates(model_id, model_name)
@@ -638,7 +638,7 @@ def _supports_prompt_caching(model: Any, env: Any = None) -> bool:
 
 
 def _supports_thinking_signature(model: Any) -> bool:
-    """检查是否支持思考签名（对应 TS ``supportsThinkingSignature``）。"""
+    """检查是否支持思考签名。"""
     return _is_anthropic_claude_model(model)
 
 
@@ -651,7 +651,7 @@ def _resolve_cache_retention(
     cache_retention: CacheRetention | None = None,
     env: Any = None,
 ) -> CacheRetention:
-    """解析缓存保留策略（对应 TS ``resolveCacheRetention``）。"""
+    """解析缓存保留策略。"""
     if cache_retention:
         return cache_retention
     if get_provider_env_value("PI_CACHE_RETENTION", env) == "long":
@@ -670,7 +670,7 @@ def _build_system_prompt(
     cache_retention: CacheRetention,
     env: Any = None,
 ) -> list[dict[str, Any]] | None:
-    """构建系统提示词（对应 TS ``buildSystemPrompt``）。"""
+    """构建系统提示词。"""
     if not system_prompt:
         return None
 
@@ -692,13 +692,13 @@ def _build_system_prompt(
 
 
 def _normalize_tool_call_id(id: str, _model: Any = None, _msg: Any = None) -> str:
-    """归一化 tool call ID（对应 TS ``normalizeToolCallId``）。"""
+    """归一化 tool call ID。"""
     sanitized = re.sub(r"[^a-zA-Z0-9_-]", "_", id)
     return sanitized[:64]
 
 
 def _create_non_blank_text_block(text: str) -> dict[str, Any] | None:
-    """创建非空文本块（对应 TS ``createNonBlankTextBlock``）。"""
+    """创建非空文本块。"""
     sanitized = sanitize_surrogates(text)
     if not sanitized.strip():
         return None
@@ -706,7 +706,7 @@ def _create_non_blank_text_block(text: str) -> dict[str, Any] | None:
 
 
 def _create_required_text_block(text: str) -> dict[str, Any]:
-    """创建必要文本块（对应 TS ``createRequiredTextBlock``）。"""
+    """创建必要文本块。"""
     block = _create_non_blank_text_block(text)
     if block is not None:
         return block
@@ -714,7 +714,7 @@ def _create_required_text_block(text: str) -> dict[str, Any]:
 
 
 def _create_image_block(mime_type: str, data: str) -> dict[str, Any]:
-    """创建图片块（对应 TS ``createImageBlock``）。"""
+    """创建图片块。"""
     format_map: dict[str, str] = {
         "image/jpeg": "jpeg",
         "image/jpg": "jpeg",
@@ -738,7 +738,7 @@ def _create_image_block(mime_type: str, data: str) -> dict[str, Any]:
 def _convert_tool_result_content(
     content: list[TextContent | ImageContent],
 ) -> list[dict[str, Any]]:
-    """转换工具结果内容（对应 TS ``convertToolResultContent``）。"""
+    """转换工具结果内容。"""
     result: list[dict[str, Any]] = []
     for block in content:
         if block.type == "image":
@@ -759,7 +759,7 @@ def _convert_messages(
     cache_retention: CacheRetention,
     env: Any = None,
 ) -> list[dict[str, Any]]:
-    """转换消息为 Bedrock 格式（对应 TS ``convertMessages``）。"""
+    """转换消息为 Bedrock 格式。"""
     result: list[dict[str, Any]] = []
     transformed_messages = transform_messages(
         context.messages, model, _normalize_tool_call_id
@@ -911,7 +911,7 @@ def _convert_tool_config(
     tool_choice: str | None,
     supports_strict_mode: bool,
 ) -> dict[str, Any] | None:
-    """转换工具配置（对应 TS ``convertToolConfig``）。"""
+    """转换工具配置。"""    
     if not tools:
         return None
     if tool_choice == "none":
@@ -948,7 +948,7 @@ def _convert_tool_config(
 
 
 def _map_stop_reason(reason: str | None) -> dict[str, Any]:
-    """映射 stop reason（对应 TS ``mapStopReason``）。"""
+    """映射 stop reason。"""
     mapping: dict[str, dict[str, Any]] = {
         "end_turn": {"stop_reason": "stop"},
         "stop_sequence": {"stop_reason": "stop"},
@@ -972,7 +972,7 @@ def _map_stop_reason(reason: str | None) -> dict[str, Any]:
 
 
 def _get_configured_bedrock_region(options: BedrockOptions) -> str | None:
-    """获取配置的 Bedrock 区域（对应 TS ``getConfiguredBedrockRegion``）。"""
+    """获取配置的 Bedrock 区域。"""
     return (
         options.region
         or get_provider_env_value("AWS_REGION", options.env)
@@ -982,7 +982,7 @@ def _get_configured_bedrock_region(options: BedrockOptions) -> str | None:
 
 
 def _get_configured_bedrock_credentials(env: Any = None) -> dict[str, str] | None:
-    """获取配置的 Bedrock 凭证（对应 TS ``getConfiguredBedrockCredentials``）。"""
+    """获取配置的 Bedrock 凭证。"""
     access_key_id = get_provider_env_value("AWS_ACCESS_KEY_ID", env)
     secret_access_key = get_provider_env_value("AWS_SECRET_ACCESS_KEY", env)
     if not access_key_id or not secret_access_key:
@@ -998,7 +998,7 @@ def _get_configured_bedrock_credentials(env: Any = None) -> dict[str, str] | Non
 
 
 def _get_standard_bedrock_endpoint_region(base_url: str | None) -> str | None:
-    """从标准 Bedrock 端点 URL 提取区域（对应 TS ``getStandardBedrockEndpointRegion``）。"""
+    """从标准 Bedrock 端点 URL 提取区域。"""
     if not base_url:
         return None
     try:
@@ -1020,7 +1020,7 @@ def _should_use_explicit_bedrock_endpoint(
     configured_region: str | None,
     has_ambient_configured_profile: bool,
 ) -> bool:
-    """判断是否应使用显式端点（对应 TS ``shouldUseExplicitBedrockEndpoint``）。"""
+    """判断是否应使用显式端点。"""
     endpoint_region = _get_standard_bedrock_endpoint_region(base_url)
     if not endpoint_region:
         return True
@@ -1028,7 +1028,7 @@ def _should_use_explicit_bedrock_endpoint(
 
 
 def _is_gov_cloud_bedrock_target(model: Any, options: BedrockOptions) -> bool:
-    """检查是否为 GovCloud 目标（对应 TS ``isGovCloudBedrockTarget``）。"""
+    """检查是否为 GovCloud 目标。"""
     region = _get_configured_bedrock_region(options)
     if region and region.lower().startswith("us-gov-"):
         return True
@@ -1045,7 +1045,7 @@ def _build_additional_model_request_fields(
     model: Any,
     options: BedrockOptions,
 ) -> dict[str, Any] | None:
-    """构建额外模型请求字段（对应 TS ``buildAdditionalModelRequestFields``）。"""
+    """构建额外模型请求字段。"""
     model_reasoning = getattr(model, "reasoning", None)
     if not options.reasoning or not model_reasoning:
         return None
@@ -1123,7 +1123,7 @@ async def _create_client(
     model: Any,
     options: BedrockOptions,
 ) -> Any:
-    """创建 Bedrock Runtime 客户端（对应 TS ``createClient`` 的客户端创建逻辑）。"""
+    """创建 Bedrock Runtime 客户端。"""
     from botocore.config import (  # type: ignore[import-not-found]
         Config as BotoCoreConfig,
     )
@@ -1220,7 +1220,7 @@ async def _create_client(
 
 
 def _add_bearer_token_auth(client: Any, token: str) -> None:
-    """通过事件系统添加 Bearer token 认证（对应 TS 的 ``config.token`` 配置）。"""
+    """通过事件系统添加 Bearer token 认证。"""
 
     def _add_auth_header(request: Any, **kwargs: Any) -> None:
         request.headers["Authorization"] = f"Bearer {token}"
@@ -1241,7 +1241,7 @@ def _build_params(
     options: BedrockOptions,
     cache_retention: CacheRetention,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS 的 ``commandInput`` 构建逻辑）。"""
+    """构建请求参数。"""
     # 消息转换
     messages = _convert_messages(context, model, cache_retention, options.env)
 
@@ -1304,7 +1304,7 @@ def stream(
     context: Context,
     options: BedrockOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Bedrock Converse API 流式生成函数（对应 TS ``stream``）。"""
+    """Bedrock Converse API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
     opts = options or BedrockOptions()
 
@@ -1493,7 +1493,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     base = build_base_options(model, context, options, None)
 
     if not options or not getattr(options, "reasoning", None):

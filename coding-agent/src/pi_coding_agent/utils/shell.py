@@ -1,4 +1,4 @@
-"""Shell 配置工具（对应 TS ``utils/shell.ts``）。
+"""Shell 配置工具。
 
 提供 ``get_shell_config`` 和 ``sanitize_binary_output`` 函数。
 """

@@ -1,4 +1,4 @@
-"""Llama 客户端（对应 TS ``extensions/llama/client.ts``）。
+"""Llama 客户端。
 
 简化版实现，使用 httpx 替代 fetch。
 """
@@ -17,11 +17,11 @@ from pydantic import BaseModel
 # ============================================================================
 
 LlamaModelStatus = Literal["unloaded", "loading", "loaded", "downloading", "sleeping"]
-"""Llama 模型状态（对应 TS ``LlamaModelStatus``）。"""
+"""Llama 模型状态。"""
 
 
 class LlamaModelStatusInfo(BaseModel):
-    """模型状态信息（对应 TS 内联类型）。"""
+    """模型状态信息。"""
 
     value: LlamaModelStatus
     args: list[str] | None = None
@@ -31,7 +31,7 @@ class LlamaModelStatusInfo(BaseModel):
 
 
 class LlamaModelMeta(BaseModel):
-    """模型元数据（对应 TS 内联类型）。"""
+    """模型元数据。"""  
 
     n_ctx: int | None = None
     n_ctx_train: int | None = None
@@ -47,7 +47,7 @@ class LlamaModelArchitecture(BaseModel):
 
 
 class LlamaModelInfo(BaseModel):
-    """Llama 模型信息（对应 TS ``LlamaModelInfo``）。"""
+    """Llama 模型信息。"""
 
     id: str
     aliases: list[str] | None = None
@@ -58,14 +58,14 @@ class LlamaModelInfo(BaseModel):
 
 
 class LlamaModelsResponse(BaseModel):
-    """模型列表响应（对应 TS ``LlamaModelsResponse``）。"""
+    """模型列表响应。"""
 
     data: list[LlamaModelInfo]
     object: str | None = None
 
 
 class LlamaModelEvent(BaseModel):
-    """模型事件（对应 TS ``LlamaModelEvent``）。"""
+    """模型事件。"""
 
     model: str
     event: str
@@ -73,7 +73,7 @@ class LlamaModelEvent(BaseModel):
 
 
 class LlamaProgress(BaseModel):
-    """加载/下载进度（对应 TS ``LlamaProgress``）。"""
+    """加载/下载进度。"""
 
     message: str
     ratio: float | None = None
@@ -222,7 +222,7 @@ def llama_inference_url(server_url: str) -> str:
 
 
 class LlamaClient:
-    """Llama.cpp 路由器客户端（对应 TS ``LlamaClient``）。"""
+    """Llama.cpp 路由器客户端。"""
 
     def __init__(self, server_url: str, api_key: str | None = None) -> None:
         self.server_url = normalize_llama_server_url(server_url)

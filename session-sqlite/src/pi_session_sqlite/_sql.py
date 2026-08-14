@@ -1,4 +1,4 @@
-"""SQLite 迁移 DDL（对应 TS ``001_initial.sql``）。"""
+"""SQLite 迁移 DDL。"""
 
 from __future__ import annotations
 

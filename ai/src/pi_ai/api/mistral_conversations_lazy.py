@@ -1,4 +1,4 @@
-"""Mistral Conversations API 延迟加载（对应 ``mistral-conversations.lazy.ts``）。"""
+"""Mistral Conversations API 延迟加载。"""
 
 from __future__ import annotations
 

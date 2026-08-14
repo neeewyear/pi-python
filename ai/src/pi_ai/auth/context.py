@@ -1,4 +1,4 @@
-"""AuthContext 实现（对应 ``auth/context.ts``）。"""
+"""AuthContext 实现"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""模型注册表与运行时（对应 ``models.ts``）。
+"""模型注册表与运行时。
 
 提供 ``Models`` 集合、``Provider`` 协议、``ModelsImpl`` 实现类，
 以及 ``calculateCost``、``getSupportedThinkingLevels`` 等工具函数。
@@ -56,7 +56,7 @@ ModelsErrorCode: type = str  # "provider" | "auth" | "model_source" | "stream"
 
 
 class ModelsError(Exception):
-    """模型系统错误（对应 TS ``ModelsError``）。"""
+    """模型系统错误。"""
 
     def __init__(
         self, code: str, message: str, *, cause: BaseException | None = None
@@ -72,7 +72,7 @@ class ModelsError(Exception):
 
 
 class ModelCostRates(BaseModel):
-    """模型成本费率（对应 TS ``ModelCostRates``）。"""
+    """模型成本费率。"""
 
     input: float = 0.0
     output: float = 0.0
@@ -81,19 +81,19 @@ class ModelCostRates(BaseModel):
 
 
 class ModelCostTier(ModelCostRates):
-    """模型成本费率层级（对应 TS ``ModelCostTier``）。"""
+    """模型成本费率层级。"""
 
     input_tokens_above: int = Field(default=0, alias="inputTokensAbove")
 
 
 class ModelCost(ModelCostRates):
-    """模型成本（对应 TS ``ModelCost``）。"""
+    """模型成本。"""
 
     tiers: list[ModelCostTier] | None = None
 
 
 class ModelRecord(BaseModel):
-    """模型记录——``Model`` 协议的具体实现（对应 TS ``Model`` 接口）。"""
+    """模型记录——``Model`` 协议的具体实现。"""
 
     model_config = {"extra": "allow", "populate_by_name": True}
 
@@ -129,7 +129,7 @@ class ModelRecord(BaseModel):
 
 @dataclass
 class ModelsPublication:
-    """Provider 发布的模型目录更新（对应 TS ``ModelsPublication``）。"""
+    """Provider 发布的模型目录更新。"""
 
     persist: ModelsStoreEntry | None = None
     """Provider 选择的持久化目录。省略表示不修改存储；None 表示删除。"""
@@ -139,7 +139,7 @@ class ModelsPublication:
 
 @dataclass
 class RefreshModelsContext:
-    """模型刷新上下文（对应 TS ``RefreshModelsContext``）。"""
+    """模型刷新上下文。"""
 
     credential: Any = None  # Credential | None
     """有效的已配置凭证。"""
@@ -157,7 +157,7 @@ class RefreshModelsContext:
 
 @dataclass
 class ModelsRefreshOptions:
-    """模型刷新选项（对应 TS ``ModelsRefreshOptions``）。"""
+    """模型刷新选项。"""
 
     allow_network: bool = True
     """是否允许网络访问。"""
@@ -171,7 +171,7 @@ class ModelsRefreshOptions:
 
 @dataclass
 class ModelsRefreshResult:
-    """模型刷新结果（对应 TS ``ModelsRefreshResult``）。"""
+    """模型刷新结果。"""
 
     aborted: bool = False
     """是否被中止。"""
@@ -181,28 +181,28 @@ class ModelsRefreshResult:
 
 @dataclass
 class ModelsRequestTransforms:
-    """模型请求转换（对应 TS ``ModelsRequestTransforms``）。"""
+    """模型请求转换。"""
 
     transform_headers: Callable[[ProviderHeaders], Any] | None = None
     """请求头发送前的转换函数。"""
 
 
 ModelsApiStreamOptions: type = StreamOptions
-"""API Stream 选项类型别名（对应 TS ``ModelsApiStreamOptions``）。"""
+"""API Stream 选项类型别名。"""
 
 ModelsSimpleStreamOptions: type = SimpleStreamOptions
-"""Simple Stream 选项类型别名（对应 TS ``ModelsSimpleStreamOptions``）。"""
+"""Simple Stream 选项类型别名。"""
 
 ModelsDeferredFetchOptions: type = DeferredFetchOptions
-"""Deferred 请求选项类型别名（对应 TS ``ModelsDeferredFetchOptions``）。"""
+"""Deferred 请求选项类型别名。"""
 
 ModelsDeferredCancelOptions: type = DeferredCancelOptions
-"""Deferred 取消选项类型别名（对应 TS ``ModelsDeferredCancelOptions``）。"""
+"""Deferred 取消选项类型别名。"""
 
 
 @runtime_checkable
 class Provider(Protocol):
-    """Provider 运行时单元（对应 TS ``Provider``）。
+    """Provider 运行时单元。
 
     拥有 id/name/base 元数据、认证方法、模型列表和流式行为。
     """
@@ -248,7 +248,7 @@ class Provider(Protocol):
 
 
 class Models(Protocol):
-    """模型集合运行时（对应 TS ``Models``）。"""
+    """模型集合运行时。"""  
 
     def get_providers(self) -> list[Provider]: ...
 
@@ -312,7 +312,7 @@ class Models(Protocol):
 
 
 class MutableModels(Models, Protocol):
-    """可变的模型集合（对应 TS ``MutableModels``）。"""
+    """可变的模型集合。"""  
 
     def set_provider(self, provider: Provider) -> None: ...
 
@@ -323,7 +323,7 @@ class MutableModels(Models, Protocol):
 
 @dataclass
 class CreateModelsOptions:
-    """创建 Models 实例的选项（对应 TS ``CreateModelsOptions``）。"""
+    """创建 Models 实例的选项。"""
 
     credentials: Any = None  # CredentialStore
     """凭证存储（可选，默认 InMemoryCredentialStore）。"""
@@ -342,7 +342,7 @@ def _merge_headers(
     base: ProviderHeaders | None,
     override: ProviderHeaders | None,
 ) -> ProviderHeaders | None:
-    """合并请求头（大小写不敏感，对应 TS ``mergeHeaders``）。"""
+    """合并请求头（大小写不敏感）。"""
     if not base and not override:
         return None
     merged = dict(base or {})
@@ -358,7 +358,7 @@ def _merge_headers(
 
 
 def _create_setup_error_message(model: Model, error: BaseException) -> AssistantMessage:
-    """创建设置错误消息（对应 TS ``createSetupErrorMessage``）。"""
+    """创建设置错误消息。"""    
     # model 可能是 Model 对象，也可能是 provider 组合流程传入的 dict
     if isinstance(model, dict):
         api = model.get("api", "")
@@ -383,7 +383,7 @@ def lazy_stream(
     model: Model,
     setup: Callable[[], Any],
 ) -> AssistantMessageEventStream:
-    """延迟流创建（对应 TS ``lazyStream``）。
+    """延迟流创建。 
 
     同步返回流，异步执行 setup（认证解析、延迟模块加载）。
     setup 失败时以错误事件终止流。
@@ -420,7 +420,7 @@ def lazy_stream(
 
 
 class ModelsImpl:
-    """Models 实现类（对应 TS ``ModelsImpl``）。
+    """Models 实现类。  
 
     管理 Provider 集合、认证、模型刷新和流式请求。
     """
@@ -892,13 +892,13 @@ class _ProviderImpl:
 
 
 def create_models(options: CreateModelsOptions | None = None) -> ModelsImpl:
-    """创建 Models 实例（对应 TS ``createModels``）。"""
+    """创建 Models 实例。"""
     return ModelsImpl(options)
 
 
 @dataclass
 class CreateProviderOptions:
-    """创建 Provider 的选项（对应 TS ``CreateProviderOptions``）。"""
+    """创建 Provider 的选项。"""
 
     id: str
     """Provider ID。"""
@@ -917,9 +917,8 @@ class CreateProviderOptions:
     api: Any = None
     """ProviderStreams 实现或 API 映射。"""
 
-
 def create_provider(input: CreateProviderOptions) -> Provider:
-    """从组件构建 Provider（对应 TS ``createProvider``）。"""
+    """从组件构建 Provider。"""
     baseline_models = list(input.models)
     dynamic_models: list[Model] = []
 
@@ -1033,12 +1032,12 @@ def create_provider(input: CreateProviderOptions) -> Provider:
 
 
 def has_api(model: Model, api: str) -> bool:
-    """检查模型是否使用指定 API（对应 TS ``hasApi``）。"""
+    """检查模型是否使用指定 API。"""
     return model.api == api
 
 
 def calculate_cost(model: Model, usage: Usage) -> Usage:
-    """计算 token 成本（对应 TS ``calculateCost``）。
+    """计算 token 成本。
 
     基于输入 token 分档计算，包含 Anthropic 缓存写入 2x 计费逻辑。
     """
@@ -1107,7 +1106,7 @@ EXTENDED_THINKING_LEVELS: list[ModelThinkingLevel] = [
 
 
 def get_supported_thinking_levels(model: Model) -> list[ModelThinkingLevel]:
-    """获取模型支持的思考级别（对应 TS ``getSupportedThinkingLevels``）。"""
+    """获取模型支持的思考级别。"""
     reasoning = getattr(model, "reasoning", False)
     if not reasoning:
         return ["off"]
@@ -1126,7 +1125,7 @@ def get_supported_thinking_levels(model: Model) -> list[ModelThinkingLevel]:
 
 
 def clamp_thinking_level(model: Model, level: ModelThinkingLevel) -> ModelThinkingLevel:
-    """将思考级别夹紧到模型支持的范围内（对应 TS ``clampThinkingLevel``）。"""
+    """将思考级别夹紧到模型支持的范围内。"""
     available = get_supported_thinking_levels(model)
     if level in available:
         return level
@@ -1149,7 +1148,7 @@ def clamp_thinking_level(model: Model, level: ModelThinkingLevel) -> ModelThinki
 
 
 def models_are_equal(a: Model | None, b: Model | None) -> bool:
-    """检查两个模型是否相等（对应 TS ``modelsAreEqual``）。"""
+    """检查两个模型是否相等。"""
     if not a or not b:
         return False
     return a.model_id == b.model_id and a.provider == b.provider

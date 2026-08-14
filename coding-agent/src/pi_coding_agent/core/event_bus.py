@@ -1,4 +1,4 @@
-"""轻量事件总线（对应 TS ``core/event-bus.ts``）。
+"""轻量事件总线。
 
 使用 ``asyncio`` 原语替代 Node.js ``EventEmitter``。所有 handler 支持 async，
 emit 以同步方式触发，但内部会 await 所有 async handler。

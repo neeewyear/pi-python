@@ -1,4 +1,4 @@
-"""Llama 扩展模块（对应 TS ``extensions/llama/index.ts``）。
+"""Llama 扩展模块。
 
 导出 llama.cpp 集成所需的所有公共符号。
 """

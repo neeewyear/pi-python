@@ -1,4 +1,4 @@
-"""CLI 参数解析与帮助信息显示（对应 TS ``cli/args.ts``）。"""
+"""CLI 参数解析与帮助信息显示。"""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class Diagnostic:
 
 
 class Args:
-    """解析后的 CLI 参数（对应 TS ``Args``）。"""
+    """解析后的 CLI 参数。"""
 
     def __init__(self) -> None:
         self.provider: str | None = None

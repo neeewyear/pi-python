@@ -1,4 +1,4 @@
-"""重试逻辑（对应 ``utils/retry.ts``）。
+"""重试逻辑。
 
 提供 ``RetryPolicy``、``retry_assistant_call``、``is_retryable_assistant_error``。
 """
@@ -88,7 +88,7 @@ RETRYABLE_PROVIDER_ERROR_PATTERN: re.Pattern[str] = re.compile(
 
 
 class AbortSignal(Protocol):
-    """abort 信号协议（对应 TS ``AbortSignal``）。"""
+    """abort 信号协议。"""
 
     @property
     def aborted(self) -> bool: ...
@@ -96,7 +96,7 @@ class AbortSignal(Protocol):
 
 @dataclass
 class RetryPolicy:
-    """重试策略（对应 TS ``RetryPolicy``）。"""
+    """重试策略。"""
 
     enabled: bool = False
     max_retries: int = 0
@@ -105,7 +105,7 @@ class RetryPolicy:
 
 @dataclass
 class RetryCallbacks:
-    """重试回调（对应 TS ``RetryCallbacks``）。"""
+    """重试回调。"""
 
     on_retry_scheduled: Callable[[int, int, int, str], Awaitable[None]] | None = None
     on_retry_attempt_start: Callable[[], Awaitable[None]] | None = None
@@ -122,7 +122,7 @@ class RetrySleepAbortError(Exception):
 
 
 async def _sleep(ms: int, signal: AbortSignal | None = None) -> None:
-    """休眠（对应 TS ``sleep``）。"""
+    """休眠。"""
     if signal is not None and signal.aborted:
         raise RetrySleepAbortError()
     try:
@@ -142,7 +142,7 @@ async def retry_assistant_call(
     signal: AbortSignal | None,
     callbacks: RetryCallbacks | None = None,
 ) -> AssistantMessage:
-    """带边界重试的 assistant 调用（对应 TS ``retryAssistantCall``）。
+    """带边界重试的 assistant 调用。
 
     行为：
     - 成功响应立即返回。abort 是终态的，不重试。
@@ -213,7 +213,7 @@ async def retry_assistant_call(
 
 
 def is_retryable_assistant_error(message: AssistantMessage) -> bool:
-    """判断 assistant 错误是否可重试（对应 TS ``isRetryableAssistantError``）。"""
+    """判断 assistant 错误是否可重试。"""
     if message.stop_reason != "error" or not message.error_message:
         return False
     error_message = message.error_message

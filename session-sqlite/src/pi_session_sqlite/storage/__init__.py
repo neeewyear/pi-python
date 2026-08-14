@@ -1,3 +1,3 @@
-"""SQLite 会话存储子模块（对应 TS ``sqlite/storage/``）。"""
+"""SQLite 会话存储子模块。"""
 
 from __future__ import annotations

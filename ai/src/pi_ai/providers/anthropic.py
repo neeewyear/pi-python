@@ -1,4 +1,4 @@
-"""Anthropic Provider（对应 ``anthropic.ts``）。"""
+"""Anthropic Provider。"""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from ..auth.types import ApiKeyAuth, ApiKeyCredential, AuthResult
 from ..models import CreateProviderOptions, create_provider
 from .anthropic_models import ANTHROPIC_MODELS
 
-# 环境变量常量（对应 ``env-api-keys.ts``）
+# 环境变量常量
 ANTHROPIC_API_KEY_ENV = "ANTHROPIC_API_KEY"
 ANTHROPIC_AUTH_TOKEN_ENV = "ANTHROPIC_AUTH_TOKEN"
 ANTHROPIC_OAUTH_TOKEN_ENV = "ANTHROPIC_OAUTH_TOKEN"

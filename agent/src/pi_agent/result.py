@@ -1,7 +1,5 @@
 """Result 类型与异常基类。
 
-对应 TS ``harness/types.ts`` 的 ``Result<T, E>``、``ok``/``err``/``getOrThrow``
-以及 ``harness/result.ts`` 的 ``TaggedError`` 体系。
 
 核心约定：**可预期失败通过 ``Result`` 返回，不抛异常**；只有编程错误与
 不可恢复错误才抛出继承自 ``AgentError`` 的异常。
@@ -47,7 +45,7 @@ class Result(Generic[TValue, TError]):
 
     @property
     def value(self) -> TValue:
-        """成功值（对应 TS ``result.value``，仅在 ``is_ok()`` 为真时访问）。"""
+        """成功值。"""
         if not self._ok:
             raise RuntimeError("Result 是错误结果；仅在 is_ok() 为真时访问 .value")
         assert self._value is not _MISSING
@@ -55,7 +53,7 @@ class Result(Generic[TValue, TError]):
 
     @property
     def error(self) -> TError:
-        """错误值（对应 TS ``result.error``，仅在 ``is_err()`` 为真时访问）。"""
+        """错误值。"""
         if self._ok:
             raise RuntimeError("Result 是成功结果；仅在 is_err() 为真时访问 .error")
         assert self._error is not None
@@ -101,7 +99,7 @@ def get_or_undefined(result: Result[TValue, TError]) -> TValue | None:
 
 
 def get_or_throw(result: Result[TValue, TError]) -> TValue:
-    """返回成功值；失败结果抛出错误（对应 TS ``Result.getOrThrow``）。"""
+    """返回成功值；失败结果抛出错误。"""    
     return result.get_or_throw()
 
 
@@ -118,7 +116,7 @@ def to_error(error: object) -> Exception:
 
 
 class AgentError(Exception):
-    """所有可预期失败异常的基类（对应 TS 的 ``TaggedError`` 体系）。
+    """所有可预期失败异常的基类。
 
     子类通过类属性 ``code`` 声明稳定错误码，供 ``match`` 分发。
     """
@@ -132,5 +130,5 @@ class AgentError(Exception):
             self.__cause__ = cause
 
     def to_json(self) -> dict[str, object]:
-        """序列化为 ``{"_tag": code, "message": ...}``，对应 TS 的 ``toJSON()``。"""
+        """序列化为 ``{"_tag": code, "message": ...}``。"""
         return {"_tag": self.code, "message": self.message}

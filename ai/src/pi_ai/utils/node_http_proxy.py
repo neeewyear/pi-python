@@ -1,4 +1,4 @@
-"""HTTP 代理解析工具（对应 ``utils/node-http-proxy.ts``）。
+"""HTTP 代理解析工具。
 
 提供 ``resolve_http_proxy_url_for_target`` 函数，用于解析 HTTP 代理 URL。
 """
@@ -106,7 +106,7 @@ def _get_proxy_for_url(target_url: str, env: ProviderEnv | None = None) -> str:
 def resolve_http_proxy_url_for_target(
     target_url: str, env: ProviderEnv | None = None
 ) -> str | None:
-    """解析目标 URL 的 HTTP 代理 URL（对应 TS ``resolveHttpProxyUrlForTarget``）。
+    """解析目标 URL 的 HTTP 代理 URL。
 
     返回代理 URL 字符串，无代理时返回 ``None``。
     """

@@ -1,4 +1,4 @@
-"""Agent 生命周期与状态管理（对应 ``agent.ts`` 的辅助类型与工厂函数）。
+"""Agent 生命周期与状态管理。
 
 包含：
 - ``MutableAgentState``：可变 agent 状态（组合 AgentState 接口，pending_tool_calls 为可变 set）
@@ -42,7 +42,7 @@ from .types import (
 
 
 class _DefaultModel:
-    """满足 ``Model`` Protocol 的默认模型占位（对应 TS ``DEFAULT_MODEL``）。"""
+    """满足 ``Model`` Protocol 的默认模型占位。"""  
 
     api: str = "unknown"
     provider: str = "unknown"
@@ -71,7 +71,7 @@ EMPTY_USAGE = Usage(
 
 
 class MutableAgentState:
-    """可变 agent 状态（对应 TS ``MutableAgentState``）。
+    """可变 agent 状态。
 
     与 ``AgentState`` 接口一致，但 ``pending_tool_calls`` 为可变 ``set[str]``
     （而非 ``frozenset[str]``），方便在 ``processEvents`` 中直接 add/discard。
@@ -132,7 +132,7 @@ class MutableAgentState:
 def create_mutable_agent_state(
     initial_state: AgentState | None = None,
 ) -> MutableAgentState:
-    """工厂函数：从可选初始状态创建 ``MutableAgentState``（对应 TS ``createMutableAgentState``）。"""
+    """工厂函数：从可选初始状态创建 ``MutableAgentState``。"""
     if initial_state is None:
         return MutableAgentState()
     return MutableAgentState(
@@ -150,7 +150,7 @@ def create_mutable_agent_state(
 
 
 class ActiveRun:
-    """活跃运行句柄（对应 TS ``ActiveRun``）。
+    """活跃运行句柄。
 
     - ``completion_event``：运行完成时 set，``wait_for_idle`` 通过 ``await event.wait()`` 等待
     - ``cancellation_token``：当前运行的取消令牌
@@ -167,7 +167,7 @@ class ActiveRun:
 
 
 class AgentOptions(BaseModel):
-    """Agent 构造选项（对应 TS ``AgentOptions``）。"""
+    """Agent 构造选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -228,7 +228,7 @@ class AgentOptions(BaseModel):
 
 
 def default_convert_to_llm(messages: list[AgentMessage]) -> list[Message]:
-    """默认 LLM 消息转换器（对应 TS ``defaultConvertToLlm``）。
+    """默认 LLM 消息转换器。
 
     过滤出 role 为 ``"user"`` / ``"assistant"`` / ``"toolResult"`` 的消息，
     移除自定义消息类型（如 ``bashExecution`` / ``custom`` / ``branchSummary`` 等）。

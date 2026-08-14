@@ -1,4 +1,4 @@
-"""Bash 工具（对应 ``harness/tools/bash.ts``）。
+"""Bash 工具。
 
 提供 ``createBashTool`` 工厂函数，生成执行 shell 命令的工具定义。
 支持超时控制、100ms 节流进度更新、输出截断与完整落盘。
@@ -39,21 +39,21 @@ BASH_UPDATE_THROTTLE_MS = 100
 
 
 class BashToolInput(BaseModel):
-    """Bash 工具输入参数（对应 TS ``BashToolInput``）。"""
+    """Bash 工具输入参数。"""
 
     command: str
     timeout: int | None = None
 
 
 class BashToolDetails(BaseModel):
-    """Bash 工具输出详情（对应 TS ``BashToolDetails``）。"""
+    """Bash 工具输出详情。"""
 
     truncation: TruncationResult | None = None
     full_output_path: str | None = None
 
 
 class BashExecution(BaseModel):
-    """Bash 执行配置（对应 TS ``BashExecution``）。"""
+    """Bash 执行配置。"""
 
     command: str
     cwd: str
@@ -68,7 +68,7 @@ BashPrepare = Callable[
 
 
 class BashToolOptions(BaseModel):
-    """Bash 工具选项（对应 TS ``BashToolOptions``）。"""
+    """Bash 工具选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -93,7 +93,7 @@ def _validate_timeout(timeout: int | None) -> None:
 def create_bash_tool(
     options: BashToolOptions | None = None,
 ) -> AgentHarnessTool:
-    """创建 Bash 工具（对应 TS ``createBashTool``）。"""
+    """创建 Bash 工具。"""
     opts = options or BashToolOptions()
 
     async def _execute(

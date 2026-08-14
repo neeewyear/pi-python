@@ -1,4 +1,4 @@
-"""OpenAI Codex Provider（对应 ``openai-codex.ts``）。"""
+"""OpenAI Codex Provider。"""
 
 from __future__ import annotations
 

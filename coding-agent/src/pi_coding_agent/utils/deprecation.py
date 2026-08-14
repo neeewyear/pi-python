@@ -1,4 +1,4 @@
-"""弃用警告工具（对应 TS ``utils/deprecation.ts``）。
+"""弃用警告工具。
 
 提供 ``deprecation_warning`` 函数，用于发出弃用警告。
 """

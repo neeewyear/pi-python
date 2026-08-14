@@ -1,4 +1,4 @@
-"""GitHub Copilot OAuth 流程（对应 ``oauth/github-copilot.ts``）。"""
+"""GitHub Copilot OAuth 流程。"""
 
 from __future__ import annotations
 

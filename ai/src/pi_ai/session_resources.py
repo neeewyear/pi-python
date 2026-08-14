@@ -1,4 +1,4 @@
-"""会话资源管理（对应 ``session-resources.ts``）。"""
+"""会话资源管理。"""
 
 from __future__ import annotations
 

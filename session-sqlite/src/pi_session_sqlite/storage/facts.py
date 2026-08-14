@@ -1,4 +1,4 @@
-"""SQLite 事实表存储（对应 TS ``sqlite/storage/facts.ts``）。"""
+"""SQLite 事实表存储。"""
 
 from __future__ import annotations
 

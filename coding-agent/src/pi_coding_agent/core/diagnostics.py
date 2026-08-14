@@ -1,4 +1,4 @@
-"""资源冲突与诊断类型定义（对应 TS ``core/diagnostics.ts``）。
+"""资源冲突与诊断类型定义。
 
 提供 ``ResourceCollision`` 和 ``ResourceDiagnostic`` 两个 Pydantic 模型，
 用于描述扩展/技能/提示词/主题等资源的注册冲突和诊断信息。

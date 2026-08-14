@@ -1,4 +1,4 @@
-"""延迟工具加载（对应 ``utils/deferred-tools.ts``）。"""
+"""延迟工具加载。"""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ def split_deferred_tools(
     enabled: bool,
     normalize_name: Callable[[str], str] | None = None,
 ) -> tuple[list[Tool], dict[str, Tool]]:
-    """将当前工具拆分为前缀和对话加载的定义（对应 TS ``splitDeferredTools``）。"""
+    """将当前工具拆分为前缀和对话加载的定义。"""
     norm = normalize_name or (lambda name: name)
     unique_tools: dict[str, Tool] = {}
     for tool in context.tools or []:

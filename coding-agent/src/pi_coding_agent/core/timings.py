@@ -1,4 +1,4 @@
-"""启动性能计时工具（对应 TS ``core/timings.ts``）。
+"""启动性能计时工具。
 
 通过 ``PI_TIMING=1`` 环境变量启用。使用 ``time.time()`` 而非 ``Date.now()``，
 所有输出走 ``print()`` 而非 ``console.error()``。

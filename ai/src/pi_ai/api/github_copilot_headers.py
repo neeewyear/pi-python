@@ -1,4 +1,4 @@
-"""GitHub Copilot 请求头（对应 ``github-copilot-headers.ts``）。"""
+"""GitHub Copilot 请求头"""
 
 from __future__ import annotations
 

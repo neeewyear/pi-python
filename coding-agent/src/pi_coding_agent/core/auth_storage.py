@@ -1,4 +1,4 @@
-"""凭据存储（对应 TS ``core/auth-storage.ts`` 的简化版）。
+"""凭据存储。
 
 提供 ``AuthStorageBackend`` 协议、文件/内存后端实现，以及 ``AuthStorage``
 类实现 ``CredentialStore`` 接口。
@@ -26,7 +26,7 @@ from ..config import get_auth_path
 
 
 class LockResult(NamedTuple):
-    """锁定操作结果（对应 TS ``LockResult<T>``）。"""
+    """锁定操作结果。"""
 
     result: object
     next: str | None = None
@@ -39,7 +39,7 @@ class LockResult(NamedTuple):
 
 @runtime_checkable
 class AuthStorageBackend(Protocol):
-    """认证存储后端协议（对应 TS ``AuthStorageBackend``）。"""
+    """认证存储后端协议。"""
 
     def with_lock(self, fn: Callable[[str | None], LockResult]) -> object: ...
 
@@ -56,7 +56,7 @@ class AuthStorageBackend(Protocol):
 
 
 class FileAuthStorageBackend:
-    """文件存储后端（对应 TS ``FileAuthStorageBackend``）。
+    """文件存储后端。
 
     使用 ``aiofiles`` 进行异步文件操作，``orjson`` 进行序列化。
     """
@@ -132,7 +132,7 @@ class FileAuthStorageBackend:
 
 
 class InMemoryAuthStorageBackend:
-    """内存存储后端（对应 TS ``InMemoryAuthStorageBackend``）。"""
+    """内存存储后端。"""
 
     def __init__(self) -> None:
         self._value: str | None = None
@@ -160,7 +160,7 @@ class InMemoryAuthStorageBackend:
 
 
 class AuthStorage(CredentialStore):
-    """凭据存储（对应 TS ``AuthStorage``）。
+    """凭据存储。
 
     实现 ``CredentialStore`` 接口，使用 ``AuthStorageBackend`` 进行实际存储。
     """
@@ -326,7 +326,7 @@ def read_stored_credential(
     provider_id: str,
     auth_path: Path | None = None,
 ) -> Credential | None:
-    """一次性同步读取存储的凭据（对应 TS ``readStoredCredential``）。"""
+    """一次性同步读取存储的凭据。"""
     path = auth_path or get_auth_path()
     try:
         raw = path.read_bytes()

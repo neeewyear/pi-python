@@ -1,4 +1,4 @@
-"""Edit 工具（对应 ``harness/tools/edit.ts``）。
+"""Edit 工具。
 
 提供 ``createEditTool`` 工厂函数，支持精确文本替换 + 模糊匹配 +
 Unified Patch 生成 + 文件变更队列串行化。
@@ -31,21 +31,21 @@ from .tool_context import ExecutionToolContext
 
 
 class ReplaceEdit(BaseModel):
-    """一次替换编辑（对应 TS 的 replaceEditSchema）。"""
+    """一次替换编辑。"""
 
     old_text: str
     new_text: str
 
 
 class EditToolInput(BaseModel):
-    """Edit 工具输入参数（对应 TS ``EditToolInput``）。"""
+    """Edit 工具输入参数。"""
 
     path: str
     edits: list[ReplaceEdit]
 
 
 class EditToolDetails(BaseModel):
-    """Edit 工具输出详情（对应 TS ``EditToolDetails``）。"""
+    """Edit 工具输出详情。"""
 
     diff: str
     patch: str
@@ -58,7 +58,7 @@ class EditToolDetails(BaseModel):
 
 
 def _prepare_edit_arguments(input_data: dict[str, object]) -> dict[str, object]:
-    """预处理编辑参数（对应 TS ``prepareEditArguments``）。
+    """预处理编辑参数。
 
     处理 legacy 格式（oldText/newText）和 JSON 字符串 edits。
     """
@@ -91,7 +91,7 @@ def _prepare_edit_arguments(input_data: dict[str, object]) -> dict[str, object]:
 
 
 def _validate_edit_input(input_data: dict[str, object]) -> tuple[str, list[Edit]]:
-    """校验并提取编辑参数（对应 TS ``validateEditInput``）。"""
+    """校验并提取编辑参数。"""
     edits_raw = input_data.get("edits")
     if not isinstance(edits_raw, list) or len(edits_raw) == 0:
         raise ValueError(
@@ -120,7 +120,7 @@ def _edit_access_error(path: str, error: FileError) -> RuntimeError:
 
 
 def create_edit_tool() -> AgentHarnessTool:
-    """创建 Edit 工具（对应 TS ``createEditTool``）。"""
+    """创建 Edit 工具。"""
 
     async def _execute(
         _tool_call_id: str,

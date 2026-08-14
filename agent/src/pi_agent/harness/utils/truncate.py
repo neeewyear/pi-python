@@ -1,4 +1,4 @@
-"""共享文本截断工具（对应 ``harness/utils/truncate.ts``）。
+"""共享文本截断工具。
 
 截断基于两个独立上限——先触发者生效：
 - 行数上限（默认 2000 行）
@@ -19,7 +19,7 @@ _UNPAIRED_SURROGATE_REPLACEMENT = "\ufffd"
 
 
 class TruncationResult(BaseModel):
-    """截断结果（对应 TS ``TruncationResult``）。"""
+    """截断结果。"""
 
     content: str
     """截断后的内容。"""
@@ -46,7 +46,7 @@ class TruncationResult(BaseModel):
 
 
 class TruncationOptions(BaseModel):
-    """截断选项（对应 TS ``TruncationOptions``）。"""
+    """截断选项。"""
 
     max_lines: int | None = None
     """最大行数（默认 2000）。"""

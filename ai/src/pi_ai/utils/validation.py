@@ -1,4 +1,4 @@
-"""工具调用验证与类型推断（对应 ``utils/validation.ts``）。
+"""工具调用验证与类型推断。
 
 提供 ``validate_tool_call``、``validate_tool_arguments``。
 """
@@ -172,7 +172,7 @@ def _get_validator(
 def validate_tool_call(
     tools: list[Tool], tool_call: ToolCallContent
 ) -> dict[str, object]:
-    """按名称查找工具并验证参数（对应 TS ``validateToolCall``）。"""
+    """按名称查找工具并验证参数。"""
     tool = next((t for t in tools if t.name == tool_call.name), None)
     if tool is None:
         raise ValueError(f'Tool "{tool_call.name}" not found')
@@ -182,7 +182,7 @@ def validate_tool_call(
 def validate_tool_arguments(
     tool: Tool, tool_call: ToolCallContent
 ) -> dict[str, object]:
-    """验证工具调用参数（对应 TS ``validateToolArguments``）。"""
+    """验证工具调用参数。"""
     args = copy.deepcopy(tool_call.args)
 
     # 尝试类型转换

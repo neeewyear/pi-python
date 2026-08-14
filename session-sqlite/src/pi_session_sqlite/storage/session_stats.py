@@ -1,4 +1,4 @@
-"""SQLite 会话统计存储（对应 TS ``sqlite/storage/session-stats.ts``）。"""
+"""SQLite 会话统计存储。"""
 
 from __future__ import annotations
 

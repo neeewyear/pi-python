@@ -1,4 +1,4 @@
-"""Session 类（对应 ``harness/session/session.ts``）。
+"""Session 类。
 
 ``Session`` 是会话树视图：封装 ``SessionStorage`` 并绑定到 ``main`` lane，
 提供树查询、追加、lane 管理、记录查询与全局事实的便捷接口。
@@ -93,7 +93,7 @@ class Session:
         return entries[0] if entries else None
 
     async def find_entries_on_branch(self, query: BranchEntryQuery | None = None) -> list[Entry]:
-        """查询分支上的条目（对应 TS ``EntryQuery & BranchBounds``，默认从当前叶子回溯）。"""
+        """查询分支上的条目（默认从当前叶子回溯）。"""
         start = query.start if query and query.start else await self.get_leaf_id()
         if start is None:
             return []

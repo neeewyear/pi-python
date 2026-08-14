@@ -1,4 +1,4 @@
-"""Google Provider（对应 ``google.ts``）。"""
+"""Google Provider。"""
 
 from __future__ import annotations
 

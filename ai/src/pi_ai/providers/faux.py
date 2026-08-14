@@ -1,4 +1,4 @@
-"""Faux（假）Provider，用于测试（对应 ``faux.ts``）。
+"""Faux（假）Provider，用于测试。
 
 提供 ``faux_provider`` 工厂函数，创建可脚本化响应的测试 provider。
 """

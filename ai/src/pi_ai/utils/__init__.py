@@ -1,4 +1,4 @@
-"""pi-ai utility modules (对应 ``pi/packages/ai/src/utils/``)。
+"""pi-ai utility modules。
 
 包含 18 个工具模块：
 - ``uuid``: UUIDv7 生成器

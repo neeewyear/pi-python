@@ -1,4 +1,4 @@
-"""OAuth 设备码轮询流程（对应 ``oauth/device-code.ts``）。"""
+"""OAuth 设备码轮询流程"""
 
 from __future__ import annotations
 
@@ -59,10 +59,7 @@ async def _abortable_sleep(
 
 
 async def poll_oauth_device_code_flow(options: OAuthDeviceCodePollOptions) -> Any:
-    """轮询 OAuth 设备码流程。
-
-    对应 TS ``pollOAuthDeviceCodeFlow``。
-    """
+    """轮询 OAuth 设备码流程。"""
     device_code = options.get("device_code", "")
     signal = options.get("signal")
     interval_seconds = options.get("interval_seconds", DEFAULT_POLL_INTERVAL_SECONDS)

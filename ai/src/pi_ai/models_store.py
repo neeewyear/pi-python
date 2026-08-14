@@ -1,4 +1,4 @@
-"""模型存储（对应 ``models-store.ts``）。
+"""模型存储。
 
 提供 ``ModelsStoreEntry``、``ModelsStore`` 协议、``InMemoryModelsStore``。
 """
@@ -12,7 +12,7 @@ from typing import Any, Protocol
 
 @dataclass
 class ModelsStoreEntry:
-    """模型存储条目（对应 TS ``ModelsStoreEntry``）。"""
+    """模型存储条目。"""
 
     models: list[dict[str, Any]]
     """Provider 模型列表（序列化形式）。"""
@@ -26,13 +26,13 @@ class ModelsStoreEntry:
 
 @dataclass
 class ModelsStoreOperationOptions:
-    """模型存储操作选项（对应 TS ``ModelsStoreOperationOptions``）。"""
+    """模型存储操作选项。"""
 
     signal: Any = None  # CancellationToken
 
 
 class ModelsStore(Protocol):
-    """持久化模型目录存储（对应 TS ``ModelsStore``）。"""
+    """持久化模型目录存储。"""
 
     async def read(self, provider_id: str, options: ModelsStoreOperationOptions | None = None) -> ModelsStoreEntry | None: ...
 
@@ -42,7 +42,7 @@ class ModelsStore(Protocol):
 
 
 class InMemoryModelsStore:
-    """内存模型存储（对应 TS ``InMemoryModelsStore``）。"""
+    """内存模型存储。"""    
 
     def __init__(self) -> None:
         self._entries: dict[str, ModelsStoreEntry] = {}

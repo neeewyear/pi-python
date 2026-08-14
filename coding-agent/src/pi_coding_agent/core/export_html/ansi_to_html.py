@@ -1,4 +1,4 @@
-"""ANSI 转 HTML（对应 TS ``ansi-to-html.ts``）。
+"""ANSI 转 HTML。
 
 将终端 ANSI 颜色/样式码转换为带内联样式的 HTML。
 支持：
@@ -79,7 +79,7 @@ def escape_html(text: str) -> str:
 
 
 class TextStyle:
-    """文本样式（对应 TS ``TextStyle``）。"""
+    """文本样式。"""
 
     fg: str | None
     bg: str | None

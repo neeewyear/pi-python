@@ -1,4 +1,4 @@
-"""Write 工具（对应 ``harness/tools/write.ts``）。
+"""Write 工具。
 
 提供 ``createWriteTool`` 工厂函数，用于创建/覆盖文件。
 """
@@ -22,7 +22,7 @@ from .tool_context import ExecutionToolContext
 
 
 class WriteToolInput(BaseModel):
-    """Write 工具输入参数（对应 TS ``WriteToolInput``）。"""
+    """Write 工具输入参数。"""
 
     path: str
     content: str
@@ -34,7 +34,7 @@ class WriteToolInput(BaseModel):
 
 
 def create_write_tool() -> AgentHarnessTool:
-    """创建 Write 工具（对应 TS ``createWriteTool``）。"""
+    """创建 Write 工具。"""
 
     async def _execute(
         _tool_call_id: str,

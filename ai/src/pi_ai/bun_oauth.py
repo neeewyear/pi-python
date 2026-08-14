@@ -1,4 +1,4 @@
-"""Bun 运行时 OAuth 注册（对应 ``bun-oauth.ts``）。"""
+"""Bun 运行时 OAuth 注册。"""
 
 from __future__ import annotations
 

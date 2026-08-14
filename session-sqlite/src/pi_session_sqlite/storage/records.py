@@ -1,4 +1,4 @@
-"""SQLite 记录表存储（对应 TS ``sqlite/storage/records.ts``）。"""
+"""SQLite 记录表存储。"""
 
 from __future__ import annotations
 

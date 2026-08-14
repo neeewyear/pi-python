@@ -97,17 +97,17 @@ class ScrollView(Container):
 
     @property
     def primary(self) -> bool:
-        """是否为主滚动视图（对应 scroll-view.ts 的 readonly primary）。"""
+        """是否为主滚动视图。"""
         return self._primary
 
     @property
     def overscroll(self) -> Literal["chain", "contain"]:
-        """到达边界时的滚动行为（对应 scroll-view.ts 的 readonly overscroll）。"""
+        """到达边界时的滚动行为。"""
         return self._overscroll
 
     @property
     def scrollbar_style(self) -> Callable[[str], str]:
-        """滚动条单元样式函数（对应 scroll-view.ts 的 readonly scrollbarStyle）。"""
+        """滚动条单元样式函数。"""
         return self._scrollbar_style
 
     @property
@@ -127,7 +127,7 @@ class ScrollView(Container):
 
     @property
     def is_scrollbar_visible(self) -> bool:
-        """滚动条当前是否可见。对应 scroll-view.ts 的 isScrollbarVisible。"""
+        """滚动条当前是否可见。"""  
         if self.current_scrollbar == "always":
             return self.current_viewport_height > 0
         return (
@@ -137,7 +137,7 @@ class ScrollView(Container):
         )
 
     def set_scrollbar(self, scrollbar: ScrollViewScrollbar) -> None:
-        """切换滚动条显示模式。对应 scroll-view.ts 的 setScrollbar()。"""
+        """切换滚动条显示模式。"""
         if scrollbar == self.current_scrollbar:
             return
         self.current_scrollbar = scrollbar
@@ -149,10 +149,7 @@ class ScrollView(Container):
             self.request_render_callback()
 
     def get_content_width(self, width: int) -> int:
-        """返回内容宽度：always 滚动条时预留最后一列。
-
-        对应 scroll-view.ts 的 getContentWidth()。
-        """
+        """返回内容宽度：always 滚动条时预留最后一列。"""
         return width - 1 if self.current_scrollbar == "always" and width > 1 else width
 
     def _mark_scrollbar_activity(self) -> None:
@@ -190,21 +187,14 @@ class ScrollView(Container):
             self.request_render_callback()
 
     def _hide_transient_scrollbar(self) -> None:
-        """立即隐藏临时滚动条并取消定时器。对应 scroll-view.ts 的 hideTransientScrollbar()。"""
+        """立即隐藏临时滚动条并取消定时器。"""
         self.transient_scrollbar_visible = False
         if self._scrollbar_hide_timer is None:
             return
         self._scrollbar_hide_timer.cancel()
         self._scrollbar_hide_timer = None
 
-    def set_scrollbar_active(self, active: bool) -> None:
-        """设置滚动条激活状态（如拖动/按键交互期间）。
-
-        对应 scroll-view.ts 的 setScrollbarActive()。
-        """
-        if active == self.scrollbar_active:
-            return
-        self.scrollbar_active = active
+        self.set_scrollbar_active(active)
         self._mark_scrollbar_activity()
 
     def scroll_to(

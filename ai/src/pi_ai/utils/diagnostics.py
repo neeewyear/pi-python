@@ -1,4 +1,4 @@
-"""诊断信息工具（对应 ``utils/diagnostics.ts``）。
+"""诊断信息工具。
 
 提供 ``format_thrown_value``、``extract_diagnostic_error``、
 ``create_assistant_message_diagnostic``、``append_assistant_message_diagnostic``。
@@ -13,7 +13,7 @@ from typing import Any
 
 @dataclass
 class DiagnosticErrorInfo:
-    """诊断错误信息（对应 TS ``DiagnosticErrorInfo``）。"""
+    """诊断错误信息。"""
 
     name: str | None = None
     message: str = ""
@@ -23,7 +23,7 @@ class DiagnosticErrorInfo:
 
 @dataclass
 class AssistantMessageDiagnostic:
-    """assistant 消息诊断（对应 TS ``AssistantMessageDiagnostic``）。"""
+    """assistant 消息诊断。"""
 
     type: str
     timestamp: float
@@ -32,7 +32,7 @@ class AssistantMessageDiagnostic:
 
 
 def format_thrown_value(value: object) -> str:
-    """格式化抛出值（对应 TS ``formatThrownValue``）。"""
+    """格式化抛出值。"""
     if isinstance(value, BaseException):
         return str(value) or type(value).__name__
     if isinstance(value, str):
@@ -41,7 +41,7 @@ def format_thrown_value(value: object) -> str:
 
 
 def extract_diagnostic_error(error: object) -> DiagnosticErrorInfo:
-    """提取诊断错误信息（对应 TS ``extractDiagnosticError``）。"""
+    """提取诊断错误信息。"""
     if not isinstance(error, BaseException):
         return DiagnosticErrorInfo(
             name="ThrownValue", message=format_thrown_value(error)
@@ -60,7 +60,7 @@ def create_assistant_message_diagnostic(
     error: object,
     details: dict[str, object] | None = None,
 ) -> AssistantMessageDiagnostic:
-    """创建 assistant 消息诊断（对应 TS ``createAssistantMessageDiagnostic``）。"""
+    """创建 assistant 消息诊断。"""
     return AssistantMessageDiagnostic(
         type=type_name,
         timestamp=time.time(),
@@ -73,7 +73,7 @@ def append_assistant_message_diagnostic(
     message: dict[str, object],
     diagnostic: AssistantMessageDiagnostic,
 ) -> None:
-    """追加诊断到消息（对应 TS ``appendAssistantMessageDiagnostic``）。"""
+    """追加诊断到消息。"""
     existing = message.get("diagnostics")
     if not isinstance(existing, list):
         existing = []

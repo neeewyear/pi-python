@@ -1,4 +1,5 @@
-"""会话数据模型与存储（对应 ``harness/session/index.ts``）。"""
+"""会话数据模型与存储。"""
+
 
 from . import context, memory, search, session, types
 from .context import build_session_context

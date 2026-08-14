@@ -1,4 +1,4 @@
-"""OpenAI Chat Completions API 消息格式转换与流式传输（对应 ``openai-completions.ts``）。"""
+"""OpenAI Chat Completions API 消息格式转换与流式传输。"""  
 
 from __future__ import annotations
 
@@ -171,7 +171,7 @@ def format_openai_error(error: object) -> str:
 
 
 class OpenAICompletionsOptions(StreamOptions):
-    """OpenAI Chat Completions API 特定选项（对应 TS ``OpenAICompletionsOptions``）。"""
+    """OpenAI Chat Completions API 特定选项。"""    
 
     reasoning_effort: (
         Literal["minimal", "low", "medium", "high", "xhigh", "max"] | None
@@ -198,7 +198,7 @@ class OpenAICompletionsOptions(StreamOptions):
 
 
 class ConvertCompletionsMessagesOptions:
-    """消息转换选项（对应 TS ``ConvertCompletionsMessagesOptions``）。"""
+    """消息转换选项。"""
 
     def __init__(
         self,
@@ -249,7 +249,7 @@ def stream(
     context: Context,
     options: OpenAICompletionsOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """OpenAI Chat Completions API 流式生成函数（对应 TS ``stream``）。"""
+    """OpenAI Chat Completions API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -810,7 +810,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     get_client_api_key(
         getattr(model, "provider", ""),
         options.api_key if options else None,
@@ -855,7 +855,7 @@ def create_client(
     session_id: str | None = None,
     compat: dict[str, Any] | None = None,
 ) -> Any:
-    """创建 OpenAI 客户端（对应 TS ``createClient``）。"""
+    """创建 OpenAI 客户端。"""
     if compat is None:
         compat = get_compat(model)
     headers: dict[str, str | None] = {}
@@ -909,7 +909,7 @@ def build_params(
     cache_retention: str | None = None,
     grammar_tool_input_properties: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    """构建请求参数。"""        
     if compat is None:
         compat = get_compat(model)
     if grammar_tool_input_properties is None:
@@ -1167,7 +1167,7 @@ def build_chat_template_values(
     options: OpenAICompletionsOptions | None,
     values: dict[str, Any],
 ) -> dict[str, Any] | None:
-    """构建聊天模板值（对应 TS ``buildChatTemplateValues``）。"""
+    """构建聊天模板值。"""
     resolved_values: dict[str, Any] = {}
 
     for key, value in values.items():
@@ -1183,7 +1183,7 @@ def resolve_chat_template_kwarg_value(
     options: OpenAICompletionsOptions | None,
     value: Any,
 ) -> Any:
-    """解析聊天模板关键字参数值（对应 TS ``resolveChatTemplateKwargValue``）。"""
+    """解析聊天模板关键字参数值。"""
     if not isinstance(value, dict):
         return value
 
@@ -1206,7 +1206,7 @@ def get_compat_cache_control(
     compat: dict[str, Any],
     cache_retention: str,
 ) -> OpenAICompatCacheControl | None:
-    """获取兼容缓存控制对象（对应 TS ``getCompatCacheControl``）。"""
+    """获取兼容缓存控制对象。"""
     if compat.get("cache_control_format") != "anthropic" or cache_retention == "none":
         return None
 
@@ -1224,7 +1224,7 @@ def apply_anthropic_cache_control(
     tools: list[dict[str, Any]] | None,
     cache_control: OpenAICompatCacheControl,
 ) -> None:
-    """应用 Anthropic 风格的缓存控制（对应 TS ``applyAnthropicCacheControl``）。"""
+    """应用 Anthropic 风格的缓存控制。"""
     _add_cache_control_to_system_prompt(messages, cache_control)
     _add_cache_control_to_last_tool(tools, cache_control)
     _add_cache_control_to_last_conversation_message(messages, cache_control)
@@ -1332,7 +1332,7 @@ def convert_messages(
     compat: dict[str, Any],
     options: ConvertCompletionsMessagesOptions | None = None,
 ) -> list[dict[str, Any]]:
-    """将内部消息格式转换为 OpenAI Chat Completions API 格式（对应 TS ``convertMessages``）。"""
+    """将内部消息格式转换为 OpenAI Chat Completions API 格式。"""   
     if options is None:
         options = ConvertCompletionsMessagesOptions()
 
@@ -1692,7 +1692,7 @@ def convert_tools(
     tools: list[Tool],
     compat: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    """将内部工具格式转换为 OpenAI Chat Completions API 工具格式（对应 TS ``convertTools``）。"""
+    """将内部工具格式转换为 OpenAI Chat Completions API 工具格式。"""   
     result: list[dict[str, Any]] = []
     supports_openai_grammar_tools = compat.get("supports_openai_grammar_tools", False)
     supports_strict_mode = compat.get("supports_strict_mode", True) is not False
@@ -1742,7 +1742,7 @@ def convert_tools(
 
 
 def parse_chunk_usage(raw_usage: Any, model: Any) -> Usage:
-    """解析流式 chunk 中的用量信息（对应 TS ``parseChunkUsage``）。"""
+    """解析流式 chunk 中的用量信息。"""
     prompt_tokens = getattr(raw_usage, "prompt_tokens", None) or 0
     completion_tokens = getattr(raw_usage, "completion_tokens", None) or 0
 
@@ -1787,7 +1787,7 @@ def parse_chunk_usage(raw_usage: Any, model: Any) -> Usage:
 
 
 def map_stop_reason(reason: str | None) -> dict[str, Any]:
-    """映射 OpenAI finish_reason 到内部 stop reason（对应 TS ``mapStopReason``）。"""
+    """映射 OpenAI finish_reason 到内部 stop reason。"""
     if reason is None:
         return {"stop_reason": "stop"}
 
@@ -1819,7 +1819,7 @@ def map_stop_reason(reason: str | None) -> dict[str, Any]:
 
 
 def detect_compat(model: Any) -> dict[str, Any]:
-    """自动检测兼容性设置（对应 TS ``detectCompat``）。"""
+    """自动检测兼容性设置"""
     provider = getattr(model, "provider", "")
     base_url = getattr(model, "base_url", "") or ""
 
@@ -1947,7 +1947,7 @@ def detect_compat(model: Any) -> dict[str, Any]:
 
 
 def get_compat(model: Any) -> dict[str, Any]:
-    """获取解析后的兼容性设置（对应 TS ``getCompat``）。
+    """获取解析后的兼容性设置。
 
     自动检测 provider/URL，然后用显式的 ``model.compat`` 覆盖。
     """
@@ -2086,7 +2086,7 @@ def resolve_cache_retention(
     cache_retention: str | None,
     env: dict[str, str] | None,
 ) -> str:
-    """解析缓存保留策略（对应 TS ``resolveCacheRetention``）。
+    """解析缓存保留策略。
 
     默认使用 "short"，通过 ``PI_CACHE_RETENTION`` 环境变量向后兼容。
     """

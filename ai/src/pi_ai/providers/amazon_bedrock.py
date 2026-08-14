@@ -1,4 +1,4 @@
-"""Amazon Bedrock Provider（对应 ``amazon-bedrock.ts``）。"""
+"""Amazon Bedrock Provider。"""
 
 from __future__ import annotations
 

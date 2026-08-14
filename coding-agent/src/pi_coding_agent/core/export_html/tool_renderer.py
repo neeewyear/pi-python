@@ -1,4 +1,4 @@
-"""工具 HTML 渲染器（对应 TS ``tool-renderer.ts``）。
+"""工具 HTML 渲染器。
 
 将自定义工具调用和结果渲染为 HTML，通过调用其 TUI 渲染器
 并将 ANSI 输出转换为 HTML。
@@ -17,7 +17,7 @@ ANSI_ESCAPE_REGEX = r"\x1b\[[\d;]*m"
 
 
 class ToolHtmlRendererDeps(Protocol):
-    """工具 HTML 渲染器依赖（对应 TS ``ToolHtmlRendererDeps``）。"""
+    """工具 HTML 渲染器依赖。"""
 
     get_tool_definition: Any  # Callable[[str], ToolDefinition | None]
     """按名称查找工具定义的函数。"""
@@ -30,7 +30,7 @@ class ToolHtmlRendererDeps(Protocol):
 
 
 class ToolHtmlRenderer(Protocol):
-    """工具 HTML 渲染器协议（对应 TS ``ToolHtmlRenderer``）。"""
+    """工具 HTML 渲染器协议。"""
 
     def render_call(
         self, tool_call_id: str, tool_name: str, args: object

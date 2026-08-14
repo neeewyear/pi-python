@@ -1,4 +1,4 @@
-"""ANSI 转义码处理工具（对应 TS ``utils/ansi.ts``）。
+"""ANSI 转义码处理工具。
 
 提供 ``strip_ansi`` 函数，用于移除文本中的 ANSI 转义序列。
 """

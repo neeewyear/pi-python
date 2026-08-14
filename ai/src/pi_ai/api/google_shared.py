@@ -1,4 +1,4 @@
-"""Google Generative AI 和 Google Vertex provider 共享工具（对应 ``google-shared.ts``）。"""
+"""Google Generative AI 和 Google Vertex provider 共享工具。""" 
 
 from __future__ import annotations
 

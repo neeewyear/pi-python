@@ -1,4 +1,4 @@
-"""xAI OAuth 设备码流程（对应 ``oauth/xai.ts``）。"""
+"""xAI OAuth 设备码流程。"""
 
 from __future__ import annotations
 

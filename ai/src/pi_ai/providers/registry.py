@@ -1,4 +1,4 @@
-"""Provider 注册表（对应 ``all.ts``）。
+"""Provider 注册表。
 
 提供 ``builtin_providers`` 和 ``builtin_models`` 函数，用于获取所有内置 provider。
 """

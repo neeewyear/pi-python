@@ -1,4 +1,4 @@
-"""Bedrock Provider 公共模块（对应 ``bedrock-provider.ts``）。"""
+"""Bedrock Provider 公共模块。"""
 
 from __future__ import annotations
 

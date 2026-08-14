@@ -1,4 +1,4 @@
-"""系统提示词格式化（对应 ``harness/system-prompt.ts``）。"""
+"""系统提示词格式化。"""
 
 from __future__ import annotations
 

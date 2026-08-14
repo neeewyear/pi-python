@@ -1,4 +1,4 @@
-"""HuggingFace Provider（对应 ``huggingface.ts``）。"""
+"""HuggingFace Provider。"""
 
 from __future__ import annotations
 

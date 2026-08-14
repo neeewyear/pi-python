@@ -1,4 +1,4 @@
-"""CLI 项目信任（对应 TS ``cli/project-trust.ts``）。
+"""CLI 项目信任。
 
 提供 CLI 模式下的项目信任上下文工厂。
 """

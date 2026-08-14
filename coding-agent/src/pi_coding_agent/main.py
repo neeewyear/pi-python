@@ -1,4 +1,4 @@
-"""主入口点（对应 TS ``main.ts``）。
+"""主入口点。
 
 处理 CLI 参数解析、创建 SessionManager → 运行时服务 → AgentSessionRuntime，
 然后分派到对应模式（print / json / rpc / interactive）。
@@ -88,7 +88,7 @@ def _report_diagnostics(diagnostics: list[Diagnostic]) -> None:
 
 
 class MainOptions:
-    """主入口选项（对应 TS ``MainOptions``）。
+    """主入口选项。 
 
     Attributes:
         extension_factories: 内联扩展工厂列表。
@@ -205,7 +205,7 @@ async def main(args: list[str], options: MainOptions | None = None) -> None:
         session_start_event: Any = None,
         project_trust_context: Any = None,
     ) -> CreateAgentSessionRuntimeResult:
-        """内部运行时工厂（对应 TS ``createRuntime``）。"""
+        """内部运行时工厂。"""
         # 创建 cwd 绑定的运行时服务
         services = await create_agent_session_services(
             CreateAgentSessionServicesOptions(

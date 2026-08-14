@@ -1,4 +1,4 @@
-"""Agent 内部消息队列（对应 ``agent.ts`` 的 ``PendingMessageQueue``）。
+"""Agent 内部消息队列。
 
 支持两种排空模式：
 - ``"all"``：一次性返回全部消息并清空队列
@@ -11,7 +11,7 @@ from .types import AgentMessage, QueueMode
 
 
 class PendingMessageQueue:
-    """内部消息队列（对应 TS ``PendingMessageQueue``）。
+    """内部消息队列。
 
     用于 steering 和 follow-up 消息的排队与排空。
     """

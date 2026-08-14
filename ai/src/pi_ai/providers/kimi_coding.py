@@ -1,4 +1,4 @@
-"""Kimi Coding Provider（对应 ``kimi-coding.ts``）。"""
+"""Kimi Coding Provider。"""
 
 from __future__ import annotations
 

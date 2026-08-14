@@ -1,4 +1,4 @@
-"""技能加载（对应 TS ``core/skills.ts``）。
+"""技能加载。
 
 递归遍历目录加载 ``SKILL.md`` 或 ``.md`` 文件，遵守 ignore 文件（.gitignore/.ignore/.fdignore），
 非法的技能文件以诊断信息返回而不是失败。
@@ -46,7 +46,7 @@ class SkillFrontmatter(BaseModel):
 
 
 class SourceInfo(BaseModel):
-    """来源信息（对应 TS ``SourceInfo``）。"""
+    """来源信息。"""
 
     path: str
     source: str
@@ -56,7 +56,7 @@ class SourceInfo(BaseModel):
 
 
 class Skill(BaseModel):
-    """已加载的技能（对应 TS ``Skill``）。"""
+    """已加载的技能。"""
 
     name: str
     description: str
@@ -81,7 +81,7 @@ class LoadSkillsFromDirOptions(BaseModel):
 
 
 class LoadSkillsOptions(BaseModel):
-    """``load_skills`` 选项（对应 TS ``LoadSkillsOptions``）。"""
+    """``load_skills`` 选项。"""
 
     cwd: str
     agent_dir: str
@@ -111,7 +111,7 @@ def _relative(root: str, target: str) -> str:
 
 
 def _prefix_ignore_pattern(line: str, prefix: str) -> str | None:
-    """为忽略规则添加目录前缀（对应 TS ``prefixIgnorePattern``）。"""
+    """为忽略规则添加目录前缀。"""
     trimmed = line.strip()
     if not trimmed:
         return None
@@ -134,7 +134,7 @@ def _prefix_ignore_pattern(line: str, prefix: str) -> str | None:
 
 
 def _create_skill_source_info(file_path: str, base_dir: str, source: str) -> SourceInfo:
-    """根据 source 类型创建 SourceInfo（对应 TS ``createSkillSourceInfo``）。"""
+    """根据 source 类型创建 SourceInfo。"""
     if source == "user":
         return SourceInfo(
             path=file_path,
@@ -163,7 +163,7 @@ def _create_skill_source_info(file_path: str, base_dir: str, source: str) -> Sou
 
 
 def _validate_name(name: str) -> list[str]:
-    """验证技能名称（对应 TS ``validateName``）。"""
+    """验证技能名称。"""
     errors: list[str] = []
     if len(name) > MAX_NAME_LENGTH:
         errors.append(f"name exceeds {MAX_NAME_LENGTH} characters ({len(name)})")
@@ -179,7 +179,7 @@ def _validate_name(name: str) -> list[str]:
 
 
 def _validate_description(description: str | None) -> list[str]:
-    """验证技能描述（对应 TS ``validateDescription``）。"""
+    """验证技能描述。"""
     errors: list[str] = []
     if not description or description.strip() == "":
         errors.append("description is required")
@@ -211,7 +211,7 @@ async def _add_ignore_rules(
     directory: Path,
     root_dir: Path,
 ) -> None:
-    """从目录中的 ignore 文件读取规则并添加到 patterns 列表（对应 TS ``addIgnoreRules``）。"""
+    """从目录中的 ignore 文件读取规则并添加到 patterns 列表。"""
     relative_dir = _relative(str(root_dir), str(directory))
     prefix = f"{relative_dir}/" if relative_dir else ""
 
@@ -239,7 +239,7 @@ async def _load_skill_from_file(
     file_path: Path,
     source: str,
 ) -> tuple[Skill | None, list[ResourceDiagnostic]]:
-    """从单个文件加载技能（对应 TS ``loadSkillFromFile``）。"""
+    """从单个文件加载技能。"""
     diagnostics: list[ResourceDiagnostic] = []
 
     try:
@@ -295,7 +295,7 @@ async def _load_skill_from_file(
 
 
 def _parse_frontmatter(content: str) -> tuple[dict[str, object], str]:
-    """解析 YAML frontmatter（对应 TS ``parseFrontmatter``）。"""
+    """解析 YAML frontmatter。"""   
     normalized = content.replace("\r\n", "\n").replace("\r", "\n")
 
     if not normalized.startswith("---"):
@@ -324,7 +324,7 @@ async def _load_skills_from_dir(
     ignore_patterns: list[str] | None = None,
     root_dir: Path | None = None,
 ) -> SkillsResult:
-    """从目录递归加载技能（对应 TS ``loadSkillsFromDirInternal``）。"""
+    """从目录递归加载技能。"""
     skills: list[Skill] = []
     diagnostics: list[ResourceDiagnostic] = []
 
@@ -407,7 +407,7 @@ async def _load_skills_from_dir(
 
 
 async def load_skills_from_dir(options: LoadSkillsFromDirOptions) -> SkillsResult:
-    """从目录加载技能（对应 TS ``loadSkillsFromDir``）。"""
+    """从目录加载技能。"""
     return await _load_skills_from_dir(options.dir_path, options.source, True)
 
 
@@ -417,7 +417,7 @@ async def load_skills_from_dir(options: LoadSkillsFromDirOptions) -> SkillsResul
 
 
 async def load_skills(options: LoadSkillsOptions) -> SkillsResult:
-    """从所有配置位置加载技能（对应 TS ``loadSkills``）。
+    """从所有配置位置加载技能。
 
     加载顺序：
     1. 默认用户技能目录（``agentDir/skills/``）
@@ -526,7 +526,7 @@ async def load_skills(options: LoadSkillsOptions) -> SkillsResult:
 
 
 def _canonicalize_path(path: str) -> str:
-    """解析真实路径（跟随符号链接），失败时返回原路径（对应 TS ``canonicalizePath``）。"""
+    """解析真实路径（跟随符号链接），失败时返回原路径。"""
     try:
         return str(Path(path).resolve())
     except Exception:  # noqa: BLE001
@@ -539,7 +539,7 @@ def _canonicalize_path(path: str) -> str:
 
 
 def format_skills_for_prompt(skills: list[Skill]) -> str:
-    """格式化技能列表用于系统提示词（对应 TS ``formatSkillsForPrompt``）。
+    """格式化技能列表用于系统提示词。
 
     使用 XML 格式，遵循 Agent Skills 标准。
     被 ``disable_model_invocation`` 标记的技能不展示给模型。

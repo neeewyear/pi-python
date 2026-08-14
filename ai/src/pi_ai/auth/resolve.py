@@ -1,4 +1,4 @@
-"""Provider 认证解析（对应 ``auth/resolve.ts``）。"""
+"""Provider 认证解析。"""
 
 from __future__ import annotations
 

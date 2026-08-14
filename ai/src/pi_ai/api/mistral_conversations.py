@@ -1,4 +1,4 @@
-"""Mistral Conversations API 消息格式转换与流式传输（对应 ``mistral-conversations.ts``）。"""
+"""Mistral Conversations API 消息格式转换与流式传输。"""
 
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ MistralReasoningEffort: TypeAlias = Literal["none", "high"]
 
 
 class MistralOptions(StreamOptions):
-    """Mistral API 特定选项（对应 TS ``MistralOptions``）。"""
+    """Mistral API 特定选项。"""
 
     tool_choice: Literal["auto", "none", "any", "required"] | dict[str, Any] | None = (
         None
@@ -99,7 +99,7 @@ def get_client_api_key(
 
 
 def format_mistral_error(error: object) -> str:
-    """格式化 Mistral 错误（对应 TS ``formatMistralError``）。"""
+    """格式化 Mistral 错误。"""
     if isinstance(error, BaseException):
         status = _extract_error_status(error)
         body = _extract_error_body(error)
@@ -148,7 +148,7 @@ def _safe_json_stringify(value: object) -> str:
 
 
 def create_mistral_tool_call_id_normalizer() -> Callable[[str], str]:
-    """创建 Mistral tool call ID 归一化器（对应 TS ``createMistralToolCallIdNormalizer``）。
+    """创建 Mistral tool call ID 归一化器。
 
     Mistral 要求 tool call ID 为 9 字符。
     """
@@ -174,7 +174,7 @@ def create_mistral_tool_call_id_normalizer() -> Callable[[str], str]:
 
 
 def derive_mistral_tool_call_id(id: str, attempt: int) -> str:
-    """派生 Mistral tool call ID（对应 TS ``deriveMistralToolCallId``）。"""
+    """派生 Mistral tool call ID。"""
     import re
 
     normalized = re.sub(r"[^a-zA-Z0-9]", "", id)
@@ -192,14 +192,14 @@ def derive_mistral_tool_call_id(id: str, attempt: int) -> str:
 def should_use_prompt_caching(
     options: MistralOptions | None,
 ) -> bool:
-    """检查是否应该使用 prompt 缓存（对应 TS ``shouldUsePromptCaching``）。"""
+    """检查是否应该使用 prompt 缓存。"""
     if not options:
         return False
     return options.cache_retention != "none" and bool(options.session_id)
 
 
 def get_mistral_cached_prompt_tokens(usage: dict[str, Any], prompt_tokens: int) -> int:
-    """获取 Mistral 缓存的 prompt token 数（对应 TS ``getMistralCachedPromptTokens``）。"""
+    """获取 Mistral 缓存的 prompt token 数。"""
     raw_cached_tokens: Any = (
         _deep_get(usage, "promptTokensDetails", "cachedTokens")
         or _deep_get(usage, "prompt_tokens_details", "cached_tokens")
@@ -231,7 +231,7 @@ def _deep_get(d: dict[str, Any], *keys: str) -> Any:
 
 
 def uses_reasoning_effort(model: Any) -> bool:
-    """检查模型是否使用 reasoning_effort（对应 TS ``usesReasoningEffort``）。"""
+    """检查模型是否使用 reasoning_effort。"""
     model_id = getattr(model, "model_id", "")
     return model_id in (
         "mistral-small-2603",
@@ -241,12 +241,12 @@ def uses_reasoning_effort(model: Any) -> bool:
 
 
 def uses_prompt_mode_reasoning(model: Any) -> bool:
-    """检查模型是否使用 prompt_mode reasoning（对应 TS ``usesPromptModeReasoning``）。"""
+    """检查模型是否使用 prompt_mode reasoning。"""
     return bool(getattr(model, "reasoning", False)) and not uses_reasoning_effort(model)
 
 
 def map_reasoning_effort(model: Any, level: str) -> MistralReasoningEffort:
-    """映射 reasoning effort（对应 TS ``mapReasoningEffort``）。"""
+    """映射 reasoning effort。"""
     thinking_level_map = getattr(model, "thinking_level_map", None) or {}
     mapped = thinking_level_map.get(level)
     if isinstance(mapped, str) and mapped in ("none", "high"):
@@ -255,7 +255,7 @@ def map_reasoning_effort(model: Any, level: str) -> MistralReasoningEffort:
 
 
 def map_tool_choice(choice: Any) -> Any:
-    """映射 tool_choice（对应 TS ``mapToolChoice``）。"""
+    """映射 tool_choice。"""
     if not choice:
         return None
     if choice in ("auto", "none", "any", "required"):
@@ -269,7 +269,7 @@ def map_tool_choice(choice: Any) -> Any:
 
 
 def map_chat_stop_reason(reason: str | None) -> dict[str, Any]:
-    """映射 Mistral finish_reason 到内部 stop reason（对应 TS ``mapChatStopReason``）。"""
+    """映射 Mistral finish_reason 到内部 stop reason。"""
     if reason is None:
         return {"stop_reason": "stop"}
     if reason == "stop":
@@ -299,7 +299,7 @@ def stream(
     context: Context,
     options: MistralOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Mistral Chat Completions API 流式生成函数（对应 TS ``stream``）。"""
+    """Mistral Chat Completions API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -439,7 +439,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     provider = getattr(model, "provider", "")
     api_key = get_client_api_key(
         provider,
@@ -487,7 +487,7 @@ def build_params(
     messages: list[Message],
     options: MistralOptions | None = None,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildChatPayload``）。"""
+    """构建请求参数。"""
     params: dict[str, Any] = {
         "model": getattr(model, "model_id", ""),
         "stream": True,
@@ -520,7 +520,7 @@ def build_request_headers(
     model: Any,
     options: MistralOptions | None = None,
 ) -> dict[str, str]:
-    """构建请求头（对应 TS ``buildRequestOptions`` 中的头部逻辑）。"""
+    """构建请求头。"""
     headers: dict[str, str] = {}
 
     # 复制模型级请求头
@@ -552,7 +552,7 @@ def convert_messages(
     model: Any,
     messages: list[Message],
 ) -> list[dict[str, Any]]:
-    """将内部消息格式转换为 Mistral Chat Completions API 格式（对应 TS ``toChatMessages``）。"""
+    """将内部消息格式转换为 Mistral Chat Completions API 格式。"""
     result: list[dict[str, Any]] = []
     supports_images = "image" in (
         getattr(model, "input_types", None) or getattr(model, "input", []) or []
@@ -693,7 +693,7 @@ def convert_messages(
 def build_tool_result_text(
     text: str, has_images: bool, supports_images: bool, is_error: bool
 ) -> str:
-    """构建工具结果文本（对应 TS ``buildToolResultText``）。"""
+    """构建工具结果文本。"""
     trimmed = text.strip()
     error_prefix = "[tool error] " if is_error else ""
 
@@ -722,7 +722,7 @@ def build_tool_result_text(
 
 
 def convert_tools(tools: list[Tool]) -> list[dict[str, Any]]:
-    """将内部工具格式转换为 Mistral 工具格式（对应 TS ``toFunctionTools``）。"""
+    """将内部工具格式转换为 Mistral 工具格式。"""
     result: list[dict[str, Any]] = []
 
     for tool in tools:
@@ -748,7 +748,7 @@ async def consume_chat_stream(
     event_stream: AssistantMessageEventStream,
     response: httpx.Response,
 ) -> None:
-    """消费 Mistral 流式响应（对应 TS ``consumeChatStream``）。"""
+    """消费 Mistral 流式响应。"""
     current_text_block: TextContent | None = None
     current_thinking_block: Any | None = None
     blocks = cast("list[Any]", output.content)

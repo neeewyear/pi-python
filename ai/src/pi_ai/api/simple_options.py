@@ -1,4 +1,4 @@
-"""SimpleStreamOptions 转换逻辑（对应 ``simple-options.ts``）。"""
+"""SimpleStreamOptions 转换逻辑。"""
 
 from __future__ import annotations
 

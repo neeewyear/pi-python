@@ -1,4 +1,4 @@
-"""Cerebras Provider（对应 ``cerebras.ts``）。"""
+"""Cerebras Provider。"""
 
 from __future__ import annotations
 

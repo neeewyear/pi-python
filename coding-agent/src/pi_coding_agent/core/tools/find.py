@@ -33,7 +33,7 @@ from .truncate import (
 
 
 class FindToolInput(BaseModel):
-    """Find tool input parameters (corresponds to TS ``FindToolInput``)."""
+    """Find tool input parameters."""
 
     pattern: str
     path: str | None = None
@@ -41,7 +41,7 @@ class FindToolInput(BaseModel):
 
 
 class FindToolDetails(BaseModel):
-    """Find tool output details (corresponds to TS ``FindToolDetails``)."""
+    """Find tool output details."""
 
     truncation: TruncationResult | None = None
     result_limit_reached: int | None = None
@@ -56,7 +56,7 @@ class FindOperations:
     """Pluggable operations for the find tool.
 
     Override these to delegate file search to remote systems.
-    Corresponds to TS ``FindOperations``.
+
     """
 
     async def exists(self, absolute_path: str) -> bool:
@@ -79,7 +79,7 @@ class FindOperations:
 
 
 class FindToolOptions(BaseModel):
-    """Find tool options (corresponds to TS ``FindToolOptions``)."""
+    """Find tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -101,7 +101,7 @@ DEFAULT_LIMIT = 1000
 def relativize_find_result_path(result_path: str, search_path: str) -> str:
     """Relativize a find result against the search root and normalize to posix separators.
 
-    Corresponds to TS ``relativizeFindResultPath``.
+
     """
     had_trailing_separator = result_path.endswith(os.sep) or (
         os.sep == "\\" and result_path.endswith("/")
@@ -127,8 +127,6 @@ def create_find_tool_definition(
     options: FindToolOptions | None = None,
 ) -> ToolDefinition[FindToolDetails | None]:
     """Create a find tool definition.
-
-    Corresponds to TS ``createFindToolDefinition``.
     """
     custom_ops = options.operations if options is not None else None
 
@@ -352,8 +350,5 @@ def create_find_tool(
     cwd: str,
     options: FindToolOptions | None = None,
 ) -> AgentTool:
-    """Create a find tool (AgentTool).
-
-    Corresponds to TS ``createFindTool``.
-    """
+    """Create a find tool (AgentTool)."""
     return wrap_tool_definition(create_find_tool_definition(cwd, options))

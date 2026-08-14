@@ -1,4 +1,4 @@
-"""Baseten Provider（对应 ``baseten.ts``）。"""
+"""Baseten Provider。"""
 
 from __future__ import annotations
 

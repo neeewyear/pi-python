@@ -1,4 +1,5 @@
-"""OAuth 动态加载器（对应 ``oauth/load.ts``）。"""
+"""OAuth 动态加载器。"""
+
 
 from __future__ import annotations
 

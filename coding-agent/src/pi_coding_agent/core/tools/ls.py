@@ -32,14 +32,14 @@ from .truncate import (
 
 
 class LsToolInput(BaseModel):
-    """Ls tool input parameters (corresponds to TS ``LsToolInput``)."""
+    """Ls tool input parameters."""
 
     path: str | None = None
     limit: int | None = None
 
 
 class LsToolDetails(BaseModel):
-    """Ls tool output details (corresponds to TS ``LsToolDetails``)."""
+    """Ls tool output details."""
 
     truncation: TruncationResult | None = None
     entry_limit_reached: int | None = None
@@ -54,7 +54,6 @@ class LsOperations:
     """Pluggable operations for the ls tool.
 
     Override these to delegate directory listing to remote systems.
-    Corresponds to TS ``LsOperations``.
     """
 
     async def exists(self, absolute_path: str) -> bool:
@@ -76,7 +75,7 @@ class LsOperations:
 
 
 class LsToolOptions(BaseModel):
-    """Ls tool options (corresponds to TS ``LsToolOptions``)."""
+    """Ls tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -101,7 +100,7 @@ def create_ls_tool_definition(
 ) -> ToolDefinition[LsToolDetails | None]:
     """Create an ls tool definition.
 
-    Corresponds to TS ``createLsToolDefinition``.
+
     """
     ops = (
         options.operations

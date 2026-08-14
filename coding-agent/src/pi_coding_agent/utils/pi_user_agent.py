@@ -1,4 +1,4 @@
-"""User-Agent 字符串工具（对应 TS ``utils/pi-user-agent.ts``）。
+"""User-Agent 字符串工具。
 
 提供 ``get_pi_user_agent`` 函数，用于获取 Pi 应用的 User-Agent 字符串。
 """

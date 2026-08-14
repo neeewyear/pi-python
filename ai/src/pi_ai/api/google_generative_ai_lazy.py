@@ -1,4 +1,4 @@
-"""Google Generative AI API 延迟加载（对应 ``google-generative-ai.lazy.ts``）。"""
+"""Google Generative AI API 延迟加载。"""
 
 from __future__ import annotations
 

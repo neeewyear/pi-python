@@ -1,4 +1,4 @@
-"""模型目录查询与过滤（对应 ``model-catalog.ts``）。
+"""模型目录查询与过滤。
 
 提供 ``flatten_model_catalog`` 工具函数，用于将分组的模型目录扁平化为
 单层模型映射。
@@ -13,7 +13,7 @@ def flatten_model_catalog(
     provider: str,
     groups: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
-    """将分组的模型目录扁平化为单层映射（对应 TS ``flattenModelCatalog``）。
+    """将分组的模型目录扁平化为单层映射。
 
     Args:
         provider: Provider ID（当前仅用于类型标注，Python 侧无编译时类型约束）。

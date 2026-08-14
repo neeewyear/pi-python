@@ -1,4 +1,4 @@
-"""Cloudflare Workers AI Provider（对应 ``cloudflare-workers-ai.ts``）。"""
+"""Cloudflare Workers AI Provider。"""
 
 from __future__ import annotations
 

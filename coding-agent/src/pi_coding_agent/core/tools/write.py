@@ -26,7 +26,7 @@ from .tool_definition_wrapper import ToolDefinition, wrap_tool_definition
 
 
 class WriteToolInput(BaseModel):
-    """Write tool input parameters (corresponds to TS ``WriteToolInput``)."""
+    """Write tool input parameters."""
 
     path: str
     content: str
@@ -41,7 +41,7 @@ class WriteOperations:
     """Pluggable operations for the write tool.
 
     Override these to delegate file writing to remote systems.
-    Corresponds to TS ``WriteOperations``.
+
     """
 
     async def write_file(self, absolute_path: str, content: str) -> None:
@@ -62,7 +62,7 @@ class WriteOperations:
 
 
 class WriteToolOptions(BaseModel):
-    """Write tool options (corresponds to TS ``WriteToolOptions``)."""
+    """Write tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -78,10 +78,7 @@ def create_write_tool_definition(
     cwd: str,
     options: WriteToolOptions | None = None,
 ) -> ToolDefinition[None]:
-    """Create a write tool definition.
-
-    Corresponds to TS ``createWriteToolDefinition``.
-    """
+    """Create a write tool definition."""
     ops = (
         options.operations
         if options is not None and options.operations is not None
@@ -156,7 +153,5 @@ def create_write_tool(
     options: WriteToolOptions | None = None,
 ) -> AgentTool:
     """Create a write tool (AgentTool).
-
-    Corresponds to TS ``createWriteTool``.
     """
     return wrap_tool_definition(create_write_tool_definition(cwd, options))

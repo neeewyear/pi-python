@@ -1,4 +1,4 @@
-"""文本处理工具（对应 ``utils/text.ts``）。"""
+"""文本处理工具。"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ Content = TextContent | ImageContent | dict[str, object]
 def content_text(
     content: str | list[Content], separator: str = "\n"
 ) -> str:
-    """从消息内容中提取并连接文本（对应 TS ``contentText``）。"""
+    """从消息内容中提取并连接文本。"""
     if isinstance(content, str):
         return content
     text_parts: list[str] = []

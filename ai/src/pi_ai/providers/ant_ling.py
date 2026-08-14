@@ -1,4 +1,4 @@
-"""Ant Ling Provider（对应 ``ant-ling.ts``）。"""
+"""Ant Ling Provider。"""
 
 from __future__ import annotations
 

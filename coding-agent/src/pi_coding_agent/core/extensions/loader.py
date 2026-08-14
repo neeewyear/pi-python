@@ -1,4 +1,4 @@
-"""扩展加载器（对应 TS ``core/extensions/loader.ts``）。
+"""扩展加载器。
 
 处理从文件/目录加载扩展、在 agent 目录中发现扩展、创建 ExtensionRuntime。
 """

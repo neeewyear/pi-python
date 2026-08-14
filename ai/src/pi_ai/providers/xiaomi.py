@@ -1,4 +1,4 @@
-"""Xiaomi Provider（对应 ``xiaomi.ts``）。"""
+"""Xiaomi Provider。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""会话管理（对应 TS ``core/session-manager.ts`` 的简化版）。
+"""会话管理。
 
 提供会话条目类型定义（Pydantic 模型）和 ``SessionManager`` 类，
 用于管理会话文件的 CRUD 操作。
@@ -35,7 +35,7 @@ T = TypeVar("T")
 
 
 class SessionHeader(BaseModel):
-    """会话头部（对应 TS ``SessionHeader``）。"""
+    """会话头部。"""
 
     type: Literal["session"] = "session"
     version: int | None = None
@@ -46,14 +46,14 @@ class SessionHeader(BaseModel):
 
 
 class NewSessionOptions(BaseModel):
-    """新建会话选项（对应 TS ``NewSessionOptions``）。"""
+    """新建会话选项。"""
 
     id: str | None = None
     parent_session: str | None = None
 
 
 class SessionEntryBase(BaseModel):
-    """会话条目基类（对应 TS ``SessionEntryBase``）。"""
+    """会话条目基类。"""
 
     type: str
     id: str
@@ -62,21 +62,21 @@ class SessionEntryBase(BaseModel):
 
 
 class SessionMessageEntry(SessionEntryBase):
-    """消息条目（对应 TS ``SessionMessageEntry``）。"""
+    """消息条目。"""
 
     type: Literal["message"] = "message"
     message: AgentMessage
 
 
 class ThinkingLevelChangeEntry(SessionEntryBase):
-    """思考级别变更条目（对应 TS ``ThinkingLevelChangeEntry``）。"""
+    """思考级别变更条目。"""
 
     type: Literal["thinking_level_change"] = "thinking_level_change"
     thinking_level: str
 
 
 class ModelChangeEntry(SessionEntryBase):
-    """模型变更条目（对应 TS ``ModelChangeEntry``）。"""
+    """模型变更条目。"""
 
     type: Literal["model_change"] = "model_change"
     provider: str
@@ -84,7 +84,7 @@ class ModelChangeEntry(SessionEntryBase):
 
 
 class CompactionEntry(SessionEntryBase, Generic[T]):
-    """上下文压缩条目（对应 TS ``CompactionEntry<T>``）。"""
+    """上下文压缩条目。"""
 
     type: Literal["compaction"] = "compaction"
     summary: str
@@ -96,7 +96,7 @@ class CompactionEntry(SessionEntryBase, Generic[T]):
 
 
 class BranchSummaryEntry(SessionEntryBase, Generic[T]):
-    """分支摘要条目（对应 TS ``BranchSummaryEntry<T>``）。"""
+    """分支摘要条目。"""
 
     type: Literal["branch_summary"] = "branch_summary"
     from_id: str
@@ -107,7 +107,8 @@ class BranchSummaryEntry(SessionEntryBase, Generic[T]):
 
 
 class CustomEntry(SessionEntryBase, Generic[T]):
-    """自定义条目（扩展存储，对应 TS ``CustomEntry<T>``）。
+    """自定义条目。
+
 
     不参与 LLM 上下文。
     """
@@ -118,7 +119,7 @@ class CustomEntry(SessionEntryBase, Generic[T]):
 
 
 class LabelEntry(SessionEntryBase):
-    """标签条目（用户标记，对应 TS ``LabelEntry``）。"""
+    """标签条目。"""
 
     type: Literal["label"] = "label"
     target_id: str
@@ -126,14 +127,14 @@ class LabelEntry(SessionEntryBase):
 
 
 class SessionInfoEntry(SessionEntryBase):
-    """会话元信息条目（对应 TS ``SessionInfoEntry``）。"""
+    """会话元信息条目。"""
 
     type: Literal["session_info"] = "session_info"
     name: str | None = None
 
 
 class CustomMessageEntry(SessionEntryBase, Generic[T]):
-    """自定义消息条目（参与 LLM 上下文，对应 TS ``CustomMessageEntry<T>``）。"""
+    """自定义消息条目。"""  
 
     type: Literal["custom_message"] = "custom_message"
     custom_type: str
@@ -157,14 +158,14 @@ SessionEntry: TypeAlias = (
     | LabelEntry
     | SessionInfoEntry
 )
-"""会话条目联合类型（对应 TS ``SessionEntry``）。"""
+"""会话条目联合类型。"""
 
 FileEntry: TypeAlias = SessionHeader | SessionEntry
-"""文件条目（包含头部，对应 TS ``FileEntry``）。"""
+"""文件条目（包含头部）。"""
 
 
 class SessionTreeNode(BaseModel):
-    """会话树节点（对应 TS ``SessionTreeNode``）。"""
+    """会话树节点。"""
 
     entry: SessionEntry
     children: list[SessionTreeNode] = Field(default_factory=list)
@@ -173,7 +174,7 @@ class SessionTreeNode(BaseModel):
 
 
 class SessionContext(BaseModel):
-    """会话上下文（对应 TS ``SessionContext``）。"""
+    """会话上下文。"""
 
     messages: list[AgentMessage] = Field(default_factory=list)
     thinking_level: str = "off"
@@ -181,7 +182,7 @@ class SessionContext(BaseModel):
 
 
 class SessionInfo(BaseModel):
-    """会话摘要信息（对应 TS ``SessionInfo``）。"""
+    """会话摘要信息。"""
 
     path: str
     id: str
@@ -206,7 +207,7 @@ def _now_iso() -> str:
 
 
 class SessionManager:
-    """会话管理器（对应 TS ``SessionManager`` 的简化版）。
+    """会话管理器。
 
     管理会话条目（JSONL 格式）的增删改查操作。
     """

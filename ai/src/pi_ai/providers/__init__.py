@@ -1,4 +1,4 @@
-"""Provider 工厂入口（对应 ``providers/all.ts``）。"""
+"""Provider 工厂入口。"""
 
 from __future__ import annotations
 

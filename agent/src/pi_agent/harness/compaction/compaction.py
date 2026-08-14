@@ -1,4 +1,4 @@
-"""压缩主流程（对应 ``compaction.ts`` 的 compact / shouldCompact / prepareCompaction 等）。
+"""压缩主流程。
 
 包含：
 - ``CompactionSettings`` / ``DEFAULT_COMPACTION_SETTINGS``
@@ -41,7 +41,7 @@ from .utils import (
 
 
 class CompactionSettings(BaseModel):
-    """压缩阈值设置（对应 TS ``CompactionSettings``）。"""
+    """压缩阈值设置。"""
 
     enabled: bool = True
     reserve_tokens: int = 16384
@@ -57,14 +57,14 @@ DEFAULT_COMPACTION_SETTINGS = CompactionSettings()
 
 
 class CompactionDetails(BaseModel):
-    """压缩详情（对应 TS ``CompactionDetails``）。"""
+    """压缩详情。"""
 
     read_files: list[str] = []
     modified_files: list[str] = []
 
 
 class CompactResult(BaseModel):
-    """压缩结果（对应 TS ``CompactResult``）。"""
+    """压缩结果。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -85,7 +85,7 @@ def should_compact(
     context_window: int,
     settings: CompactionSettings,
 ) -> bool:
-    """判断是否需要压缩（对应 TS ``shouldCompact``）。"""
+    """判断是否需要压缩。"""
     if not settings.enabled:
         return False
     return context_tokens > context_window - settings.reserve_tokens
@@ -101,7 +101,7 @@ def _extract_file_operations(
     entries: list[Entry],
     prev_compaction_index: int,
 ) -> FileOperations:
-    """提取文件操作（对应 TS ``extractFileOperations``）。"""
+    """提取文件操作。"""
     file_ops = create_file_ops()
     if prev_compaction_index >= 0:
         prev_compaction = entries[prev_compaction_index]
@@ -124,7 +124,7 @@ def _extract_file_operations(
 
 
 def _get_message_from_entry(entry: Entry) -> AgentMessage | None:
-    """从条目获取消息（对应 TS ``getMessageFromEntry``）。"""
+    """从条目获取消息。"""
     if entry.type == "message":
         return entry.message
     if entry.type == "branch_summary":
@@ -141,7 +141,7 @@ def _get_message_from_entry(entry: Entry) -> AgentMessage | None:
 
 
 def _get_message_from_entry_for_compaction(entry: Entry) -> AgentMessage | None:
-    """获取压缩用消息（跳过 compaction 条目，对应 TS ``getMessageFromEntryForCompaction``）。"""
+    """获取压缩用消息（跳过 compaction 条目）。"""
     if entry.type == "compaction":
         return None
     return _get_message_from_entry(entry)
@@ -156,7 +156,7 @@ def prepare_compaction(
     path_entries: list[Entry],
     settings: CompactionSettings,
 ) -> Result[CompactionPreparation | None, CompactionError]:
-    """准备压缩数据（对应 TS ``prepareCompaction``）。"""
+    """准备压缩数据。"""
     if not path_entries or path_entries[-1].type == "compaction":
         return ok(None)
 
@@ -260,7 +260,7 @@ def prepare_compaction(
 
 
 def _combine_usage(first: Usage, second: Usage) -> Usage:
-    """合并两个 Usage（对应 TS ``combineUsage``）。"""
+    """合并两个 Usage。"""
     return Usage(
         input=first.input + second.input,
         output=first.output + second.output,
@@ -286,7 +286,7 @@ async def _generate_turn_prefix_summary(
     *,
     thinking_level: ThinkingLevel | None = None,
 ) -> Result[tuple[str, Usage], CompactionError]:
-    """生成回合前缀摘要（对应 TS ``generateTurnPrefixSummary``）。"""
+    """生成回合前缀摘要。"""
     from ..messages import convert_to_llm
 
     max_tokens = min(int(0.5 * reserve_tokens), 4096)
@@ -351,7 +351,7 @@ async def compact(
     custom_instructions: str | None = None,
     thinking_level: ThinkingLevel | None = None,
 ) -> Result[CompactResult, CompactionError]:
-    """执行压缩（对应 TS ``compact``）。"""
+    """执行压缩。"""
     settings: CompactionSettings = preparation.settings  # type: ignore[assignment]
 
     if preparation.is_split_turn and preparation.turn_prefix_messages:

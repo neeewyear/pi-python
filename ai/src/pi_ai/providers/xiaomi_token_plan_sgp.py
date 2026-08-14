@@ -1,4 +1,4 @@
-"""Xiaomi Token Plan SGP Provider（对应 ``xiaomi-token-plan-sgp.ts``）。"""
+"""Xiaomi Token Plan SGP Provider。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""TypeBox 辅助工具（对应 ``utils/typebox-helpers.ts``）。
+"""TypeBox 辅助工具。
 
 Python 侧使用 Pydantic 替代 TypeBox，``StringEnum`` 可通过 Pydantic 的
 ``Literal`` 类型或 ``Field`` 约束实现。
@@ -14,7 +14,7 @@ def string_enum(
     description: str | None = None,
     default: str | None = None,
 ) -> dict[str, object]:
-    """创建字符串枚举 schema（对应 TS ``StringEnum``）。
+    """创建字符串枚举 schema。  
 
     返回字典形式的 JSON Schema 片段，兼容 Pydantic / JSON Schema 验证器。
     """

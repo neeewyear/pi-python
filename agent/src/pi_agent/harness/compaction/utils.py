@@ -1,4 +1,4 @@
-"""压缩工具函数（对应 ``harness/compaction/utils.ts``）。
+"""压缩工具函数。
 
 包含：
 - ``FileOperations``：文件操作累加器
@@ -21,7 +21,7 @@ from ...types import AgentMessage, AssistantMessage, Message
 
 
 class FileOperations(BaseModel):
-    """文件操作累加器（对应 TS ``FileOperations``）。"""
+    """文件操作累加器。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -31,14 +31,14 @@ class FileOperations(BaseModel):
 
 
 def create_file_ops() -> FileOperations:
-    """创建空文件操作累加器（对应 TS ``createFileOps``）。"""
+    """创建空文件操作累加器。"""
     return FileOperations()
 
 
 def extract_file_ops_from_message(
     message: AgentMessage, file_ops: FileOperations
 ) -> None:
-    """从 assistant 消息的 toolCall 中提取文件路径（对应 TS ``extractFileOpsFromMessage``）。"""
+    """从 assistant 消息的 toolCall 中提取文件路径。""" 
     if message.role != "assistant":
         return
     if not isinstance(message, AssistantMessage):
@@ -61,7 +61,7 @@ def extract_file_ops_from_message(
 
 
 def compute_file_lists(file_ops: FileOperations) -> tuple[list[str], list[str]]:
-    """计算 sorted read-only 和 modified 文件列表（对应 TS ``computeFileLists``）。"""
+    """计算 sorted read-only 和 modified 文件列表。"""
     modified: set[str] = file_ops.edited | file_ops.written
     read_only = sorted(f for f in file_ops.read if f not in modified)
     modified_files = sorted(modified)
@@ -69,7 +69,7 @@ def compute_file_lists(file_ops: FileOperations) -> tuple[list[str], list[str]]:
 
 
 def format_file_operations(read_files: list[str], modified_files: list[str]) -> str:
-    """格式化为 XML 标签（对应 TS ``formatFileOperations``）。"""
+    """格式化为 XML 标签。"""
     sections: list[str] = []
     if read_files:
         sections.append(f"<read-files>\n{chr(10).join(read_files)}\n</read-files>")
@@ -116,7 +116,7 @@ def _content_text(content: Sequence[object]) -> str:
 
 
 def serialize_conversation(messages: list[Message]) -> str:
-    """序列化 LLM 消息为纯文本（对应 TS ``serializeConversation``）。"""
+    """序列化 LLM 消息为纯文本。"""
     parts: list[str] = []
 
     for msg in messages:

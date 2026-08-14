@@ -1,4 +1,4 @@
-"""中止信号工具（对应 ``utils/abort.ts`` + ``utils/abort-signals.ts``）。
+"""中止信号工具。
 
 提供 ``CancellationToken`` 类以及 ``operation_signal``、``race_with_abort_signal``、
 ``combine_abort_signals``。
@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 
 class CancellationToken:
-    """取消令牌（对应 TS ``AbortSignal``）。
+    """取消令牌。
 
     基于 ``asyncio.Event`` 实现，替代 TS 的 ``AbortSignal``/``AbortController``。
     """
@@ -59,14 +59,14 @@ class CancellationToken:
 
 
 def operation_signal(signal: CancellationToken | None = None) -> CancellationToken:
-    """创建或返回操作信号（对应 TS ``operationSignal``）。"""
+    """创建或返回操作信号。"""
     return signal if signal is not None else CancellationToken()
 
 
 async def race_with_abort_signal(
     operation: Awaitable[object], signal: CancellationToken
 ) -> object:
-    """与取消信号赛跑（对应 TS ``raceWithAbortSignal``）。
+    """与取消信号赛跑。
 
     ``asyncio`` 的协程取消机制（``CancelledError``）已内建此语义，
     Python 侧只需在适当时机检查 ``signal.aborted``。
@@ -78,7 +78,7 @@ async def race_with_abort_signal(
 
 @dataclass
 class CombinedAbortSignal:
-    """组合取消信号（对应 TS ``CombinedAbortSignal``）。"""
+    """组合取消信号。"""
 
     signal: CancellationToken | None = None
     cleanup: Callable[[], None] = lambda: None
@@ -87,7 +87,7 @@ class CombinedAbortSignal:
 def combine_abort_signals(
     signals: list[CancellationToken | None],
 ) -> CombinedAbortSignal:
-    """组合多个取消信号（对应 TS ``combineAbortSignals``）。
+    """组合多个取消信号。
 
     当任一信号取消时，合并的信号也取消。
     """

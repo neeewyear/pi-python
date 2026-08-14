@@ -1,4 +1,4 @@
-"""Cloudflare API 适配（对应 ``cloudflare.ts``）。
+"""Cloudflare API 适配。
 
 提供 Cloudflare Workers AI 和 AI Gateway 的 Base URL 常量。
 """

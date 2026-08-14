@@ -1,4 +1,4 @@
-"""Google Generative AI API 主入口（对应 ``google-generative-ai.ts``）。"""
+"""Google Generative AI API 主入口。"""
 
 from __future__ import annotations
 
@@ -57,7 +57,7 @@ _GEMINI_API_BASE = "https://generativelanguage.googleapis.com"
 
 
 class GoogleOptions(StreamOptions):
-    """Google Generative AI 流式选项（对应 TS ``GoogleOptions``）。"""
+    """Google Generative AI 流式选项。"""
 
     tool_choice: Literal["auto", "none", "any"] | None = None
     thinking: dict[str, Any] | None = None
@@ -438,7 +438,7 @@ def stream(
     context: Context,
     options: GoogleOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Google Generative AI 流式生成函数（对应 TS ``stream``）。"""
+    """Google Generative AI 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -747,7 +747,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     api_key = getattr(options, "api_key", None) if options else None
     if not api_key:
         raise ValueError(f"No API key for provider: {getattr(model, 'provider', '')}")

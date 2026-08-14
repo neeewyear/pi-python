@@ -1,4 +1,4 @@
-"""Token 估算工具（对应 ``utils/estimate.ts``）。
+"""Token 估算工具。
 
 提供 ``estimate_context_tokens``、``estimate_message_tokens``、
 ``estimate_text_tokens`` 等估算函数。
@@ -24,7 +24,7 @@ from ..types import (
 
 @dataclass
 class ContextUsageEstimate:
-    """上下文用量估算（对应 TS ``ContextUsageEstimate``）。"""
+    """上下文用量估算。"""
 
     tokens: int = 0
     usage_tokens: int = 0
@@ -37,7 +37,7 @@ ESTIMATED_IMAGE_CHARS = 4800
 
 
 def calculate_context_tokens(usage: Usage) -> int:
-    """计算上下文 token 数（对应 TS ``calculateContextTokens``）。"""
+    """计算上下文 token 数。"""
     return usage.total_tokens or (
         usage.input + usage.output + usage.cache_read + usage.cache_write
     )
@@ -67,14 +67,14 @@ def _estimate_text_and_image_content_chars(
 
 
 def estimate_text_tokens(text: str) -> int:
-    """估算文本 token 数（对应 TS ``estimateTextTokens``）。"""
+    """估算文本 token 数。"""
     return max(1, (len(text) + CHARS_PER_TOKEN - 1) // CHARS_PER_TOKEN)
 
 
 def estimate_text_and_image_content_tokens(
     content: str | list[TextContent | ImageContent],
 ) -> int:
-    """估算文本和图片内容 token 数（对应 TS ``estimateTextAndImageContentTokens``）。"""
+    """估算文本和图片内容 token 数。"""
     return max(
         1,
         (_estimate_text_and_image_content_chars(content) + CHARS_PER_TOKEN - 1)
@@ -83,7 +83,7 @@ def estimate_text_and_image_content_tokens(
 
 
 def estimate_message_tokens(message: Message) -> int:
-    """估算单条消息的 token 数（对应 TS ``estimateMessageTokens``）。"""
+    """估算单条消息的 token 数。"""
     if isinstance(message, UserMessage):
         return estimate_text_and_image_content_tokens(message.content)
 
@@ -162,7 +162,7 @@ def _estimate_tools_tokens(tools: list[Tool] | None) -> int:
 def estimate_context_tokens(
     context: Context | list[Message],
 ) -> ContextUsageEstimate:
-    """估算上下文的 token 数（对应 TS ``estimateContextTokens``）。
+    """估算上下文的 token 数。  
 
     可接受 ``Context`` 对象或 ``Message`` 列表。
     """

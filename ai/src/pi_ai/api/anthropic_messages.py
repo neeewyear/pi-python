@@ -1,4 +1,4 @@
-"""Anthropic Messages API 主入口（对应 ``anthropic-messages.ts``）。"""
+"""Anthropic Messages API 主入口。"""
 
 from __future__ import annotations
 
@@ -96,7 +96,7 @@ AnthropicThinkingDisplay = Literal["summarized", "omitted"]
 
 
 class AnthropicOptions(StreamOptions):
-    """Anthropic Messages API 流式选项（对应 TS ``AnthropicOptions``）。"""
+    """Anthropic Messages API 流式选项。"""
 
     thinking_enabled: bool | None = None
     thinking_budget_tokens: int | None = None
@@ -149,7 +149,7 @@ def _resolve_cache_retention(
     cache_retention: str | None,
     env: dict[str, str] | None,
 ) -> str:
-    """解析缓存保留策略（对应 TS ``resolveCacheRetention``）。
+    """解析缓存保留策略。
 
     默认使用 "short"，通过 PI_CACHE_RETENTION 环境变量向后兼容。
     """
@@ -165,7 +165,7 @@ def _get_cache_control(
     cache_retention: str | None = None,
     env: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    """获取缓存控制配置（对应 TS ``getCacheControl``）。"""
+    """获取缓存控制配置。"""    
     retention = _resolve_cache_retention(cache_retention, env)
     if retention == "none":
         return {"retention": retention}
@@ -185,7 +185,7 @@ def _has_header(
     headers: dict[str, str | None] | None,
     name: str,
 ) -> bool:
-    """检查请求头是否存在且非空（对应 TS ``hasHeader``）。"""
+    """检查请求头是否存在且非空。"""
     if not headers:
         return False
     expected = name.lower()
@@ -199,8 +199,8 @@ def _assert_request_auth(
     provider: str,
     api_key: str | None,
     headers: dict[str, str | None] | None,
-) -> None:
-    """断言请求认证（对应 TS ``assertRequestAuth``）。"""
+    ) -> None:
+    """断言请求认证。"""
     if api_key:
         return
     if (
@@ -217,7 +217,7 @@ def _get_client_api_key(
     api_key: str | None,
     headers: dict[str, str | None] | None,
 ) -> str:
-    """获取客户端 API key（对应 TS ``getClientApiKey``）。"""
+    """获取客户端 API key。"""
     _assert_request_auth(provider, api_key, headers)
     if api_key:
         return api_key
@@ -225,14 +225,14 @@ def _get_client_api_key(
 
 
 def _is_oauth_token(api_key: str) -> bool:
-    """检查是否是 OAuth token（对应 TS ``isOAuthToken``）。"""
+    """检查是否是 OAuth token。"""
     return "sk-ant-oat" in api_key
 
 
 def _merge_headers(
     *header_sources: dict[str, str | None] | None,
 ) -> dict[str, str | None]:
-    """合并请求头（对应 TS ``mergeHeaders``）。"""
+    """合并请求头。"""
     merged: dict[str, str | None] = {}
     for headers in header_sources:
         if headers:
@@ -241,7 +241,7 @@ def _merge_headers(
 
 
 def _default_supports_tool_references(model: Any) -> bool:
-    """默认的 ``supportsToolReferences`` 实现（对应 TS ``defaultSupportsToolReferences``）。"""
+    """默认的 ``supportsToolReferences`` 实现。"""
     provider = getattr(model, "provider", "")
     model_id = getattr(model, "model_id", "") or getattr(model, "id", "")
     if provider != "anthropic" or "haiku" in model_id:
@@ -260,7 +260,7 @@ def _default_supports_tool_references(model: Any) -> bool:
 
 
 def _get_anthropic_compat(model: Any) -> dict[str, Any]:
-    """获取 Anthropic 兼容性设置（对应 TS ``getAnthropicCompat``）。"""
+    """获取 Anthropic 兼容性设置。"""
     compat = getattr(model, "compat", None) or {}
     if isinstance(compat, dict):
         return {
@@ -298,7 +298,7 @@ def _get_anthropic_compat(model: Any) -> dict[str, Any]:
 
 
 def _should_use_fine_grained_tool_streaming_beta(model: Any, context: Context) -> bool:
-    """检查是否需要 fine-grained tool streaming beta（对应 TS ``shouldUseFineGrainedToolStreamingBeta``）。"""
+    """检查是否需要 fine-grained tool streaming beta。"""
     tools = context.tools
     return bool(tools) and not _get_anthropic_compat(model).get(
         "supports_eager_tool_input_streaming", True
@@ -310,7 +310,7 @@ def _normalize_tool_call_id(
     _model: Any = None,
     _msg: Any = None,
 ) -> str:
-    """归一化 tool call ID（对应 TS ``normalizeToolCallId``）。
+    """归一化 tool call ID。
 
     兼容 ``transform_messages`` 的签名：``Callable[[str, Model, AssistantMessage], str]``。
     """
@@ -321,7 +321,7 @@ def _normalize_tool_call_id(
 
 
 def _format_anthropic_error(error: object) -> str:
-    """格式化 Anthropic 错误（对应 TS ``formatAnthropicError``）。"""
+    """格式化 Anthropic 错误。"""
     return format_provider_error(normalize_provider_error(error), "Anthropic API error")
 
 
@@ -329,7 +329,7 @@ def _map_stop_reason(
     reason: str,
     stop_details: Any | None = None,
 ) -> dict[str, Any]:
-    """映射 stop reason（对应 TS ``mapStopReason``）。"""
+    """映射 stop reason。"""
     error_message: str | None = None
     if stop_details is not None and hasattr(stop_details, "explanation"):
         error_message = cast(str, stop_details.explanation)
@@ -360,7 +360,7 @@ def _map_thinking_level_to_effort(
     model: Any,
     level: str | None,
 ) -> AnthropicEffort | None:
-    """映射 ThinkingLevel 到 Anthropic effort 级别（对应 TS ``mapThinkingLevelToEffort``）。"""
+    """映射 ThinkingLevel 到 Anthropic effort 级别。"""
     if not level:
         return None
     thinking_level_map = getattr(model, "thinking_level_map", None) or {}
@@ -385,7 +385,7 @@ def _map_thinking_level_to_effort(
 def _convert_content_blocks(
     content: list[TextContent | ImageContent],
 ) -> str | list[dict[str, Any]]:
-    """转换内容块为 Anthropic API 格式（对应 TS ``convertContentBlocks``）。
+    """转换内容块为 Anthropic API 格式。
 
     如果只有文本块，返回拼接后的字符串。
     如果有图片，返回内容块数组。
@@ -427,7 +427,7 @@ def _convert_tool_result(
     loaded_tool_names: set[str],
     normalize_tool_name: Callable[[str], str],
 ) -> dict[str, Any]:
-    """转换工具结果消息（对应 TS ``convertToolResult``）。"""
+    """转换工具结果消息。"""
     references: list[dict[str, str]] = []
     for name in getattr(msg, "added_tool_names", None) or []:
         normalized_name = normalize_tool_name(name)
@@ -474,7 +474,7 @@ def _convert_messages(
     deferred_tool_names: set[str] | None = None,
     normalize_tool_name: Callable[[str], str] | None = None,
 ) -> list[dict[str, Any]]:
-    """转换消息为 Anthropic API 格式（对应 TS ``convertMessages``）。"""
+    """转换消息为 Anthropic API 格式。"""
     if deferred_tool_names is None:
         deferred_tool_names = set()
     if normalize_tool_name is None:
@@ -661,7 +661,7 @@ def _convert_tools(
     cache_control: dict[str, Any] | None = None,
     defer_loading: bool = False,
 ) -> list[dict[str, Any]]:
-    """转换工具为 Anthropic API 格式（对应 TS ``convertTools``）。"""
+    """转换工具为 Anthropic API 格式。"""
     if not tools:
         return []
 
@@ -712,7 +712,7 @@ def _create_client(
     dynamic_headers: dict[str, str] | None = None,
     session_id: str | None = None,
 ) -> dict[str, Any]:
-    """创建 Anthropic 客户端（对应 TS ``createClient``）。"""
+    """创建 Anthropic 客户端。"""
     # Adaptive thinking models have interleaved thinking built in, so skip the beta header
     compat = _get_anthropic_compat(model)
     needs_interleaved_beta = interleaved_thinking and not compat.get(
@@ -821,7 +821,7 @@ def _build_params(
     is_oauth_token: bool,
     options: AnthropicOptions | None = None,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    """构建请求参数。"""
     cache_control_result = _get_cache_control(
         model,
         options.cache_retention if options else None,
@@ -975,7 +975,7 @@ def stream(
     context: Context,
     options: AnthropicOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Anthropic Messages API 流式生成函数（对应 TS ``stream``）。"""
+    """Anthropic Messages API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -1473,7 +1473,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     _assert_request_auth(
         getattr(model, "provider", ""),
         options.api_key if options else None,

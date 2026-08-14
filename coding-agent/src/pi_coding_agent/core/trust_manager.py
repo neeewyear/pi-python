@@ -1,4 +1,4 @@
-"""项目信任管理（对应 TS ``core/trust-manager.ts`` 的简化版）。
+"""项目信任管理。
 
 提供 ``ProjectTrustStore`` 类以及辅助函数，用于管理项目信任决策。
 """
@@ -26,7 +26,7 @@ ProjectTrustDecision: TypeAlias = bool | None
 
 
 class ProjectTrustStoreEntry:
-    """项目信任存储条目（对应 TS ``ProjectTrustStoreEntry``）。"""
+    """项目信任存储条目。"""
 
     def __init__(self, path: str, decision: bool) -> None:
         self.path = path
@@ -34,7 +34,7 @@ class ProjectTrustStoreEntry:
 
 
 class ProjectTrustUpdate:
-    """项目信任更新（对应 TS ``ProjectTrustUpdate``）。"""
+    """项目信任更新。"""
 
     def __init__(self, path: str, decision: ProjectTrustDecision) -> None:
         self.path = path
@@ -42,7 +42,7 @@ class ProjectTrustUpdate:
 
 
 class ProjectTrustOption:
-    """项目信任选项（对应 TS ``ProjectTrustOption``）。"""
+    """项目信任选项。"""
 
     def __init__(
         self,
@@ -98,7 +98,7 @@ def _find_nearest_trust_entry(
 
 
 def get_project_trust_parent_path(cwd: str) -> str | None:
-    """获取项目信任的父目录路径（对应 TS ``getProjectTrustParentPath``）。"""
+    """获取项目信任的父目录路径。"""
     trust_path = _normalize_cwd(cwd)
     parent = str(Path(trust_path).parent)
     return None if parent == trust_path else parent
@@ -108,7 +108,7 @@ def get_project_trust_options(
     cwd: str,
     include_session_only: bool = False,
 ) -> list[ProjectTrustOption]:
-    """获取项目信任选项列表（对应 TS ``getProjectTrustOptions``）。"""
+    """获取项目信任选项列表。"""
     trust_path = _normalize_cwd(cwd)
     options: list[ProjectTrustOption] = [
         ProjectTrustOption(
@@ -159,7 +159,7 @@ def get_project_trust_options(
 
 
 def has_trust_requiring_project_resources(cwd: str) -> bool:
-    """检查项目目录是否包含需要信任的资源（对应 TS ``hasTrustRequiringProjectResources``）。
+    """检查项目目录是否包含需要信任的资源。
 
     检查 ``cwd/.pi/`` 下是否有需要信任的配置文件，以及 ``cwd/.agents/skills/``
     是否存在（排除用户全局 ``~/.agents/skills``）。
@@ -192,7 +192,7 @@ def has_trust_requiring_project_resources(cwd: str) -> bool:
 
 
 class ProjectTrustStore:
-    """项目信任存储（对应 TS ``ProjectTrustStore``）。
+    """项目信任存储。
 
     读取/写入 ``trust.json`` 文件，管理项目目录的信任决策。
     """

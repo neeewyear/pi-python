@@ -1,4 +1,4 @@
-"""Shell 输出捕获（对应 ``harness/utils/shell-output.ts``）。
+"""Shell 输出捕获。
 
 ``executeShellWithCapture`` 执行 shell 命令并捕获输出，支持：
 - 实时进度回调（``on_chunk``）
@@ -31,7 +31,7 @@ from .truncate import (
 
 
 class ShellCaptureProgress(BaseModel):
-    """进度快照（对应 TS ``ShellCaptureProgress``）。"""
+    """进度快照。"""
 
     output: str
     """当前截断后的输出。"""
@@ -44,7 +44,7 @@ class ShellCaptureProgress(BaseModel):
 
 
 class ShellCaptureOptions(BaseModel):
-    """捕获选项（对应 TS ``ShellCaptureOptions``）。
+    """捕获选项。
 
     继承 ``ShellExecOptions`` 除 ``on_stdout`` / ``on_stderr`` 以外的字段，
     追加 ``on_chunk`` / ``return_execution_errors``。
@@ -64,7 +64,7 @@ class ShellCaptureOptions(BaseModel):
 
 
 class ShellCaptureResult(ShellCaptureProgress):
-    """最终捕获结果（对应 TS ``ShellCaptureResult``）。"""
+    """最终捕获结果。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -115,7 +115,7 @@ async def execute_shell_with_capture(
     command: str,
     options: ShellCaptureOptions | None = None,
 ) -> Result[ShellCaptureResult, ExecutionError]:
-    """执行 shell 命令并捕获输出（对应 TS ``executeShellWithCapture``）。
+    """执行 shell 命令并捕获输出。
 
     契约：
     - 取消时返回 ``cancelled=True``，不报错

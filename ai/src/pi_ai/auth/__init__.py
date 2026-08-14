@@ -1,4 +1,4 @@
-"""pi-ai 认证模块（对应 ``pi/packages/ai/src/auth/``）。"""
+"""pi-ai 认证模块。"""
 
 from __future__ import annotations
 

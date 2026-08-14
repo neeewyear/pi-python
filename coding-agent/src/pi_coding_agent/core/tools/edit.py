@@ -35,21 +35,21 @@ from .tool_definition_wrapper import ToolDefinition, wrap_tool_definition
 
 
 class ReplaceEdit(BaseModel):
-    """A single replacement edit (corresponds to TS ``replaceEditSchema``)."""
+    """A single replacement edit."""
 
     old_text: str
     new_text: str
 
 
 class EditToolInput(BaseModel):
-    """Edit tool input parameters (corresponds to TS ``EditToolInput``)."""
+    """Edit tool input parameters."""
 
     path: str
     edits: list[ReplaceEdit]
 
 
 class EditToolDetails(BaseModel):
-    """Edit tool output details (corresponds to TS ``EditToolDetails``)."""
+    """Edit tool output details.""" 
 
     diff: str
     patch: str
@@ -65,7 +65,6 @@ class EditOperations:
     """Pluggable operations for the edit tool.
 
     Override these to delegate file editing to remote systems.
-    Corresponds to TS ``EditOperations``.
     """
 
     async def read_file(self, absolute_path: str) -> bytes:
@@ -96,7 +95,7 @@ class EditOperations:
 
 
 class EditToolOptions(BaseModel):
-    """Edit tool options (corresponds to TS ``EditToolOptions``)."""
+    """Edit tool options."""    
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -111,7 +110,7 @@ class EditToolOptions(BaseModel):
 def _prepare_edit_arguments(input_data: dict[str, object]) -> dict[str, object]:
     """Prepare edit arguments, handling legacy format and JSON string edits.
 
-    Corresponds to TS ``prepareEditArguments``.
+
     """
     args = dict(input_data)
 
@@ -144,7 +143,7 @@ def _prepare_edit_arguments(input_data: dict[str, object]) -> dict[str, object]:
 def _validate_edit_input(input_data: dict[str, object]) -> tuple[str, list[Edit]]:
     """Validate and extract edit parameters.
 
-    Corresponds to TS ``validateEditInput``.
+
     """
     edits_raw = input_data.get("edits")
     if not isinstance(edits_raw, list) or len(edits_raw) == 0:
@@ -174,7 +173,7 @@ def create_edit_tool_definition(
 ) -> ToolDefinition[EditToolDetails | None]:
     """Create an edit tool definition.
 
-    Corresponds to TS ``createEditToolDefinition``.
+
     """
     ops = (
         options.operations
@@ -301,6 +300,6 @@ def create_edit_tool(
 ) -> AgentTool:
     """Create an edit tool (AgentTool).
 
-    Corresponds to TS ``createEditTool``.
+
     """
     return wrap_tool_definition(create_edit_tool_definition(cwd, options))

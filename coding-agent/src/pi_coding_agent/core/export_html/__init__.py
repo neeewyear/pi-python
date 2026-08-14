@@ -1,4 +1,4 @@
-"""导出 HTML 模块入口（对应 TS ``index.ts``）。
+"""导出 HTML 模块入口。
 
 将按舒适话条目导出为独立的 HTML 文件，包含自定义主题、
 工具渲染器支持，以及语法高亮等。
@@ -26,7 +26,7 @@ from .tool_renderer import ToolHtmlRenderer
 
 
 class ToolHtmlRendererProtocol(Protocol):
-    """工具 HTML 渲染器协议（对应 TS ``ToolHtmlRenderer``）。"""
+    """工具 HTML 渲染器协议。"""
 
     def render_call(
         self, tool_call_id: str, tool_name: str, args: object
@@ -48,7 +48,7 @@ class ToolHtmlRendererProtocol(Protocol):
 
 @dataclass
 class ExportOptions:
-    """导出选项（对应 TS ``ExportOptions``）。"""
+    """导出选项。"""
 
     output_path: str | None = None
     """输出文件路径。"""
@@ -312,7 +312,7 @@ def _generate_html(
     session_data: dict[str, object],
     theme_name: str | None = None,
 ) -> str:
-    """核心 HTML 生成逻辑（对应 TS ``generateHtml``）。"""
+    """核心 HTML 生成逻辑。"""
     theme_vars = _generate_theme_vars(theme_name)
     colors = _get_default_theme_colors()
     theme_export = _get_theme_export_colors(theme_name)
@@ -354,7 +354,7 @@ async def export_session_to_html(
     state: Any = None,
     options: ExportOptions | str | None = None,
 ) -> str:
-    """将会话导出为 HTML（对应 TS ``exportSessionToHtml``）。
+    """将会话导出为 HTML。
 
     用于 TUI 的 /export 命令。
     """

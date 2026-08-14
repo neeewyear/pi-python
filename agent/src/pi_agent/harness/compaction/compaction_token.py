@@ -1,4 +1,4 @@
-"""Token 估算与切点查找（对应 ``compaction.ts`` 的 token 估算 + 切点逻辑）。
+"""Token 估算与切点查找。
 
 包含：
 - ``estimate_tokens`` / ``estimate_context_tokens`` / ``calculate_context_tokens``
@@ -66,7 +66,7 @@ def _estimate_text_and_image_content_chars(content: Sequence[object]) -> int:
 
 
 def estimate_tokens(message: AgentMessage) -> int:
-    """估算单条消息的 token 数（对应 TS ``estimateTokens``）。
+    """估算单条消息的 token 数。
 
     使用保守的字符/4 启发式。
     """
@@ -108,7 +108,7 @@ def estimate_tokens(message: AgentMessage) -> int:
 
 
 def calculate_context_tokens(usage: Usage) -> int:
-    """从 provider usage 计算总上下文 token 数（对应 TS ``calculateContextTokens``）。"""
+    """从 provider usage 计算总上下文 token 数。"""
     return (
         usage.total_tokens
         or usage.input + usage.output + usage.cache_read + usage.cache_write
@@ -129,7 +129,7 @@ def _get_assistant_usage(message: AgentMessage) -> Usage | None:
 
 
 def get_last_assistant_usage(entries: list[Entry]) -> Usage | None:
-    """返回最后一条有效 assistant 的 usage（对应 TS ``getLastAssistantUsage``）。"""
+    """返回最后一条有效 assistant 的 usage。"""
     for i in range(len(entries) - 1, -1, -1):
         entry = entries[i]
         if entry.type == "message":
@@ -145,7 +145,7 @@ def get_last_assistant_usage(entries: list[Entry]) -> Usage | None:
 
 
 class ContextUsageEstimate(BaseModel):
-    """上下文用量估算（对应 TS ``ContextUsageEstimate``）。"""
+    """上下文用量估算。"""
 
     tokens: int
     usage_tokens: int
@@ -164,7 +164,7 @@ def _get_last_assistant_usage_info(
 
 
 def estimate_context_tokens(messages: list[AgentMessage]) -> ContextUsageEstimate:
-    """估算上下文 token 数（对应 TS ``estimateContextTokens``）。
+    """估算上下文 token 数。
 
     优先使用 provider usage，否则退化为字符启发式。
     """
@@ -200,7 +200,7 @@ def estimate_context_tokens(messages: list[AgentMessage]) -> ContextUsageEstimat
 def _find_valid_cut_points(
     entries: list[Entry], start_index: int, end_index: int
 ) -> list[int]:
-    """查找有效切点（对应 TS ``findValidCutPoints``）。"""
+    """查找有效切点。"""    
     cut_points: list[int] = []
     for i in range(start_index, end_index):
         entry = entries[i]
@@ -223,7 +223,7 @@ def _find_valid_cut_points(
 def find_turn_start_index(
     entries: list[Entry], entry_index: int, start_index: int
 ) -> int:
-    """查找包含指定条目的回合起始索引（对应 TS ``findTurnStartIndex``）。"""
+    """查找包含指定条目的回合起始索引。"""
     for i in range(entry_index, start_index - 1, -1):
         entry = entries[i]
         if entry.type == "branch_summary":
@@ -235,7 +235,7 @@ def find_turn_start_index(
 
 
 class CutPointResult(BaseModel):
-    """切点结果（对应 TS ``CutPointResult``）。"""
+    """切点结果。"""
 
     first_kept_entry_index: int
     turn_start_index: int
@@ -248,7 +248,7 @@ def find_cut_point(
     end_index: int,
     keep_recent_tokens: int,
 ) -> CutPointResult:
-    """查找压缩切点（对应 TS ``findCutPoint``）。"""
+    """查找压缩切点。"""
     cut_points = _find_valid_cut_points(entries, start_index, end_index)
 
     if not cut_points:
@@ -301,7 +301,7 @@ def find_cut_point(
 
 
 class CompactionPreparation(BaseModel):
-    """压缩准备数据（对应 TS ``CompactionPreparation``）。"""
+    """压缩准备数据。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 

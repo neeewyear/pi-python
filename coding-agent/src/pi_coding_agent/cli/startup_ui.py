@@ -1,4 +1,4 @@
-"""启动 UI（对应 TS ``cli/startup-ui.ts``）。
+"""启动 UI。
 
 非 TUI 版本：使用 stdin 文本交互。
 由于 TUI 组件尚未移植到 Python，此版本提供简单的文本选择界面。

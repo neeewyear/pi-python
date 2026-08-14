@@ -1,4 +1,4 @@
-"""运行时凭据覆盖层（对应 TS ``runtime-credentials.ts``）。
+"""运行时凭据覆盖层。
 
 ``RuntimeCredentials`` 包装一个 ``CredentialStore``，提供非持久化的运行时
 API key 覆盖机制。运行时设置的 key 优先级高于持久化存储中的 key。

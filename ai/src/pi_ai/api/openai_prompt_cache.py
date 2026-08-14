@@ -1,4 +1,4 @@
-"""OpenAI Prompt Cache Key 工具（对应 ``openai-prompt-cache.ts``）。"""
+"""OpenAI Prompt Cache Key 工具"""
 
 from __future__ import annotations
 

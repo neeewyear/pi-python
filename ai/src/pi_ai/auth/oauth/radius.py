@@ -1,4 +1,4 @@
-"""Radius gateway OAuth 设备码流程（对应 ``oauth/radius.ts``）。
+"""Radius gateway OAuth 设备码流程。
 
 Radius 是一个 pi-messages 网关。OAuth 客户端 API 位于配置的网关上。
 此模块仅实现设备码流程（不含浏览器回调服务器）。

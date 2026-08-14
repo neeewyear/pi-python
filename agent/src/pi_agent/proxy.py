@@ -1,4 +1,4 @@
-"""SSE 流式代理（对应 ``proxy.ts``）。
+"""SSE 流式代理。
 
 ``streamProxy`` 将 LLM 请求通过 HTTP SSE 代理到 ``/api/stream`` 端点，
 服务器管理认证并转发请求到 LLM 提供商。
@@ -174,7 +174,7 @@ ProxyAssistantMessageEvent: TypeAlias = Annotated[
     | ProxyErrorEvent,
     Field(discriminator="type"),
 ]
-"""代理事件判别联合（对应 TS ``ProxyAssistantMessageEvent``）。"""
+"""代理事件判别联合。"""
 
 
 # ---------------------------------------------------------------------------
@@ -183,7 +183,7 @@ ProxyAssistantMessageEvent: TypeAlias = Annotated[
 
 
 class ProxyStreamOptions(BaseModel):
-    """代理流式选项（对应 TS ``ProxyStreamOptions``）。"""
+    """代理流式选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True, populate_by_name=True)
 
@@ -194,7 +194,7 @@ class ProxyStreamOptions(BaseModel):
     signal: CancellationToken | None = None
     """本地取消信号。"""
 
-    # 可序列化的流式参数（对应 TS ``ProxySerializableStreamOptions``）
+    # 可序列化的流式参数
     temperature: float | None = None
     sampling_params: dict[str, object] | None = Field(
         default=None, alias="samplingParams"
@@ -220,7 +220,7 @@ class ProxyStreamOptions(BaseModel):
 class ProxyEventStream:
     """代理事件流：支持 push 生产和 async for 消费。
 
-    对应 TS 的 ``ProxyMessageEventStream``（extends ``EventStream``）。
+
     调用方通过 ``async for`` 消费事件，完成后通过 ``final_message`` 获取最终消息。
     """
 
@@ -256,10 +256,7 @@ class ProxyEventStream:
 
 
 def _parse_streaming_json(partial: str) -> dict[str, object]:
-    """尝试将部分 JSON 字符串解析为 dict，失败返回空 dict。
-
-    对应 TS 的 ``parseStreamingJson``（来自 pi-ai）。
-    """
+    """尝试将部分 JSON 字符串解析为 dict，失败返回空 dict。"""
     try:
         result = orjson.loads(partial)
         if isinstance(result, dict):
@@ -275,7 +272,7 @@ def _parse_streaming_json(partial: str) -> dict[str, object]:
 
 
 def _build_proxy_request_options(options: ProxyStreamOptions) -> dict[str, object]:
-    """构建发往代理服务器的请求选项（对应 TS ``buildProxyRequestOptions``）。"""
+    """构建发往代理服务器的请求选项。"""
     payload: dict[str, object] = {}
     if options.temperature is not None:
         payload["temperature"] = options.temperature
@@ -446,7 +443,7 @@ async def stream_proxy(
     context: Context,
     options: ProxyStreamOptions,
 ) -> ProxyEventStream:
-    """通过代理服务器流式传输 LLM 请求（对应 TS ``streamProxy``）。
+    """通过代理服务器流式传输 LLM 请求。
 
     用法：作为 ``streamFn`` 选项传给 Agent。
 

@@ -1,4 +1,4 @@
-"""xAI Provider（对应 ``xai.ts``）。"""
+"""xAI Provider。"""
 
 from __future__ import annotations
 

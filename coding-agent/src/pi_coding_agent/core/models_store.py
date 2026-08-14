@@ -1,4 +1,4 @@
-"""模型存储（对应 TS ``models-store.ts``）。
+"""模型存储。
 
 提供两种 ``ModelsStore`` 实现：
 - ``InMemoryCodingAgentModelsStore``：内存存储，用于测试或无持久化需求

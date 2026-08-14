@@ -1,4 +1,4 @@
-"""Frontmatter 解析工具（对应 TS ``utils/frontmatter.ts``）。
+"""Frontmatter 解析工具。
 
 提供 ``strip_frontmatter`` 和 ``parse_frontmatter`` 函数，
 用于解析 YAML frontmatter。

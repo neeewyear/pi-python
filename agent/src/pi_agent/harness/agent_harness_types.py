@@ -1,4 +1,4 @@
-"""Agent Harness 类型与错误体系（对应 ``harness/agent-harness.ts`` 的类型层）。
+"""Agent Harness 类型与错误体系。
 
 包含：
 - 20 个错误类（17 个 TaggedError + 3 个系统错误）
@@ -223,7 +223,7 @@ class HarnessNotImplemented(Exception):
 
 
 class OperationError(BaseModel):
-    """操作错误（对应 TS ``OperationError``）。"""
+    """操作错误。"""
 
     code: str
     message: str
@@ -288,7 +288,7 @@ RunOutcome: TypeAlias = Annotated[
     RunCompletedOutcome | RunAbortedOutcome | RunFailedOutcome | RunSuspendedOutcome,
     Field(discriminator="kind"),
 ]
-"""运行结果（对应 TS ``RunOutcome``）。"""
+"""运行结果。"""
 
 
 class CompactionCompletedOutcome(BaseModel):
@@ -328,7 +328,7 @@ CompactionOutcome: TypeAlias = Annotated[
     | CompactionFailedOutcome,
     Field(discriminator="kind"),
 ]
-"""压缩结果（对应 TS ``CompactionOutcome``）。"""
+"""压缩结果。"""
 
 
 class NavigationCompletedOutcome(BaseModel):
@@ -368,7 +368,7 @@ NavigationOutcome: TypeAlias = Annotated[
     | NavigationFailedOutcome,
     Field(discriminator="kind"),
 ]
-"""导航结果（对应 TS ``NavigationOutcome``）。"""
+"""导航结果。"""
 
 
 # ---------------------------------------------------------------------------
@@ -416,7 +416,7 @@ ResumeOutcome: TypeAlias = Annotated[
     ResumeRunOutcome | ResumeCompactionOutcome | ResumeNavigationOutcome,
     Field(discriminator="operation"),
 ]
-"""恢复结果（对应 TS ``ResumeOutcome``）。"""
+"""恢复结果。"""
 
 
 # ---------------------------------------------------------------------------
@@ -452,7 +452,7 @@ CreateLaneResult: TypeAlias = Result[object, LaneExists | InvalidLane | UnknownT
 
 
 class NavigateOptions(BaseModel):
-    """导航选项（对应 TS ``NavigateOptions``）。"""
+    """导航选项。"""
 
     summarize: bool = False
     custom_instructions: str | None = None
@@ -460,7 +460,7 @@ class NavigateOptions(BaseModel):
 
 
 class SuspendedOperation(BaseModel):
-    """挂起操作（对应 TS ``SuspendedOperation``）。"""
+    """挂起操作。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -484,7 +484,7 @@ class LaneOperationInfo(BaseModel):
 
 
 class LaneInfo(BaseModel):
-    """车道信息（对应 TS ``LaneInfo``）。"""
+    """车道信息。"""
 
     name: str
     leaf_id: str | None
@@ -492,7 +492,7 @@ class LaneInfo(BaseModel):
 
 
 class QueuedItem(BaseModel):
-    """队列项（对应 TS ``QueuedItem``）。"""
+    """队列项。"""  
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -516,7 +516,7 @@ class PendingWrite(BaseModel):
 
 
 class LaneSnapshot(BaseModel):
-    """车道快照（对应 TS ``LaneSnapshot``）。"""
+    """车道快照。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -536,7 +536,7 @@ class LaneInfoWithSuspended(LaneInfo):
 
 
 class SessionSnapshot(BaseModel):
-    """会话快照（对应 TS ``SessionSnapshot``）。"""
+    """会话快照。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -677,7 +677,7 @@ ActionInfo: TypeAlias = Annotated[
     | SleepAction,
     Field(discriminator="kind"),
 ]
-"""动作信息（对应 TS ``ActionInfo``，14 种判别联合）。"""
+"""动作信息（14 种判别联合）。"""
 
 
 # ---------------------------------------------------------------------------
@@ -697,7 +697,7 @@ HookName: TypeAlias = Literal[
     "before_compaction",
     "before_navigation",
 ]
-"""钩子名称（对应 TS ``HookName``，11 种）。"""
+"""钩子名称（11 种）。"""
 
 
 # ---------------------------------------------------------------------------
@@ -706,7 +706,7 @@ HookName: TypeAlias = Literal[
 
 
 class Hooks(Protocol):
-    """钩子注册接口（对应 TS ``Hooks``）。"""
+    """钩子注册接口。"""
 
     def on(
         self,
@@ -717,7 +717,7 @@ class Hooks(Protocol):
 
 
 class Events(Protocol):
-    """事件注册接口（对应 TS ``Events``）。"""
+    """事件注册接口。"""
 
     def on(
         self,
@@ -727,7 +727,7 @@ class Events(Protocol):
 
 
 class PassiveRegistry:
-    """空实现注册器（同时实现 Hooks + Events，对应 TS ``PassiveRegistry``）。"""
+    """空实现注册器（同时实现 Hooks + Events）。"""
 
     def on(
         self,
@@ -744,11 +744,11 @@ class PassiveRegistry:
 
 
 SpanAttributes: TypeAlias = dict[str, str | int | bool | None]
-"""跨度属性（对应 TS ``SpanAttributes``）。"""
+"""跨度属性。"""
 
 
 class SpanEnd(BaseModel):
-    """跨度结束（对应 TS ``SpanEnd``）。"""
+    """跨度结束。"""
 
     status: Literal["ok", "error"]
     error: object | None = None  # { name: str; message: str }
@@ -757,7 +757,7 @@ class SpanEnd(BaseModel):
 
 @runtime_checkable
 class ExecutionSpan(Protocol):
-    """执行跨度（对应 TS ``ExecutionSpan``）。"""
+    """执行跨度。"""
 
     def add_event(self, name: str, attributes: SpanAttributes | None = None) -> None: ...
     def set_attributes(self, attributes: SpanAttributes) -> None: ...
@@ -766,7 +766,7 @@ class ExecutionSpan(Protocol):
 
 @runtime_checkable
 class ExecutionContext(Protocol):
-    """执行上下文（对应 TS ``ExecutionContext``）。"""
+    """执行上下文。"""
 
     def start_span(
         self, name: str, attributes: SpanAttributes | None = None
@@ -779,7 +779,7 @@ class ExecutionContext(Protocol):
 
 
 class HarnessTool(AgentTool):
-    """harness 工具（对应 TS ``HarnessTool``）。"""
+    """harness 工具。"""
 
     replay: Literal["never", "safe"] | None = None
 
@@ -789,7 +789,7 @@ StreamOptions: TypeAlias = AgentHarnessStreamOptions
 StreamOptionsPatch: TypeAlias = dict[str, object]  # Partial<SimpleStreamOptions>
 
 EntryProjector: TypeAlias = Callable[[Entry], list[AgentMessage] | Awaitable[list[AgentMessage]]]
-"""条目投影器（对应 TS ``EntryProjector``）。"""
+"""条目投影器。"""
 
 
 # ---------------------------------------------------------------------------
@@ -798,7 +798,7 @@ EntryProjector: TypeAlias = Callable[[Entry], list[AgentMessage] | Awaitable[lis
 
 
 class AgentHarnessOptions(BaseModel):
-    """harness 构造选项（对应 TS ``AgentHarnessOptions``）。"""
+    """harness 构造选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -833,7 +833,7 @@ TSnapshot = TypeVar("TSnapshot")
 
 
 class WatchHandle(BaseModel, Generic[TSnapshot]):
-    """快照监听句柄（对应 TS ``WatchHandle<TSnapshot>``）。"""
+    """快照监听句柄。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -850,7 +850,7 @@ class WatchHandle(BaseModel, Generic[TSnapshot]):
 
 @runtime_checkable
 class AgentLane(Protocol):
-    """AgentLane 接口（对应 TS ``AgentLane``，约 35 个方法）。"""
+    """AgentLane 接口（约 35 个方法）。""" 
 
     name: str
     session: SessionTree

@@ -1,4 +1,4 @@
-"""初始消息构建（对应 TS ``cli/initial-message.ts``）。
+"""初始消息构建。
 
 从 stdin 内容、@file 文本和 CLI 消息构建初始 prompt。
 """

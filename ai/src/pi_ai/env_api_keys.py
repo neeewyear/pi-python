@@ -1,4 +1,4 @@
-"""环境变量 API Key 解析（对应 ``env-api-keys.ts``）。"""
+"""环境变量 API Key 解析。"""
 
 from __future__ import annotations
 

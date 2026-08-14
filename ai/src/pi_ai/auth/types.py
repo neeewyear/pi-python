@@ -1,4 +1,4 @@
-"""认证类型定义（对应 ``auth/types.ts``）。"""
+"""认证类型定义"""
 
 from __future__ import annotations
 

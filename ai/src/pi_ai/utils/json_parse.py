@@ -1,4 +1,4 @@
-"""JSON 解析与修复工具（对应 ``utils/json-parse.ts``）。
+"""JSON 解析与修复工具。
 
 提供 ``repair_json``、``parse_json_with_repair``、``parse_streaming_json``。
 """
@@ -19,7 +19,7 @@ def _is_control_character(char: str) -> bool:
 
 
 def _escape_control_character(char: str) -> str:
-    """转义控制字符（对应 TS ``escapeControlCharacter``）。"""
+    """转义控制字符。"""
     escape_map = {
         "\b": "\\b",
         "\f": "\\f",
@@ -33,7 +33,7 @@ def _escape_control_character(char: str) -> str:
 
 
 def repair_json(json_str: str) -> str:
-    """修复格式错误的 JSON 字符串（对应 TS ``repairJson``）。
+    """修复格式错误的 JSON 字符串。
 
     处理：
     - 字符串中的原始控制字符
@@ -93,7 +93,7 @@ def repair_json(json_str: str) -> str:
 
 
 def parse_json_with_repair(json_str: str) -> object:
-    """解析 JSON，失败时尝试修复后重试（对应 TS ``parseJsonWithRepair``）。"""
+    """解析 JSON，失败时尝试修复后重试。"""
     try:
         return json.loads(json_str)
     except json.JSONDecodeError:
@@ -132,7 +132,7 @@ def _parse_partial_json(text: str) -> object | None:
 
 
 def parse_streaming_json(partial_json: str | None) -> dict[str, object]:
-    """尝试解析流式 JSON（对应 TS ``parseStreamingJson``）。
+    """尝试解析流式 JSON。
 
     总是返回有效的对象，即使 JSON 不完整。
     """

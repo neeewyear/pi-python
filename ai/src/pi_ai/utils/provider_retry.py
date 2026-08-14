@@ -1,4 +1,4 @@
-"""Provider 级别重试策略（对应 ``utils/provider-retry.ts``）。
+"""Provider 级别重试策略。
 
 提供与 OpenAI / Anthropic SDK 相同的重试行为。
 """
@@ -17,7 +17,7 @@ DEFAULT_MAX_RETRY_DELAY_MS = 60_000
 
 @dataclass
 class ProviderRetryOptions:
-    """Provider 重试选项（对应 TS ``ProviderRetryOptions``）。"""
+    """Provider 重试选项。"""
 
     max_retries: int = 0
     max_retry_delay_ms: int | None = None
@@ -25,7 +25,7 @@ class ProviderRetryOptions:
 
 
 class ProviderError(Exception):
-    """Provider 错误（对应 TS ``ProviderError``）。"""
+    """Provider 错误。"""
 
     def __init__(
         self,
@@ -44,7 +44,7 @@ def _is_provider_error(error: object) -> bool:
 
 
 def _is_retryable_provider_error(error: ProviderError) -> bool:
-    """判断 provider 错误是否可重试（对应 TS ``isRetryableProviderError``）。"""
+    """判断 provider 错误是否可重试。"""
     should_retry = error.headers.get("x-should-retry")
     if should_retry == "true":
         return True
@@ -82,7 +82,7 @@ def _get_retry_delay_ms(
     retry_index: int,
     max_retry_delay_ms: int | None,
 ) -> float:
-    """计算重试延迟时间（对应 TS ``getRetryDelayMs``）。"""
+    """计算重试延迟时间。"""
     retry_after_ms = error.headers.get("retry-after-ms")
     if retry_after_ms is not None:
         try:
@@ -120,7 +120,7 @@ def _create_abort_error() -> BaseException:
 
 
 async def _abortable_sleep(ms: float, signal: Any = None) -> None:
-    """可中止的休眠（对应 TS ``abortableSleep``）。"""
+    """可中止的休眠。"""
     if signal is not None and getattr(signal, "aborted", False):
         raise _create_abort_error()
 
@@ -134,7 +134,7 @@ async def retry_provider_request(
     request: Callable[[], Awaitable[object]],
     options: ProviderRetryOptions | None = None,
 ) -> object:
-    """Provider 请求重试（对应 TS ``retryProviderRequest``）。
+    """Provider 请求重试。
 
     重现 OpenAI 和 Anthropic SDK 的重试行为，同时使其退避休眠可中断。
     """

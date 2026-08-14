@@ -1,4 +1,4 @@
-"""Pi Coding Agent 产品层（对应 ``@earendil-works/pi-coding-agent`` 的导出面）。
+"""Pi Coding Agent 产品层。
 
 依赖：``pi_ai``（LLM API 层）、``pi_agent``（通用 agent 引擎）、``pi_session``（会话数据层）。
 """

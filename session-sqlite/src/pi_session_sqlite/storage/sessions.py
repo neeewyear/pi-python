@@ -1,4 +1,4 @@
-"""SQLite 会话表存储（对应 TS ``sqlite/storage/sessions.ts``）。"""
+"""SQLite 会话表存储。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""SQLite 会话序列存储（对应 TS ``sqlite/storage/session-sequences.ts``）。"""
+"""SQLite 会话序列存储。"""
 
 from __future__ import annotations
 

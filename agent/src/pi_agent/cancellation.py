@@ -1,4 +1,4 @@
-"""取消令牌（对应 TS 的 ``AbortSignal`` / ``AbortController``）。
+"""取消令牌。
 
 在需要"非抛异常取消"的边界（工具执行、钩子回调、文件系统操作）使用显式
 ``CancellationToken``；纯协程取消场景使用 ``asyncio.CancelledError``。

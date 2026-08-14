@@ -1,4 +1,4 @@
-"""上下文溢出检测（对应 ``utils/overflow.ts``）。
+"""上下文溢出检测。
 
 提供 ``is_context_overflow``、``is_recoverable_length``、``get_overflow_patterns``。
 """
@@ -59,7 +59,7 @@ NON_OVERFLOW_PATTERNS: list[re.Pattern[str]] = [
 def is_context_overflow(
     message: AssistantMessage, context_window: int | None = None
 ) -> bool:
-    """检查 assistant 消息是否表示上下文溢出错误（对应 TS ``isContextOverflow``）。
+    """检查 assistant 消息是否表示上下文溢出错误。
 
     处理三种情况：
     1. 基于错误消息的溢出（大多数 provider）
@@ -88,7 +88,7 @@ def is_context_overflow(
 
 
 def is_recoverable_length(message: AssistantMessage, desired_max_output: int) -> bool:
-    """检查 length stop 是否因上下文压力或 provider 截断导致（对应 TS ``isRecoverableLength``）。"""
+    """检查 length stop 是否因上下文压力或 provider 截断导致。"""
     return (
         message.stop_reason == "length"
         and desired_max_output > 0
@@ -98,5 +98,5 @@ def is_recoverable_length(message: AssistantMessage, desired_max_output: int) ->
 
 
 def get_overflow_patterns() -> list[re.Pattern[str]]:
-    """获取溢出模式列表（用于测试，对应 TS ``getOverflowPatterns``）。"""
+    """获取溢出模式列表（用于测试）。"""    
     return list(OVERFLOW_PATTERNS)

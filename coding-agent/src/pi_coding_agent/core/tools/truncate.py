@@ -17,7 +17,7 @@ GREP_MAX_LINE_LENGTH = 500
 
 
 class TruncationResult(BaseModel):
-    """Truncation result (corresponds to TS ``TruncationResult``)."""
+    """Truncation result."""
 
     content: str
     truncated: bool
@@ -33,7 +33,7 @@ class TruncationResult(BaseModel):
 
 
 class TruncationOptions(BaseModel):
-    """Truncation options (corresponds to TS ``TruncationOptions``)."""
+    """Truncation options."""
 
     max_lines: int | None = None
     max_bytes: int | None = None

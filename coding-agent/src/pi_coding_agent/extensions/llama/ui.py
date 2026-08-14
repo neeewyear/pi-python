@@ -1,4 +1,4 @@
-"""UI 组件（对应 TS ``extensions/llama/ui.ts``）。
+"""UI 组件。
 
 简化占位实现，TUI 组件依赖 pi-tui 框架，Python 侧暂不实现完整 TUI。
 """
@@ -22,14 +22,14 @@ LlamaManagerAction = (
     | dict[Literal["type"], Literal["download"]]
     | dict[Literal["type"], Literal["close"]]
 )
-"""模型管理器操作（对应 TS ``LlamaManagerAction``）。
+"""模型管理器操作。
 
 用法：``{"type": "model", "model": ...}`` 或 ``{"type": "download"}`` 或 ``{"type": "close"}``
 """
 
 
 class ProgressState(BaseModel):
-    """进度状态（对应 TS ``ProgressState``）。"""
+    """进度状态。"""
 
     title: str
     model: str
@@ -42,9 +42,13 @@ class ProgressState(BaseModel):
 # LlamaUi 接口
 # ============================================================================
 
+"""Llama UI 接口。
+
+简化版，提供基础 UI 交互方法。
+"""
 
 class LlamaUi:
-    """Llama UI 接口（对应 TS ``LlamaUi``）。
+    """Llama UI 接口。  
 
     简化版，提供基础 UI 交互方法。
     """
@@ -66,20 +70,20 @@ class LlamaUi:
 
     async def show_models(
         self, server_url: str, models: list[LlamaModelInfo]
-    ) -> Any:
-        """显示模型列表（对应 TS ``showModels``）。"""
+        ) -> Any:
+        """显示模型列表。"""
         raise NotImplementedError("TUI components not implemented in Python")
 
     async def select(
         self, title: str, options: list[str]
-    ) -> str | None:
-        """显示选择器（对应 TS ``select``）。"""
+        ) -> str | None:
+        """显示选择器。"""
         if self._select:
             return await self._select(title, options)
         raise NotImplementedError("TUI components not implemented in Python")
 
     async def confirm(self, title: str, message: str) -> bool:
-        """显示确认对话框（对应 TS ``confirm``）。"""
+        """显示确认对话框。"""
         if self._confirm:
             return await self._confirm(title, message)
         raise NotImplementedError("TUI components not implemented in Python")
@@ -87,7 +91,7 @@ class LlamaUi:
     async def connection_error(
         self, server_url: str, message: str
     ) -> Literal["retry", "close"]:
-        """显示连接错误（对应 TS ``connectionError``）。"""
+        """显示连接错误。"""
         choice = await self.select(
             f"llama.cpp unavailable\n{server_url}\n\n{message}",
             ["Retry", "Close"],
@@ -100,21 +104,21 @@ class LlamaUi:
             [str, asyncio.Event], Awaitable[list[Any]]
         ],
     ) -> str | None:
-        """搜索模型（对应 TS ``searchModels``）。"""
+        """搜索模型。"""
         raise NotImplementedError("TUI components not implemented in Python")
 
     def show_status(self, title: str, message: str) -> None:
-        """显示状态（对应 TS ``showStatus``）。"""
+        """显示状态。"""
         if self._show_status:
             self._show_status(title, message)
 
     async def progress(self, state: ProgressState) -> None:
-        """显示进度（对应 TS ``progress``）。"""
+        """显示进度。"""
         # 简化版：只打印进度信息
         print(f"[{state.title}] {state.model}: {state.message}")
 
     def update_progress(self, state: ProgressState) -> None:
-        """更新进度（对应 TS ``updateProgress``）。"""
+        """更新进度。"""
         # 简化版：只打印进度信息
         print(f"[{state.title}] {state.model}: {state.message} (ratio={state.ratio})")
 
@@ -125,7 +129,7 @@ class LlamaUi:
 
 
 def model_description(model: LlamaModelInfo) -> str:
-    """获取模型描述文本（对应 TS ``modelDescription``）。"""
+    """获取模型描述文本。"""
     details: list[str] = []
     loaded = model.status.value in ("loaded", "sleeping")
     if loaded:
@@ -146,7 +150,7 @@ def model_description(model: LlamaModelInfo) -> str:
 async def show_llama_ui(
     ctx: Any, run: Callable[[LlamaUi], Awaitable[None]]
 ) -> None:
-    """显示 Llama UI（对应 TS ``showLlamaUi``）。
+    """显示 Llama UI。
 
     简化版，只在非 TUI 模式下提供基础交互。
     """
@@ -166,7 +170,7 @@ async def run_with_progress(
     ui: LlamaUi,
     options: dict[str, Any],
 ) -> dict[str, Any]:
-    """运行带进度的操作（对应 TS ``runWithProgress``）。
+    """运行带进度的操作。
 
     options 包含:
     - title: str

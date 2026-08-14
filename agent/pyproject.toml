@@ -1,7 +1,7 @@
 [project]
 name = "pi-agent"
 version = "0.1.0"
-description = "Pi Agent 模块的 Python 重构（对应 @earendil-works/pi-agent-core）"
+description = "Pi Agent 模块的 Python 重构。"
 requires-python = ">=3.11"
 dependencies = [
     "pi-ai>=0.1.0",

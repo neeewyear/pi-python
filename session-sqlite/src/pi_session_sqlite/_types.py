@@ -1,4 +1,4 @@
-"""SQLite 会话后端类型定义（对应 TS ``sqlite/types.ts``）。"""
+"""SQLite 会话后端类型定义。"""
 
 from __future__ import annotations
 

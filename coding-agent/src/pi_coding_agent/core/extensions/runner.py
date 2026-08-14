@@ -1,4 +1,4 @@
-"""扩展运行器（对应 TS ``core/extensions/runner.ts``）。
+"""扩展运行器。
 
 执行扩展并管理其生命周期。ExtensionRunner 类负责将事件派发到扩展处理器，
 以及管理扩展的注册、快捷键、命令等。

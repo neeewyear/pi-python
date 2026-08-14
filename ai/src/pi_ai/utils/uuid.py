@@ -1,4 +1,4 @@
-"""UUIDv7 生成器（对应 ``utils/uuid.ts``）。"""
+"""UUIDv7 生成器。"""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ _sequence = 0
 
 
 def _fill_random_bytes(size: int) -> bytearray:
-    """填充随机字节（对应 TS ``fillRandomBytes``）。"""
+    """填充随机字节。"""
     return bytearray(os.urandom(size))
 
 
 def uuidv7() -> str:
-    """生成时间有序的 UUIDv7（对应 TS ``uuidv7``）。
+    """生成时间有序的 UUIDv7。
 
     返回格式：``xxxxxxxx-xxxx-7xxx-8xxx-xxxxxxxxxxxx``。
     """

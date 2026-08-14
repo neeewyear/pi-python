@@ -1,10 +1,10 @@
-"""快速确定性哈希（对应 ``utils/hash.ts``）。"""
+"""快速确定性哈希。"""
 
 from __future__ import annotations
 
 
 def short_hash(text: str) -> str:
-    """快速确定性哈希以缩短长字符串（对应 TS ``shortHash``）。
+    """快速确定性哈希以缩短长字符串。
 
     使用双 32 位哈希（类似 TS 的 ``Math.imul`` 实现）。
     """

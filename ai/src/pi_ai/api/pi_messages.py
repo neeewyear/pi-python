@@ -50,7 +50,7 @@ from ..utils.provider_env import get_provider_env_value
 
 
 class PiMessagesOptions(StreamOptions):
-    """pi-messages 流式选项（对应 TS ``PiMessagesOptions``）。"""
+    """pi-messages 流式选项。"""
 
     reasoning: Any | None = None  # ThinkingLevel
     tool_choice: Literal["auto", "none", "required"] | dict[str, Any] | None = None
@@ -79,10 +79,10 @@ class PiMessagesOptions(StreamOptions):
 # ---------------------------------------------------------------------------
 
 PiMessagesUsage: TypeAlias = dict[str, Any]
-"""pi-messages 用量类型（对应 TS ``PiMessagesUsage``）。"""
+"""pi-messages 用量类型。"""
 
 PiMessagesStopReason: TypeAlias = str
-"""pi-messages stop reason 类型（对应 TS ``PiMessagesStopReason``）。"""
+"""pi-messages stop reason 类型。"""
 
 
 # ---------------------------------------------------------------------------
@@ -91,7 +91,7 @@ PiMessagesStopReason: TypeAlias = str
 
 
 class PiMessagesRewriteImpact(BaseModel):
-    """服务端消息重写影响摘要（对应 TS ``PiMessagesRewriteImpact``）。"""
+    """服务端消息重写影响摘要。"""
 
     policy_id: str
     policy_version: int
@@ -223,7 +223,7 @@ PiMessagesEvent = (
     | PiMessagesEventDone
     | PiMessagesEventError
 )
-"""pi-messages 事件联合类型（对应 TS ``PiMessagesEvent``）。"""
+"""pi-messages 事件联合类型。"""
 
 
 # ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ PiMessagesEvent = (
 
 
 class PiMessagesResponseError(Exception):
-    """pi-messages 响应错误（对应 TS ``PiMessagesResponseError``）。"""
+    """pi-messages 响应错误。"""
 
     def __init__(self, message: str, status_code: int | None = None) -> None:
         self.status_code = status_code
@@ -267,7 +267,7 @@ def get_client_api_key(
     api_key: str | None,
     headers: dict[str, str | None] | None,
 ) -> str:
-    """获取客户端 API key（对应 TS ``getClientApiKey``）。"""
+    """获取客户端 API key。"""
     if api_key:
         return api_key
     if headers and has_header(headers, "authorization"):
@@ -281,7 +281,7 @@ def has_header(
     headers: dict[str, str | None] | None,
     name: str,
 ) -> bool:
-    """检查请求头是否存在且非空（对应 TS ``hasHeader``）。"""
+    """检查请求头是否存在且非空。"""
     if not headers:
         return False
     expected = name.lower()
@@ -292,14 +292,14 @@ def has_header(
 
 
 def format_pi_messages_error(error: object) -> str:
-    """格式化 pi-messages 错误（对应 TS ``formatPiMessagesError``）。"""
+    """格式化 pi-messages 错误。"""
     if isinstance(error, PiMessagesResponseError):
         return str(error)
     return f"pi-messages API error: {error}"
 
 
 def build_url(model: Any) -> str:
-    """构建请求 URL（对应 TS ``buildUrl``）。"""
+    """构建请求 URL。"""
     base_url = getattr(model, "base_url", "") or ""
     base_url = base_url.rstrip("/")
     return f"{base_url}/messages"
@@ -310,7 +310,7 @@ def build_params(
     context: Context,
     options: PiMessagesOptions | None = None,
 ) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    """构建请求参数。"""
     payload: dict[str, Any] = {
         "model": getattr(model, "model_id", "") or getattr(model, "id", ""),
         "context": context.model_dump() if hasattr(context, "model_dump") else {},
@@ -333,7 +333,7 @@ def _resolve_cache_retention(
     cache_retention: str | None,
     env: dict[str, str] | None = None,
 ) -> str | None:
-    """解析缓存保留策略（对应 TS ``resolveCacheRetention``）。"""
+    """解析缓存保留策略。"""
     if cache_retention:
         return cache_retention
     if get_provider_env_value("PI_CACHE_RETENTION", env) == "long":
@@ -342,7 +342,7 @@ def _resolve_cache_retention(
 
 
 def deserialize_pi_message_event(line: str) -> PiMessagesEvent | None:
-    """反序列化 SSE 事件行（对应 TS ``parsePiMessagesEvent``）。
+    """反序列化 SSE 事件行。
 
     Args:
         line: 以 ``data: `` 开头的 SSE 事件行。
@@ -402,7 +402,7 @@ def deserialize_pi_message_event(line: str) -> PiMessagesEvent | None:
 
 
 def _create_empty_usage() -> dict[str, Any]:
-    """创建空用量（对应 TS ``createEmptyUsage``）。"""
+    """创建空用量。"""
     return {
         "input": 0,
         "output": 0,
@@ -420,7 +420,7 @@ def _create_empty_usage() -> dict[str, Any]:
 
 
 def _create_pi_usage(usage_data: dict[str, Any]) -> dict[str, Any]:
-    """创建 pi-messages 用量（对应 TS 的 usage 创建逻辑）。"""
+    """创建 pi-messages 用量。"""
     input_tokens = usage_data.get("input", 0) or usage_data.get("inputTokens", 0)
     output_tokens = usage_data.get("output", 0) or usage_data.get("outputTokens", 0)
     cache_read = usage_data.get("cacheRead", 0) or usage_data.get(
@@ -451,7 +451,7 @@ def _append_rewrite_diagnostic(
     message: AssistantMessage,
     rewrite: PiMessagesRewriteImpact | None,
 ) -> None:
-    """追加重写诊断信息（对应 TS ``appendRewriteDiagnostic``）。"""
+    """追加重写诊断信息。"""
     if not rewrite:
         return
     append_assistant_message_diagnostic(
@@ -469,7 +469,7 @@ def _create_error_event(
     error: object,
     aborted: bool,
 ) -> AssistantErrorEvent:
-    """创建错误事件（对应 TS ``createErrorEvent``）。"""
+    """创建错误事件。"""
     reason = "aborted" if aborted else "error"
     assistant_message = AssistantMessage(
         role="assistant",
@@ -517,7 +517,7 @@ def stream(
     context: Context,
     options: PiMessagesOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """pi-messages API 流式生成函数（对应 TS ``stream``）。"""
+    """pi-messages API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -811,7 +811,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的 pi-messages 流式接口（对应 TS ``streamSimple``）。"""
+    """简化的 pi-messages 流式接口。""" 
     extra = options if options else None
     return stream(
         model,

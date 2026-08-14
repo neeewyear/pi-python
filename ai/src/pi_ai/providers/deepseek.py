@@ -1,4 +1,4 @@
-"""DeepSeek Provider（对应 ``deepseek.ts``）。"""
+"""DeepSeek Provider。"""
 
 from __future__ import annotations
 

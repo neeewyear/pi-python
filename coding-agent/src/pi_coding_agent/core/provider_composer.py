@@ -1,4 +1,4 @@
-"""Provider 组合器（对应 TS ``provider-composer.ts``）。
+"""Provider 组合器。
 
 将内置 provider、``models.json`` 配置和扩展 provider 三层组合为一个
 统一的 ``Provider`` 对象，处理认证、模型列表和流式请求。

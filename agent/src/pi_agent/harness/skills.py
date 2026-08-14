@@ -1,4 +1,4 @@
-"""技能加载（对应 ``harness/skills.ts``）。
+"""技能加载。
 
 递归遍历目录加载 ``SKILL.md``，遵守 ignore 文件（.gitignore/.ignore/.fdignore），
 非法的技能文件以诊断信息返回而不是失败。

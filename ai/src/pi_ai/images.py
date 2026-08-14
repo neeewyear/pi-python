@@ -1,4 +1,4 @@
-"""图片生成 API 兼容层（对应 ``images.ts`` + ``images-api-registry.ts`` + ``images-models.ts``）。"""
+"""图片生成 API 兼容层。"""
 
 from __future__ import annotations
 
@@ -102,7 +102,7 @@ def get_images_api_provider(api: str) -> _ImagesApiProviderInternal | None:
 
 
 class ImagesProvider(Protocol):
-    """图片生成 provider（对应 TS ``ImagesProvider``）。"""
+    """图片生成 provider。"""
 
     @property
     def id(self) -> str: ...
@@ -122,7 +122,7 @@ class ImagesProvider(Protocol):
 
 
 class ImagesModels(Protocol):
-    """图片生成模型集合（对应 TS ``ImagesModels``）。"""
+    """图片生成模型集合。"""
 
     def get_providers(self) -> list[Any]: ...
     def get_provider(self, id: str) -> Any | None: ...
@@ -141,7 +141,7 @@ class ImagesModels(Protocol):
 
 
 class MutableImagesModels(Protocol):
-    """可变图片生成模型集合（对应 TS ``MutableImagesModels``）。"""
+    """可变图片生成模型集合。"""
 
     def set_provider(self, provider: Any) -> None: ...
     def delete_provider(self, id: str) -> None: ...

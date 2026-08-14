@@ -1,4 +1,4 @@
-"""OpenRouter 图片生成 API（对应 ``openrouter-images.ts``）。"""
+"""OpenRouter 图片生成 API。"""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from ..utils.sanitize_unicode import sanitize_surrogates
 
 
 class OpenRouterGeneratedImage(TypedDict, total=False):
-    """OpenRouter 图片生成响应中的单个图片（对应 TS ``OpenRouterGeneratedImage``）。"""
+    """OpenRouter 图片生成响应中的单个图片。"""
 
     image_url: str | dict[str, str] | None
 
@@ -25,7 +25,7 @@ async def generate_images(
     context: Any,
     options: Any | None = None,
 ) -> dict[str, Any]:
-    """生成图片（对应 TS ``generateImages``）。
+    """生成图片。
 
     Args:
         model: 图片生成模型句柄。
@@ -146,7 +146,7 @@ async def generate_images(
 
 
 def _extract_image_url(image: Any) -> str | None:
-    """从图片对象中提取 URL（对应 TS 中 ``image.image_url`` 处理）。"""
+    """从图片对象中提取 URL。"""
     if isinstance(image, dict):
         raw = image.get("image_url")
     else:
@@ -166,7 +166,7 @@ def _create_client(
     api_key: str,
     options: Any | None = None,
 ) -> AsyncOpenAI:
-    """创建 OpenAI 客户端（对应 TS ``createClient``）。"""
+    """创建 OpenAI 客户端。"""
     headers: dict[str, str | None] = {}
 
     model_headers = getattr(model, "headers", None) or {}
@@ -190,7 +190,7 @@ def _create_client(
 
 
 def _build_params(model: Any, context: Any) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    """构建请求参数。"""
     prompt = getattr(context, "prompt", "")
     content: list[dict[str, Any]] = [
         {"type": "text", "text": sanitize_surrogates(prompt)}
@@ -210,7 +210,7 @@ def _build_params(model: Any, context: Any) -> dict[str, Any]:
 
 
 def _parse_usage(raw_usage: Any, model: Any) -> dict[str, Any]:
-    """解析 token 用量（对应 TS ``parseUsage``）。"""
+    """解析 token 用量。"""
     prompt_tokens = getattr(raw_usage, "prompt_tokens", 0) or 0
     completion_tokens = getattr(raw_usage, "completion_tokens", 0) or 0
 

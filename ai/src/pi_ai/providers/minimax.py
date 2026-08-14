@@ -1,4 +1,4 @@
-"""MiniMax Provider（对应 ``minimax.ts``）。"""
+"""MiniMax Provider。"""
 
 from __future__ import annotations
 

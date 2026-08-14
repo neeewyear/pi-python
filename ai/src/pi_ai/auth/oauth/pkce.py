@@ -1,4 +1,4 @@
-"""PKCE OAuth 流程（对应 ``oauth/pkce.ts``）。"""
+"""PKCE OAuth 流程。"""
 
 from __future__ import annotations
 

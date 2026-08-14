@@ -1,4 +1,4 @@
-"""凭据存储实现（对应 ``auth/credential-store.ts``）。"""
+"""凭据存储实现"""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ class InMemoryCredentialStore(CredentialStore):
         task: Callable[[], Awaitable[T]],
         options: AuthOperationOptions | None = None,
     ) -> T:
-        """串行化任务队列（对应 TS ``enqueue``）。
+        """串行化任务队列。
 
         等待前一个任务完成后执行当前任务，使用 ``CancellationToken`` 支持取消。
         """

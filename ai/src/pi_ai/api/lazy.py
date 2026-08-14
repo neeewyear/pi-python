@@ -1,4 +1,4 @@
-"""Lazy API 加载器（对应 ``api/lazy.ts``）。
+"""Lazy API 加载器。
 
 提供 ``lazy_api`` 函数，用于延迟加载 API 实现模块。
 """

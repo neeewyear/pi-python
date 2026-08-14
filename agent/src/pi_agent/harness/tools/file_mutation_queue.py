@@ -1,4 +1,4 @@
-"""文件变更队列（对应 ``harness/tools/file-mutation-queue.ts``）。
+"""文件变更队列。
 
 按 canonical path 串行化对同一执行环境的文件变更，避免并发写冲突。
 """
@@ -16,7 +16,7 @@ T = TypeVar("T")
 
 
 class _MutationQueueState:
-    """文件变更队列状态（对应 TS ``MutationQueueState``）。"""
+    """文件变更队列状态。"""
 
     __slots__ = ("queues", "registration")
 
@@ -59,7 +59,7 @@ async def with_file_mutation_queue(
     path: str,
     fn: Callable[[], Awaitable[T]],
 ) -> T:
-    """按 canonical path 串行化文件变更（对应 TS ``withFileMutationQueue``）。"""
+    """按 canonical path 串行化文件变更。"""
     state = _get_state(env)
 
     async def _register() -> dict[str, object]:

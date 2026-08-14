@@ -1,4 +1,4 @@
-"""路径解析与规范化工具（对应 TS ``utils/paths.ts``）。
+"""路径解析与规范化工具。
 
 提供 ``resolve_path``、``normalize_path``、``canonicalize_path``、
 ``is_local_path`` 和 ``mark_path_ignored_by_cloud_sync`` 函数。

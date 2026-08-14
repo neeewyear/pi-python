@@ -1,4 +1,4 @@
-"""SQLite 会话后端（对应 TS ``sqlite/index.ts``）。"""
+"""SQLite 会话后端。"""
 
 from __future__ import annotations
 

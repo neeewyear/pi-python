@@ -1,4 +1,4 @@
-"""Google Vertex AI API 主入口（对应 ``google-vertex.ts``）。"""
+"""Google Vertex AI API 主入口。"""
 
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ _GCP_VERTEX_CREDENTIALS_MARKER = "gcp-vertex-credentials"
 
 
 class GoogleVertexOptions(StreamOptions):
-    """Google Vertex AI 流式选项（对应 TS ``GoogleVertexOptions``）。"""
+    """Google Vertex AI 流式选项。"""
 
     tool_choice: Literal["auto", "none", "any"] | None = None
     thinking: dict[str, Any] | None = None
@@ -534,7 +534,7 @@ def stream(
     context: Context,
     options: GoogleVertexOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Google Vertex AI 流式生成函数（对应 TS ``stream``）。"""
+    """Google Vertex AI 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -836,7 +836,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     base = build_base_options(model, context, options, None)
 
     if not options or not getattr(options, "reasoning", None):

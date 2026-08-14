@@ -1,4 +1,4 @@
-"""Anthropic Messages API 延迟加载（对应 ``anthropic-messages.lazy.ts``）。"""
+"""Anthropic Messages API 延迟加载。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""会话搜索（对应 ``harness/session/search.ts``）。
+"""会话搜索。
 
 提供全量扫描搜索实现：列出所有会话，逐条查找包含目标文本的条目。
 """
@@ -37,7 +37,7 @@ class SessionSearchHit(BaseModel):
 
 
 class SessionSearch:
-    """会话搜索接口（对应 TS ``SessionSearch``）。"""
+    """会话搜索接口。"""
 
     async def search(self, options: SessionSearchOptions) -> list[SessionSearchHit]:
         """搜索命中（子类实现）。"""

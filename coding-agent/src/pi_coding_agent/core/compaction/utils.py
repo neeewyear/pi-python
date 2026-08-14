@@ -20,7 +20,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class FileOperations(BaseModel):
-    """File operation accumulator (corresponds to TS ``FileOperations``)."""
+    """File operation accumulator."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -30,14 +30,14 @@ class FileOperations(BaseModel):
 
 
 def create_file_ops() -> FileOperations:
-    """Create an empty file operation accumulator (corresponds to TS ``createFileOps``)."""
+    """Create an empty file operation accumulator."""
     return FileOperations()
 
 
 def extract_file_ops_from_message(
     message: AgentMessage, file_ops: FileOperations
 ) -> None:
-    """Extract file paths from tool calls in an assistant message (corresponds to TS ``extractFileOpsFromMessage``)."""
+    """Extract file paths from tool calls in an assistant message."""
     if message.role != "assistant":
         return
     if not isinstance(message, AssistantMessage):
@@ -60,7 +60,7 @@ def extract_file_ops_from_message(
 
 
 def compute_file_lists(file_ops: FileOperations) -> tuple[list[str], list[str]]:
-    """Compute sorted read-only and modified file lists (corresponds to TS ``computeFileLists``)."""
+    """Compute sorted read-only and modified file lists."""
     modified: set[str] = file_ops.edited | file_ops.written
     read_only = sorted(f for f in file_ops.read if f not in modified)
     modified_files = sorted(modified)
@@ -68,7 +68,7 @@ def compute_file_lists(file_ops: FileOperations) -> tuple[list[str], list[str]]:
 
 
 def format_file_operations(read_files: list[str], modified_files: list[str]) -> str:
-    """Format file operations as XML tags for summary (corresponds to TS ``formatFileOperations``)."""
+    """Format file operations as XML tags for summary."""
     sections: list[str] = []
     if read_files:
         sections.append(f"<read-files>\n{chr(10).join(read_files)}\n</read-files>")
@@ -97,7 +97,7 @@ def _safe_json_stringify(value: object) -> str:
 
 
 def _truncate_for_summary(text: str, max_chars: int) -> str:
-    """Truncate text to a maximum character length for summarization (corresponds to TS ``truncateForSummary``)."""
+    """Truncate text to a maximum character length for summarization."""
     if len(text) <= max_chars:
         return text
     truncated_chars = len(text) - max_chars
@@ -105,7 +105,7 @@ def _truncate_for_summary(text: str, max_chars: int) -> str:
 
 
 def serialize_conversation(messages: list[Message]) -> str:
-    """Serialize LLM messages to text for summarization (corresponds to TS ``serializeConversation``).
+    """Serialize LLM messages to text for summarization.
 
     This prevents the model from treating it as a conversation to continue.
     """

@@ -82,10 +82,10 @@ from .write import (
 # ---------------------------------------------------------------------------
 
 ToolName = Literal["read", "bash", "edit", "write", "grep", "find", "ls"]
-"""Type alias for tool names (corresponds to TS ``ToolName``)."""
+"""Type alias for tool names."""
 
 ALL_TOOL_NAMES: set[ToolName] = {"read", "bash", "edit", "write", "grep", "find", "ls"}
-"""Set of all available tool names (corresponds to TS ``allToolNames``)."""
+"""Set of all available tool names."""
 
 
 # ---------------------------------------------------------------------------
@@ -94,7 +94,7 @@ ALL_TOOL_NAMES: set[ToolName] = {"read", "bash", "edit", "write", "grep", "find"
 
 
 class ToolsOptions:
-    """Options for all tools (corresponds to TS ``ToolsOptions``)."""
+    """Options for all tools."""
 
     def __init__(
         self,
@@ -123,7 +123,7 @@ class ToolsOptions:
 def create_tool_definition(
     tool_name: ToolName, cwd: str, options: ToolsOptions | None = None
 ) -> ToolDefinition[Any]:
-    """Create a tool definition by name (corresponds to TS ``createToolDefinition``)."""
+    """Create a tool definition by name."""
     tool_options = options or ToolsOptions()
     factories: dict[ToolName, ToolDefinition[Any]] = {
         "read": create_read_tool_definition(cwd, tool_options.read),
@@ -143,10 +143,7 @@ def create_tool_definition(
 def create_coding_tool_definitions(
     cwd: str, options: ToolsOptions | None = None
 ) -> list[ToolDefinition[Any]]:
-    """Create coding tool definitions (read, bash, edit, write).
-
-    Corresponds to TS ``createCodingToolDefinitions``.
-    """
+    """Create coding tool definitions (read, bash, edit, write).""" 
     tool_options = options or ToolsOptions()
     return [
         create_read_tool_definition(cwd, tool_options.read),
@@ -159,10 +156,7 @@ def create_coding_tool_definitions(
 def create_read_only_tool_definitions(
     cwd: str, options: ToolsOptions | None = None
 ) -> list[ToolDefinition[Any]]:
-    """Create read-only tool definitions (read, grep, find, ls).
-
-    Corresponds to TS ``createReadOnlyToolDefinitions``.
-    """
+    """Create read-only tool definitions (read, grep, find, ls)."""
     tool_options = options or ToolsOptions()
     return [
         create_read_tool_definition(cwd, tool_options.read),
@@ -175,10 +169,7 @@ def create_read_only_tool_definitions(
 def create_all_tool_definitions(
     cwd: str, options: ToolsOptions | None = None
 ) -> dict[ToolName, ToolDefinition[Any]]:
-    """Create all tool definitions as a dict keyed by tool name.
-
-    Corresponds to TS ``createAllToolDefinitions``.
-    """
+    """Create all tool definitions as a dict keyed by tool name."""
     tool_options = options or ToolsOptions()
     return {
         "read": create_read_tool_definition(cwd, tool_options.read),
@@ -198,10 +189,7 @@ from pi_agent.types import AgentTool
 def create_coding_tools(
     cwd: str, options: ToolsOptions | None = None
 ) -> list[AgentTool]:
-    """Create coding tools (read, bash, edit, write).
-
-    Corresponds to TS ``createCodingTools``.
-    """
+    """Create coding tools (read, bash, edit, write)."""
     from .tool_definition_wrapper import wrap_tool_definition
 
     tool_options = options or ToolsOptions()
@@ -216,10 +204,7 @@ def create_coding_tools(
 def create_read_only_tools(
     cwd: str, options: ToolsOptions | None = None
 ) -> list[AgentTool]:
-    """Create read-only tools (read, grep, find, ls).
-
-    Corresponds to TS ``createReadOnlyTools``.
-    """
+    """Create read-only tools (read, grep, find, ls)."""
     from .tool_definition_wrapper import wrap_tool_definition
 
     tool_options = options or ToolsOptions()
@@ -234,10 +219,7 @@ def create_read_only_tools(
 def create_all_tools(
     cwd: str, options: ToolsOptions | None = None
 ) -> dict[ToolName, AgentTool]:
-    """Create all tools as a dict keyed by tool name.
-
-    Corresponds to TS ``createAllTools``.
-    """
+    """Create all tools as a dict keyed by tool name."""
     from .tool_definition_wrapper import wrap_tool_definition
 
     tool_options = options or ToolsOptions()

@@ -626,7 +626,7 @@ ACCENTS: dict[str, str] = {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 私有区标记字符（对应 TS 的 \u{f0000} ~ \u{f0005} 等布局/命名操作符标记）
+# 私有区标记字符（\u{f0000} ~ \u{f0005} 等布局/命名操作符标记）
 # ─────────────────────────────────────────────────────────────────────────────
 
 NAMED_OPERATOR_START = "\U000f0004"
@@ -644,32 +644,32 @@ _ENV_ROW_SPLIT_RE = re.compile(r"\\\\(?:\[[^\]\n]*\])?")
 
 
 def _is_ascii_letter(ch: str) -> bool:
-    """是否 ASCII 字母（对应 TS 的 /[A-Za-z]/）。"""
+    """是否 ASCII 字母（ /[A-Za-z]/）。"""
     return ("A" <= ch <= "Z") or ("a" <= ch <= "z")
 
 
 def _is_ascii_letters(value: str) -> bool:
-    """是否全部为 ASCII 字母（对应 TS 的 /^[A-Za-z]+$/）。"""
+    """是否全部为 ASCII 字母（/^[A-Za-z]+$/）。"""
     return bool(value) and all(_is_ascii_letter(ch) for ch in value)
 
 
 def _is_math_char(ch: str) -> bool:
-    """是否属于 \\p{L} 或 \\p{N}（Unicode 字母或数字，对应 TS 字符类 [\\p{L}\\p{N}]）。"""
+    """是否属于 \\p{L} 或 \\p{N}（Unicode 字母或数字）。"""
     return ch.isalnum()
 
 
 def _is_simple_math(value: str) -> bool:
-    """对应 TS /^[\\p{L}\\p{N}.]+$/：仅由字母、数字或小数点组成。"""
+    """仅由字母、数字或小数点组成。"""
     return bool(value) and all(_is_math_char(ch) or ch == "." for ch in value)
 
 
 def _is_simple_number(value: str) -> bool:
-    """对应 TS /^[\\p{N}.]+$/：仅由数字或小数点组成。"""
+    """仅由数字或小数点组成。"""
     return bool(value) and all(ch.isnumeric() or ch == "." for ch in value)
 
 
 def _replace_characters(value: str, replacements: dict[str, str]) -> str | None:
-    """逐个字符查替换表；任一字符未命中返回 None（对应 TS replaceCharacters）。"""
+    """逐个字符查替换表；任一字符未命中返回 None。"""
     result = ""
     for ch in value:
         replacement = replacements.get(ch)
@@ -713,9 +713,7 @@ def _format_root(value: str, symbol: str = "√") -> str:
 
 
 def _replace_named_operator_left_spacing(value: str) -> str:
-    """对应 TS NAMED_OPERATOR_LEFT_SPACING_PATTERN（(?<=[\\p{L}\\p{N])\\}]\\u{f0001}])\\u{f0004}）。
-
-    命名操作符（如 sin/cos）左侧若紧跟字母、数字、')'、'}' 或布局标记，则补一个空格。
+    """命名操作符（如 sin/cos）左侧若紧跟字母、数字、')'、'}' 或布局标记，则补一个空格。
     """
     result = ""
     for index, ch in enumerate(value):
@@ -729,9 +727,7 @@ def _replace_named_operator_left_spacing(value: str) -> str:
 
 
 def _replace_named_operator_right_spacing(value: str) -> str:
-    """对应 TS NAMED_OPERATOR_RIGHT_SPACING_PATTERN（\\u{f0005}(?=[\\p{L}\\p{N}√\\u{f0000}])）。
-
-    命名操作符右侧若紧跟字母、数字、√ 或布局标记，则补一个空格。
+    """命名操作符右侧若紧跟字母、数字、√ 或布局标记，则补一个空格。
     """
     result = ""
     for index, ch in enumerate(value):
@@ -745,7 +741,7 @@ def _replace_named_operator_right_spacing(value: str) -> str:
 
 
 def _normalize_output(value: str) -> str:
-    """输出规范化：清理命名操作符标记、合并空白、删除首尾空行（对应 TS normalizeOutput）。"""
+    """输出规范化：清理命名操作符标记、合并空白、删除首尾空行。"""
     value = _replace_named_operator_left_spacing(value)
     value = value.replace(NAMED_OPERATOR_START, "")
     value = _replace_named_operator_right_spacing(value)
@@ -798,14 +794,14 @@ class Layout(NamedTuple):
 
 
 def _pad_layout_line(line: str, width: int, centered: bool = False) -> str:
-    """按宽度补齐布局行（可选居中），对应 TS padLayoutLine。"""
+    """按宽度补齐布局行（可选居中）。"""
     padding = max(0, width - visible_width(line))
     left = padding // 2 if centered else 0
     return f"{' ' * left}{line}{' ' * (padding - left)}"
 
 
 def _join_layouts(layouts: list[Layout]) -> Layout:
-    """把多个并排布局按基线对齐拼接为一行布局，对应 TS joinLayouts。"""
+    """把多个并排布局按基线对齐拼接为一行布局。"""
     if not layouts:
         return Layout([""], 0, 0)
     baseline = max(layout.baseline for layout in layouts)
@@ -824,7 +820,7 @@ def _join_layouts(layouts: list[Layout]) -> Layout:
 
 
 def _render_layout(source: str, nodes: list[LayoutNode]) -> Layout:
-    """把渲染文本中的布局标记展开为多行布局，对应 TS renderLayout。"""
+    """把渲染文本中的布局标记展开为多行布局。"""
     rendered_lines: list[str] = []
     first_baseline = 0
     for source_line in source.split("\n"):
@@ -961,14 +957,14 @@ class LatexParser:
         self._stack_fractions = True
 
     def render(self) -> str | None:
-        """解析整个源码；遇到不支持或残缺的语法返回 None（对应 TS render()）。"""
+        """解析整个源码；遇到不支持或残缺的语法返回 None。"""
         rendered = self._parse_sequence()
         if not self._supported or self._position != len(self._source):
             return None
         return _normalize_output(rendered)
 
     def _parse_sequence(self, end_character: str | None = None) -> str:
-        """解析一段字符序列，直到遇到结束字符或源码末尾（对应 TS parseSequence）。"""
+        """解析一段字符序列，直到遇到结束字符或源码末尾。"""
         result = ""
         while self._position < len(self._source):
             character = self._source[self._position]
@@ -1032,7 +1028,7 @@ class LatexParser:
                 continue
 
             if character == ".":
-                # 矩阵后紧跟的句号追加到矩阵最后一行（对应 TS 对 trailing marker 的处理）
+                # 矩阵后紧跟的句号追加到矩阵最后一行
                 marker = _TRAILING_LAYOUT_MARKER_RE.search(result)
                 matrix_node: MatrixNode | None = None
                 if marker is not None:
@@ -1055,7 +1051,7 @@ class LatexParser:
         return result
 
     def _parse_whitespace(self) -> str:
-        """折叠连续空白为单个空格（对应 TS parseWhitespace）。"""
+        """折叠连续空白为单个空格。"""
         while (
             self._position < len(self._source)
             and self._source[self._position].isspace()
@@ -1064,7 +1060,7 @@ class LatexParser:
         return " "
 
     def _parse_command(self) -> str:
-        """解析 \\ 开头的命令并返回其渲染结果（对应 TS parseCommand）。"""
+        """解析 \\ 开头的命令并返回其渲染结果。"""
         self._position += 1
         if self._position >= len(self._source):
             self._supported = False
@@ -1229,8 +1225,8 @@ class LatexParser:
         inline_lower_style: Literal["bracket", "script"],
         display_limits: bool,
         spaced: bool = False,
-    ) -> str:
-        """解析带上下标/limits 修饰的运算符（对应 TS parseOperator）。"""
+        ) -> str:
+        """解析带上下标/limits 修饰的运算符。"""
         use_display_limits = display_limits
         modifier_position = self._position
         while (
@@ -1291,7 +1287,7 @@ class LatexParser:
         return f" {rendered} " if spaced else rendered
 
     def _parse_required_argument(self, stack_fractions: bool = True) -> str:
-        """解析必选参数（大括号分组/单字符/命令），对应 TS parseRequiredArgument。"""
+        """解析必选参数（大括号分组/单字符/命令）。"""
         previous_stack_fractions = self._stack_fractions
         self._stack_fractions = previous_stack_fractions and stack_fractions
         value = self._parse_required_argument_value()
@@ -1299,7 +1295,7 @@ class LatexParser:
         return value
 
     def _parse_required_argument_value(self) -> str:
-        """必选参数的实际取值逻辑（对应 TS parseRequiredArgumentValue）。"""
+        """必选参数的实际取值逻辑。"""
         while (
             self._position < len(self._source)
             and self._source[self._position].isspace()
@@ -1318,7 +1314,7 @@ class LatexParser:
         return value
 
     def _parse_optional_argument(self) -> str | None:
-        """解析可选参数 [..]（对应 TS parseOptionalArgument）。"""
+        """解析可选参数 [..]。"""
         while (
             self._position < len(self._source) and self._source[self._position] in " \t"
         ):
@@ -1334,7 +1330,7 @@ class LatexParser:
         return self._render_nested(value)
 
     def _read_raw_group(self) -> str | None:
-        """读取未渲染的原始 {..} 分组（用于环境名，对应 TS readRawGroup）。"""
+        """读取未渲染的原始 {..} 分组（用于环境名）。"""    
         while (
             self._position < len(self._source) and self._source[self._position] in " \t"
         ):
@@ -1364,11 +1360,11 @@ class LatexParser:
         return None
 
     def _split_environment_rows(self, body: str) -> list[str]:
-        """按 \\\\ 或 \\\\[...] 切分环境行（对应 TS splitEnvironmentRows）。"""
+        """按 \\\\ 或 \\\\[...] 切分环境行。"""
         return _ENV_ROW_SPLIT_RE.split(body)
 
     def _parse_environment(self) -> str:
-        """解析 \\begin{env} ... \\end{env} 环境（对应 TS parseEnvironment）。"""
+        """解析 \\begin{env} ... \\end{env} 环境。"""
         environment = self._read_raw_group()
         if environment is None:
             return ""
@@ -1463,7 +1459,7 @@ class LatexParser:
         return body
 
     def _render_matrix(self, environment: str, body: str) -> str:
-        """渲染矩阵环境（对应 TS renderMatrix）。"""
+        """渲染矩阵环境。"""
         matrix: list[list[str]] = [
             [self._render_nested(cell, False).strip() for cell in row.split("&")]
             for row in self._split_environment_rows(body)
@@ -1514,7 +1510,7 @@ class LatexParser:
         return f"{LAYOUT_MARKER_START}{len(self._layout_nodes) - 1}{LAYOUT_MARKER_END}"
 
     def _render_nested(self, source: str, stack_fractions: bool = True) -> str:
-        """渲染嵌套源码片段（对应 TS renderNested）。"""
+        """渲染嵌套源码片段。"""    
         rendered = LatexParser(
             source, self._layout_nodes, self._display and stack_fractions
         ).render()

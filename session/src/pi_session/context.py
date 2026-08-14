@@ -1,4 +1,4 @@
-"""会话 → 模型上下文消息（对应 ``harness/session/context.ts``）。
+"""会话 → 模型上下文消息。
 
 从路径条目推导模型上下文：压缩边界、分支摘要、自定义条目投影、
 以及 model / thinking / active tools 状态推导。
@@ -29,7 +29,7 @@ from .types import (
 
 
 class SessionContext(BaseModel):
-    """会话上下文（对应 TS ``SessionContext``）。"""
+    """会话上下文。"""
 
     messages: list[AgentMessage]
     thinking_level: str

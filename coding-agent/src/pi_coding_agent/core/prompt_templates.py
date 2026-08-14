@@ -1,4 +1,4 @@
-"""提示词模板加载与参数替换（对应 TS ``core/prompt-templates.ts``）。
+"""提示词模板加载与参数替换。
 
 目录输入非递归加载直接子级 ``.md`` 文件；文件输入加载显式 ``.md`` 文件。
 支持 ``$1`` / ``$@`` / ``$ARGUMENTS`` / ``${@:N}`` / ``${@:N:L}`` / ``${N:-default}`` 占位符替换。
@@ -18,7 +18,7 @@ from .diagnostics import ResourceDiagnostic
 
 
 class PromptTemplate(BaseModel):
-    """提示词模板（对应 TS ``PromptTemplate``）。"""
+    """提示词模板。"""
 
     name: str
     description: str
@@ -29,7 +29,7 @@ class PromptTemplate(BaseModel):
 
 
 class LoadPromptTemplatesOptions(BaseModel):
-    """``load_prompt_templates`` 选项（对应 TS ``LoadPromptTemplatesOptions``）。"""
+    """``load_prompt_templates`` 选项。"""
 
     cwd: str
     agent_dir: str
@@ -43,7 +43,7 @@ class LoadPromptTemplatesOptions(BaseModel):
 
 
 def parse_command_args(args_string: str) -> list[str]:
-    """解析参数串（支持单双引号）（对应 TS ``parseCommandArgs``）。"""
+    """解析参数串（支持单双引号）。"""
     args: list[str] = []
     current = ""
     in_quote: str | None = None
@@ -70,7 +70,7 @@ def parse_command_args(args_string: str) -> list[str]:
 
 
 def substitute_args(content: str, args: list[str]) -> str:
-    """替换模板占位符（对应 TS ``substituteArgs``）。
+    """替换模板占位符。
 
     支持：
     - ``$1``, ``$2``, ... 位置参数
@@ -125,7 +125,7 @@ def substitute_args(content: str, args: list[str]) -> str:
 
 
 async def _load_template_from_file(file_path: Path) -> PromptTemplate | None:
-    """从单个文件加载提示词模板（对应 TS ``loadTemplateFromFile``）。"""
+    """从单个文件加载提示词模板。"""
     try:
         async with aiofiles.open(str(file_path), mode="r", encoding="utf-8") as f:
             raw_content = await f.read()
@@ -160,7 +160,7 @@ async def _load_template_from_file(file_path: Path) -> PromptTemplate | None:
 
 
 async def _load_templates_from_dir(directory: Path) -> list[PromptTemplate]:
-    """从目录非递归加载 .md 文件（对应 TS ``loadTemplatesFromDir``）。"""
+    """从目录非递归加载 .md 文件。"""
     templates: list[PromptTemplate] = []
 
     if not directory.exists():
@@ -217,7 +217,7 @@ def _parse_frontmatter(content: str) -> tuple[dict[str, object], str]:
 
 
 async def load_prompt_templates(options: LoadPromptTemplatesOptions) -> list[PromptTemplate]:
-    """加载所有提示词模板（对应 TS ``loadPromptTemplates``）。
+    """加载所有提示词模板。
 
     加载顺序：
     1. 全局：``agentDir/prompts/``
@@ -264,7 +264,7 @@ async def load_prompt_templates(options: LoadPromptTemplatesOptions) -> list[Pro
 
 
 def expand_prompt_template(text: str, templates: list[PromptTemplate]) -> str:
-    """展开提示词模板（对应 TS ``expandPromptTemplate``）。
+    """展开提示词模板。
 
     如果 ``text`` 以 ``/`` 开头，尝试匹配模板名称并替换参数。
     否则返回原文本。

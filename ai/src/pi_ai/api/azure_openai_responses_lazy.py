@@ -1,4 +1,4 @@
-"""Azure OpenAI Responses API 延迟加载（对应 ``azure-openai-responses.lazy.ts``）。"""
+"""Azure OpenAI Responses API 延迟加载。"""
 
 from __future__ import annotations
 

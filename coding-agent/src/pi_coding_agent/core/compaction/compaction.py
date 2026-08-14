@@ -59,7 +59,7 @@ else:
 
 
 class CompactionDetails(BaseModel):
-    """Details stored in CompactionEntry.details for file tracking (corresponds to TS ``CompactionDetails``)."""
+    """Details stored in CompactionEntry.details for file tracking."""
 
     read_files: list[str] = []
     modified_files: list[str] = []
@@ -70,7 +70,7 @@ def _extract_file_operations(
     entries: list[SessionEntry],
     prev_compaction_index: int,
 ) -> FileOperations:
-    """Extract file operations from messages and previous compaction entries (corresponds to TS ``extractFileOperations``)."""
+    """Extract file operations from messages and previous compaction entries."""
     file_ops = create_file_ops()
 
     # Collect from previous compaction's details (if pi-generated)
@@ -104,7 +104,7 @@ def _extract_file_operations(
 
 
 def _get_message_from_entry_for_compaction(entry: SessionEntry) -> AgentMessage | None:
-    """Extract AgentMessage from an entry if it produces one (corresponds to TS ``getMessageFromEntryForCompaction``).
+    """Extract AgentMessage from an entry if it produces one.
 
     Returns None for entries that don't contribute to LLM context.
     """
@@ -121,14 +121,14 @@ def _get_message_from_entry_for_compaction(entry: SessionEntry) -> AgentMessage 
 
 @dataclass
 class SummaryResult:
-    """Result from generate_summary_with_usage (corresponds to TS return ``{ text, usage }``)."""
+    """Result from generate_summary_with_usage."""
 
     text: str
     usage: Usage | None
 
 
 class CompactionResult(BaseModel):
-    """Result from compact() - SessionManager adds uuid/parentUuid when saving (corresponds to TS ``CompactionResult``)."""
+    """Result from compact() - SessionManager adds uuid/parentUuid when saving."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -141,7 +141,7 @@ class CompactionResult(BaseModel):
 
 
 def _combine_usage(first: Usage, second: Usage) -> Usage:
-    """Combine two Usage objects (corresponds to TS ``combineUsage``)."""
+    """Combine two Usage objects."""
     total_tokens = first.total_tokens + second.total_tokens
     cost = first.cost.model_copy(
         update={
@@ -163,7 +163,7 @@ def _combine_usage(first: Usage, second: Usage) -> Usage:
 
 
 class CompactionSettings(BaseModel):
-    """Compaction threshold settings (corresponds to TS ``CompactionSettings``)."""
+    """Compaction threshold settings."""
 
     enabled: bool = True
     reserve_tokens: int = 16384
@@ -179,7 +179,7 @@ DEFAULT_COMPACTION_SETTINGS = CompactionSettings()
 
 
 def calculate_context_tokens(usage: Usage) -> int:
-    """Calculate total context tokens from usage (corresponds to TS ``calculateContextTokens``).
+    """Calculate total context tokens from usage.
 
     Uses the native totalTokens field when available, falls back to computing from components.
     """
@@ -190,7 +190,7 @@ def calculate_context_tokens(usage: Usage) -> int:
 
 
 def _get_assistant_usage(msg: AgentMessage) -> Usage | None:
-    """Get usage from an assistant message if available (corresponds to TS ``getAssistantUsage``).
+    """Get usage from an assistant message if available.
 
     Skips aborted, error, and all-zero usage messages as they don't have valid usage data.
     """
@@ -205,7 +205,7 @@ def _get_assistant_usage(msg: AgentMessage) -> Usage | None:
 
 
 def get_last_assistant_usage(entries: list[SessionEntry]) -> Usage | None:
-    """Find the last valid assistant message usage from session entries (corresponds to TS ``getLastAssistantUsage``)."""
+    """Find the last valid assistant message usage from session entries."""
     for i in range(len(entries) - 1, -1, -1):
         entry = entries[i]
         if isinstance(entry, CompactionEntry):
@@ -219,7 +219,7 @@ def get_last_assistant_usage(entries: list[SessionEntry]) -> Usage | None:
 
 
 class ContextUsageEstimate(BaseModel):
-    """Context usage estimate (corresponds to TS ``ContextUsageEstimate``)."""
+    """Context usage estimate."""
 
     tokens: int
     usage_tokens: int
@@ -230,7 +230,7 @@ class ContextUsageEstimate(BaseModel):
 def _get_last_assistant_usage_info(
     messages: list[AgentMessage],
 ) -> tuple[Usage, int] | None:
-    """Get last assistant usage info from messages (corresponds to TS ``getLastAssistantUsageInfo``)."""
+    """Get last assistant usage info from messages."""
     for i in range(len(messages) - 1, -1, -1):
         usage = _get_assistant_usage(messages[i])
         if usage:
@@ -239,10 +239,10 @@ def _get_last_assistant_usage_info(
 
 
 def estimate_context_tokens(messages: list[AgentMessage]) -> ContextUsageEstimate:
-    """Estimate context tokens from messages (corresponds to TS ``estimateContextTokens``).
+    """Estimate context tokens from messages.
 
     Uses the last assistant usage when available.
-    If there are messages after the last usage, estimate their tokens with estimateTokens.
+    If there are messages after the last usage, estimate their tokens with estimate_tokens.
     """
     usage_info = _get_last_assistant_usage_info(messages)
 
@@ -276,7 +276,7 @@ def should_compact(
     context_window: int,
     settings: CompactionSettings,
 ) -> bool:
-    """Check if compaction should trigger based on context usage (corresponds to TS ``shouldCompact``)."""
+    """Check if compaction should trigger based on context usage."""
     if not settings.enabled:
         return False
     return context_tokens > context_window - settings.reserve_tokens
@@ -292,7 +292,7 @@ ESTIMATED_IMAGE_CHARS = 4800
 def _estimate_text_and_image_content_chars(
     content: str | list[dict[str, object]],
 ) -> int:
-    """Estimate character count for text and image content (corresponds to TS ``estimateTextAndImageContentChars``)."""
+    """Estimate character count for text and image content."""
     if isinstance(content, str):
         return len(content)
 
@@ -310,7 +310,7 @@ def _estimate_text_and_image_content_chars(
 
 
 def estimate_tokens(message: AgentMessage) -> int:
-    """Estimate token count for a message using chars/4 heuristic (corresponds to TS ``estimateTokens``).
+    """Estimate token count for a message using chars/4 heuristic.
 
     This is conservative (overestimates tokens).
     """
@@ -357,7 +357,7 @@ def estimate_tokens(message: AgentMessage) -> int:
 
 
 def _is_cut_point_message(message: AgentMessage) -> bool:
-    """Check if message is a valid cut point (corresponds to TS ``isCutPointMessage``)."""
+    """Check if message is a valid cut point."""
     return message.role in (
         "user",
         "assistant",
@@ -369,7 +369,7 @@ def _is_cut_point_message(message: AgentMessage) -> bool:
 
 
 def _is_turn_start_message(message: AgentMessage) -> bool:
-    """Check if message starts a turn (corresponds to TS ``isTurnStartMessage``)."""
+    """Check if message starts a turn."""
     return message.role in (
         "user",
         "bashExecution",
@@ -380,7 +380,7 @@ def _is_turn_start_message(message: AgentMessage) -> bool:
 
 
 def _is_turn_start_entry(entry: SessionEntry) -> bool:
-    """Check if entry starts a turn (corresponds to TS ``isTurnStartEntry``)."""
+    """Check if entry starts a turn."""
     if isinstance(entry, CompactionEntry):
         return False
     messages = _session_entry_to_context_messages(entry, 0, [entry])  # type: ignore[list-item, arg-type]
@@ -392,7 +392,7 @@ def _find_valid_cut_points(
     start_index: int,
     end_index: int,
 ) -> list[int]:
-    """Find valid cut points (corresponds to TS ``findValidCutPoints``).
+    """Find valid cut points.
 
     Never cut at tool results (they must follow their tool call).
     When we cut at an assistant message with tool calls, its tool results follow it
@@ -414,7 +414,7 @@ def find_turn_start_index(
     entry_index: int,
     start_index: int,
 ) -> int:
-    """Find the context-visible user-role message that starts the turn containing the given entry index (corresponds to TS ``findTurnStartIndex``).
+    """Find the context-visible user-role message that starts the turn containing the given entry index.
 
     Returns -1 if no turn start found before the index.
     """
@@ -425,7 +425,7 @@ def find_turn_start_index(
 
 
 class CutPointResult(BaseModel):
-    """Cut point result (corresponds to TS ``CutPointResult``)."""
+    """Cut point result."""
 
     first_kept_entry_index: int
     """Index of first entry to keep."""
@@ -440,8 +440,8 @@ def find_cut_point(
     start_index: int,
     end_index: int,
     keep_recent_tokens: int,
-) -> CutPointResult:
-    """Find the cut point in session entries that keeps approximately keepRecentTokens (corresponds to TS ``findCutPoint``).
+    ) -> CutPointResult:
+    """Find the cut point in session entries that keeps approximately keepRecentTokens.
 
     Algorithm: Walk backwards from newest, accumulating estimated message sizes.
     Stop when we've accumulated >= keepRecentTokens. Cut at that point.
@@ -588,7 +588,7 @@ def _create_summarization_options(
     headers: dict[str, str] | None = None,
     thinking_level: ThinkingLevel | None = None,
 ) -> SimpleStreamOptions:
-    """Create summarization options (corresponds to TS ``createSummarizationOptions``)."""
+    """Create summarization options."""
     options = SimpleStreamOptions()
     # SimpleStreamOptions doesn't have max_tokens, so we use a workaround
     # by setting extra fields that the compat layer can access via getattr
@@ -604,7 +604,7 @@ async def _complete_with_stream_fn(
     options: SimpleStreamOptions,
     stream_fn: StreamFn | None,
 ) -> AssistantMessage:
-    """Complete with optional streamFn (corresponds to TS inline logic in ``completeSummarization``)."""
+    """Complete with optional streamFn."""
     if stream_fn is not None:
         # StreamFn returns AsyncIterator[AssistantMessageEvent]
         # We need to collect events to build the final message
@@ -704,7 +704,7 @@ async def generate_summary(
     retry: RetryPolicy | None = None,
     callbacks: RetryCallbacks | None = None,
 ) -> str:
-    """Generate a summary of the conversation using the LLM (corresponds to TS ``generateSummary``).
+    """Generate a summary of the conversation using the LLM.
 
     If previousSummary is provided, uses the update prompt to merge.
     """
@@ -741,7 +741,7 @@ async def generate_summary_with_usage(
     retry: RetryPolicy | None = None,
     callbacks: RetryCallbacks | None = None,
 ) -> SummaryResult:
-    """Generate or update a conversation summary and return its provider usage (corresponds to TS ``generateSummaryWithUsage``)."""
+    """Generate or update a conversation summary and return its provider usage."""
     model_max_tokens = getattr(model, "max_tokens", 0) or 0
     max_tokens = min(
         int(0.8 * reserve_tokens),

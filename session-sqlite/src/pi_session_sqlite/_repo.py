@@ -1,4 +1,5 @@
-"""SQLite 会话仓库与存储实现（对应 TS ``sqlite/repo.ts``）。"""
+"""SQLite 会话仓库与存储实现。"""
+
 
 from __future__ import annotations
 

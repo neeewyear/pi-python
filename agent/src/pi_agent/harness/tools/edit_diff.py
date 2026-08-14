@@ -1,4 +1,4 @@
-"""Diff/Patch 核心算法（对应 ``harness/tools/edit-diff.ts``）。
+"""Diff/Patch 核心算法。  
 
 提供编辑工具所需的精确替换、模糊匹配、Unified Patch 生成与
 diff 字符串格式化。
@@ -17,14 +17,14 @@ from pydantic import BaseModel
 
 
 class Edit(BaseModel):
-    """一次编辑操作（对应 TS ``Edit``）。"""
+    """一次编辑操作。"""
 
     old_text: str
     new_text: str
 
 
 class FuzzyMatchResult(BaseModel):
-    """模糊匹配结果（对应 TS ``FuzzyMatchResult``）。"""
+    """模糊匹配结果。"""
 
     found: bool
     index: int
@@ -34,7 +34,7 @@ class FuzzyMatchResult(BaseModel):
 
 
 class AppliedEditsResult(BaseModel):
-    """编辑应用结果（对应 TS ``AppliedEditsResult``）。"""
+    """编辑应用结果。"""
 
     base_content: str
     new_content: str
@@ -46,7 +46,7 @@ class AppliedEditsResult(BaseModel):
 
 
 def detect_line_ending(content: str) -> Literal["\r\n", "\n"]:
-    """检测行结尾风格（对应 TS ``detectLineEnding``）。"""
+    """检测行结尾风格。"""
     crlf_idx = content.find("\r\n")
     lf_idx = content.find("\n")
     if lf_idx == -1:
@@ -57,12 +57,12 @@ def detect_line_ending(content: str) -> Literal["\r\n", "\n"]:
 
 
 def normalize_to_lf(text: str) -> str:
-    """统一为 LF 行结尾（对应 TS ``normalizeToLF``）。"""
+    """统一为 LF 行结尾。"""
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def restore_line_endings(text: str, ending: Literal["\r\n", "\n"]) -> str:
-    """恢复原始行结尾（对应 TS ``restoreLineEndings``）。"""
+    """恢复原始行结尾。"""  
     return text.replace("\n", "\r\n") if ending == "\r\n" else text
 
 
@@ -72,7 +72,7 @@ def restore_line_endings(text: str, ending: Literal["\r\n", "\n"]) -> str:
 
 
 def normalize_for_fuzzy_match(text: str) -> str:
-    """模糊匹配归一化（对应 TS ``normalizeForFuzzyMatch``）。
+    """模糊匹配归一化。
 
     渐进式变换：
     - 每行去掉尾部空白
@@ -197,7 +197,7 @@ def apply_replacements_preserving_unchanged_lines(
     base_content: str,
     replacements: list[_TextReplacement],
 ) -> str:
-    """在保留未变更行的前提下应用替换（对应 TS ``applyReplacementsPreservingUnchangedLines``）。"""
+    """在保留未变更行的前提下应用替换。"""
     original_lines = _split_lines_with_endings(original_content)
     base_line_spans = _get_line_spans(base_content)
 
@@ -247,7 +247,7 @@ def apply_replacements_preserving_unchanged_lines(
 
 
 def fuzzy_find_text(content: str, old_text: str) -> FuzzyMatchResult:
-    """在 content 中查找 old_text，先精确匹配再模糊匹配（对应 TS ``fuzzyFindText``）。"""
+    """在 content 中查找 old_text，先精确匹配再模糊匹配。"""
     exact_index = content.find(old_text)
     if exact_index != -1:
         return FuzzyMatchResult(
@@ -286,7 +286,7 @@ def fuzzy_find_text(content: str, old_text: str) -> FuzzyMatchResult:
 
 
 def strip_bom(content: str) -> dict[str, str]:
-    """去除 UTF-8 BOM（对应 TS ``stripBom``）。"""
+    """去除 UTF-8 BOM。"""
     if content.startswith("\ufeff"):
         return {"bom": "\ufeff", "text": content[1:]}
     return {"bom": "", "text": content}
@@ -363,7 +363,7 @@ def apply_edits_to_normalized_content(
     edits: list[Edit],
     path: str,
 ) -> AppliedEditsResult:
-    """对 LF 归一化内容应用一组精确替换（对应 TS ``applyEditsToNormalizedContent``）。"""
+    """对 LF 归一化内容应用一组精确替换。"""
     normalized_edits = [
         Edit(old_text=normalize_to_lf(e.old_text), new_text=normalize_to_lf(e.new_text))
         for e in edits
@@ -443,7 +443,7 @@ def generate_unified_patch(
     new_content: str,
     context_lines: int = 4,
 ) -> str:
-    """生成标准 unified patch（对应 TS ``generateUnifiedPatch``）。"""
+    """生成标准 unified patch。"""
     diff = difflib.unified_diff(
         old_content.splitlines(keepends=True),
         new_content.splitlines(keepends=True),
@@ -464,7 +464,7 @@ def generate_diff_string(
     new_content: str,
     context_lines: int = 4,
 ) -> dict[str, object]:
-    """生成带行号的显示用 diff 字符串（对应 TS ``generateDiffString``）。"""
+    """生成带行号的显示用 diff 字符串。"""
     old_lines = old_content.split("\n")
     new_lines = new_content.split("\n")
 

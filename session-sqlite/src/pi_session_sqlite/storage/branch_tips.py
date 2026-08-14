@@ -1,4 +1,4 @@
-"""SQLite 分支 tips 表存储（对应 TS ``sqlite/storage/branch-tips.ts``）。"""
+"""SQLite 分支 tips 表存储。"""
 
 from __future__ import annotations
 

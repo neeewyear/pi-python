@@ -1,4 +1,4 @@
-"""OpenCode Go Provider（对应 ``opencode-go.ts``）。"""
+"""OpenCode Go Provider。"""
 
 from __future__ import annotations
 

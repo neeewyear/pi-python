@@ -50,7 +50,7 @@ from .utils import (
 
 
 class BranchSummaryResult(BaseModel):
-    """Branch summary result (corresponds to TS ``BranchSummaryResult``)."""
+    """Branch summary result."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -63,14 +63,14 @@ class BranchSummaryResult(BaseModel):
 
 
 class BranchSummaryDetails(BaseModel):
-    """Details stored in BranchSummaryEntry.details for file tracking (corresponds to TS ``BranchSummaryDetails``)."""
+    """Details stored in BranchSummaryEntry.details for file tracking."""
 
     read_files: list[str] = []
     modified_files: list[str] = []
 
 
 class BranchPreparation(BaseModel):
-    """Branch preparation data (corresponds to TS ``BranchPreparation``)."""
+    """Branch preparation data."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -80,14 +80,14 @@ class BranchPreparation(BaseModel):
 
 
 class CollectEntriesResult(BaseModel):
-    """Result of collecting entries for branch summary (corresponds to TS ``CollectEntriesResult``)."""
+    """Result of collecting entries for branch summary."""
 
     entries: list[Any] = []  # SessionEntry
     common_ancestor_id: str | None = None
 
 
 class GenerateBranchSummaryOptions(BaseModel):
-    """Options for generating a branch summary (corresponds to TS ``GenerateBranchSummaryOptions``)."""
+    """Options for generating a branch summary."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -114,7 +114,7 @@ def collect_entries_for_branch_summary(
     old_leaf_id: str | None,
     target_id: str,
 ) -> CollectEntriesResult:
-    """Collect entries that should be summarized when navigating from one position to another (corresponds to TS ``collectEntriesForBranchSummary``).
+    """Collect entries that should be summarized when navigating from one position to another.
 
     Walks from oldLeafId back to the common ancestor with targetId, collecting entries
     along the way. Does NOT stop at compaction boundaries - those are included and their
@@ -166,7 +166,7 @@ def collect_entries_for_branch_summary(
 
 
 def _get_message_from_entry(entry: Any) -> AgentMessage | None:
-    """Extract AgentMessage from a session entry (corresponds to TS ``getMessageFromEntry``).
+    """Extract AgentMessage from a session entry.
 
     Similar to getMessageFromEntry in compaction.py but also handles compaction entries.
     """
@@ -210,7 +210,7 @@ def prepare_branch_entries(
     entries: list[Any],
     token_budget: int = 0,
 ) -> BranchPreparation:
-    """Prepare entries for summarization with token budget (corresponds to TS ``prepareBranchEntries``).
+    """Prepare entries for summarization with token budget. 
 
     Walks entries from NEWEST to OLDEST, adding messages until we hit the token budget.
     This ensures we keep the most recent context when the branch is too long.
@@ -324,7 +324,7 @@ async def generate_branch_summary(
     entries: list[Any],
     options: GenerateBranchSummaryOptions,
 ) -> BranchSummaryResult:
-    """Generate a summary of abandoned branch entries (corresponds to TS ``generateBranchSummary``).
+    """Generate a summary of abandoned branch entries.
 
     Args:
         entries: Session entries to summarize (chronological order)

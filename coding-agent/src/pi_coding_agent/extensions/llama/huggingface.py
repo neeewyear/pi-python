@@ -1,4 +1,4 @@
-"""HuggingFace 集成（对应 TS ``extensions/llama/huggingface.ts``）。
+"""HuggingFace 集成。
 
 简化版实现，使用 httpx 替代 fetch。
 """
@@ -28,21 +28,21 @@ SHARD_SUFFIX = r"-\d{5}-of-\d{5}$"
 
 
 class HuggingFaceModel(BaseModel):
-    """HuggingFace 模型搜索结果（对应 TS ``HuggingFaceModel``）。"""
+    """HuggingFace 模型搜索结果。"""
 
     id: str
     downloads: int
 
 
 class HuggingFaceQuantization(BaseModel):
-    """量化信息（对应 TS ``HuggingFaceQuantization``）。"""
+    """量化信息。"""
 
     name: str
     size: int | None = None
 
 
 class HuggingFaceModelDetails(BaseModel):
-    """模型详情（对应 TS ``HuggingFaceModelDetails``）。"""
+    """模型详情。"""
 
     id: str
     gated: bool | str  # false | "auto" | "manual"
@@ -87,7 +87,7 @@ async def _read_token(path: str) -> str | None:
 async def find_hugging_face_token(
     env: dict[str, str] | None = None,
 ) -> str | None:
-    """查找 HuggingFace token（对应 TS ``findHuggingFaceToken``）。"""
+    """查找 HuggingFace token。"""
     if env is None:
         env = dict(os.environ)
     hf_token = env.get("HF_TOKEN", "").strip()
@@ -126,7 +126,7 @@ async def find_hugging_face_token(
 
 
 class HuggingFaceClient:
-    """HuggingFace API 客户端（对应 TS ``HuggingFaceClient``）。"""
+    """HuggingFace API 客户端。"""
 
     def __init__(
         self, token: str | None = None, base_url: str = DEFAULT_HUGGING_FACE_URL
@@ -178,7 +178,7 @@ class HuggingFaceClient:
     async def search(
         self, query: str, signal: asyncio.Event | None = None
     ) -> list[HuggingFaceModel]:
-        """搜索模型（对应 TS ``search``）。"""
+        """搜索模型。"""
         from urllib.parse import urlencode
 
         params = urlencode(
@@ -212,7 +212,7 @@ class HuggingFaceClient:
     async def details(
         self, id_: str, signal: asyncio.Event | None = None
     ) -> HuggingFaceModelDetails:
-        """获取模型详情（对应 TS ``details``）。"""
+        """获取模型详情。"""        
         from urllib.parse import quote
 
         encoded_id = "/".join(quote(part) for part in id_.split("/"))

@@ -1,4 +1,4 @@
-"""受限采样（对应 ``constrained-sampling.ts``）。"""
+"""受限采样。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,5 @@
-"""SQLite FTS5 搜索后端（对应 TS ``sqlite/search-backend.ts``）。"""
+"""SQLite FTS5 搜索后端。"""
+
 
 from __future__ import annotations
 

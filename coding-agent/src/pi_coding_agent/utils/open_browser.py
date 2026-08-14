@@ -1,4 +1,4 @@
-"""浏览器打开工具（对应 TS ``utils/open-browser.ts``）。
+"""浏览器打开工具。
 
 提供 ``open_browser`` 函数，用于在系统默认浏览器中打开 URL。
 """

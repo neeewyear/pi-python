@@ -1,4 +1,4 @@
-"""OpenAI Provider（对应 ``openai.ts``）。"""
+"""OpenAI Provider。"""
 
 from __future__ import annotations
 

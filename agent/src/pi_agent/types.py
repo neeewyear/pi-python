@@ -66,11 +66,11 @@ from .cancellation import CancellationToken
 # ---------------------------------------------------------------------------
 
 QueueMode: TypeAlias = Literal["all", "one-at-a-time"]
-"""队列排空模式（对应 TS ``QueueMode``）。"""
+"""队列排空模式。"""
 
 
 # ---------------------------------------------------------------------------
-# 自定义消息（对应 harness/messages.ts 的 CustomAgentMessages 扩展）
+# 自定义消息。
 # ---------------------------------------------------------------------------
 
 
@@ -127,7 +127,7 @@ AgentMessage: TypeAlias = Annotated[
     | CompactionSummaryMessage,
     Field(discriminator="role"),
 ]
-"""应用层消息联合（对应 TS ``AgentMessage = Message | CustomAgentMessages[...]``）。"""
+"""应用层消息联合。"""
 
 
 # ---------------------------------------------------------------------------
@@ -136,7 +136,7 @@ AgentMessage: TypeAlias = Annotated[
 
 
 class AgentToolResult(BaseModel):
-    """工具执行的最终或部分结果（对应 TS ``AgentToolResult<T>``）。"""
+    """工具执行的最终或部分结果。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -152,7 +152,7 @@ AgentToolUpdateCallback: TypeAlias = Callable[[AgentToolResult], None]
 
 
 class AgentTool(Tool):
-    """agent 运行时使用的工具定义（对应 TS ``AgentTool``）。"""
+    """agent 运行时使用的工具定义。"""
 
     label: str
     prepare_arguments: Callable[[dict[str, object]], dict[str, object]] | None = None
@@ -174,7 +174,7 @@ class AgentTool(Tool):
 
 
 class AgentContext(BaseModel):
-    """传入低层 agent 循环的上下文快照（对应 TS ``AgentContext``）。"""
+    """传入低层 agent 循环的上下文快照。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -184,7 +184,7 @@ class AgentContext(BaseModel):
 
 
 class AgentState:
-    """公共 agent 状态（对应 TS ``AgentState``）。
+    """公共 agent 状态。    
 
     ``tools`` / ``messages`` 使用属性语义：赋值时拷贝顶层数组，防止外部变异。
     """
@@ -321,7 +321,7 @@ PrepareNextTurnContext: TypeAlias = ShouldStopAfterTurnContext
 
 
 class AgentLoopTurnUpdate(BaseModel):
-    """替换下一回合运行时状态（对应 TS ``AgentLoopTurnUpdate``）。"""
+    """替换下一回合运行时状态。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -336,7 +336,7 @@ class AgentLoopTurnUpdate(BaseModel):
 
 
 class AgentLoopConfig(SimpleStreamOptions):
-    """低层循环配置（对应 TS ``AgentLoopConfig``）。
+    """低层循环配置。
 
     必需：``model``、``convert_to_llm``。所有钩子契约：**不得抛异常**，
     失败时返回安全回退值。
@@ -481,7 +481,7 @@ AgentEvent: TypeAlias = Annotated[
     | ToolExecutionEndEvent,
     Field(discriminator="type"),
 ]
-"""agent 生命周期事件联合（对应 TS ``AgentEvent``）。"""
+"""agent 生命周期事件联合。"""
 
 
 __all__ = [

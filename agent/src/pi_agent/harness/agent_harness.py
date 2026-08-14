@@ -1,4 +1,4 @@
-"""AgentHarness 类（对应 ``harness/agent-harness.ts`` 的 scaffold 实现）。
+"""AgentHarness 类。
 
 当前实现为 scaffold：所有执行类方法返回 ``HarnessNotImplemented``，
 属性读写方法有实际实现。
@@ -56,7 +56,7 @@ if TYPE_CHECKING:
 
 
 class AgentHarness:
-    """AgentHarness scaffold 实现（对应 TS ``AgentHarness``）。
+    """AgentHarness scaffold 实现。  
 
     实现 ``AgentLane`` 协议，当前所有执行类方法返回
     ``HarnessNotImplemented`` 或 ``HarnessClosed``。
@@ -116,8 +116,8 @@ class AgentHarness:
     @staticmethod
     async def create(
         options: AgentHarnessOptions,
-    ) -> tuple[AgentHarness, list[object]]:
-        """静态工厂方法（对应 TS ``AgentHarness.create``）。"""
+        ) -> tuple[AgentHarness, list[object]]:
+        """静态工厂方法。"""
         return AgentHarness(options), []
 
     # ------------------------------------------------------------------
@@ -125,7 +125,7 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     def _unavailable(self, operation: str) -> HarnessNotImplemented | HarnessClosed:
-        """返回未实现或已关闭错误（对应 TS ``unavailable``）。
+        """返回未实现或已关闭错误。
 
         注意：TS 版本返回 ``Promise.reject(...)``，Python 侧直接抛出异常。
         """
@@ -134,7 +134,7 @@ class AgentHarness:
         raise HarnessNotImplemented(operation)
 
     async def _unavailable_async(self, operation: str) -> object:
-        """异步版本的 unavailable（对应 TS 返回 rejected Promise 的方法）。"""
+        """异步版本的 unavailable。"""
         raise self._unavailable(operation)
 
     # ------------------------------------------------------------------
@@ -200,11 +200,11 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def wait_for_idle(self) -> None:
-        """等待空闲（对应 TS ``waitForIdle``，当前为空实现）。"""
+        """等待空闲（当前为空实现）。"""
         return
 
     async def run_when_idle(self, callback: Callable[[], None | Awaitable[None]]) -> None:
-        """空闲时运行回调（对应 TS ``runWhenIdle``）。"""
+        """空闲时运行回调。"""
         result = callback()
         if hasattr(result, "__await__"):
             await result  # type: ignore[misc]
@@ -214,15 +214,15 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def peek_action(self) -> ActionInfo | None:
-        """查看待执行动作（对应 TS ``peekAction``）。"""
+        """查看待执行动作。"""
         return None
 
     async def execute_action(self) -> ActionInfo | None:
-        """执行动作（对应 TS ``executeAction``）。"""
+        """执行动作。"""
         return None
 
     async def run_to_completion(self) -> None:
-        """运行至完成（对应 TS ``runToCompletion``）。"""
+        """运行至完成（当前为空实现）。"""
         return
 
     # ------------------------------------------------------------------
@@ -267,7 +267,7 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def watch(self) -> WatchHandle[LaneSnapshot]:
-        """获取车道快照监听句柄（对应 TS ``watch``）。"""
+        """获取车道快照监听句柄。"""
         leaf_id = await self.get_leaf_id()
         transcript: list[object] = (
             [] if leaf_id is None
@@ -292,14 +292,14 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def lane(self, name: str) -> object | None:
-        """获取车道（对应 TS ``lane``）。"""
+        """获取车道。"""
         return self if name == "main" else None
 
     async def create_lane(self, name: str, at: str | None) -> CreateLaneResult:
         raise self._unavailable("createLane")
 
     async def lanes(self) -> list[LaneInfo]:
-        """获取所有车道信息（对应 TS ``lanes``）。"""
+        """获取所有车道信息。"""
         pointers = await self._durable_session.storage.get_lanes()
         return [
             LaneInfo(name=p.lane, leaf_id=p.leaf_id, operation=None)
@@ -390,7 +390,7 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def watch_session(self) -> WatchHandle[SessionSnapshot]:
-        """获取会话快照监听句柄（对应 TS ``watchSession``）。"""
+        """获取会话快照监听句柄。"""
         return WatchHandle[SessionSnapshot](
             snapshot=SessionSnapshot(
                 lanes=[],
@@ -403,5 +403,5 @@ class AgentHarness:
     # ------------------------------------------------------------------
 
     async def close(self) -> None:
-        """关闭 harness（对应 TS ``close``）。"""
+        """关闭 harness。"""
         self._closed = True

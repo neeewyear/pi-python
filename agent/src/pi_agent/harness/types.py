@@ -1,4 +1,4 @@
-"""harness 基础设施抽象（对应 ``harness/types.ts``）。
+"""harness 基础设施抽象。
 
 包含 ``Result`` 工具函数、``Skill`` / ``PromptTemplate``、文件与执行环境
 抽象（``FileSystem`` / ``Shell`` / ``ExecutionEnv``）以及各域错误类型。
@@ -57,7 +57,7 @@ FileErrorCode: TypeAlias = Literal[
     "not_supported",
     "unknown",
 ]
-"""后端无关的文件错误码（对应 TS ``FileErrorCode``）。"""
+"""后端无关的文件错误码。"""
 
 
 class FileError(AgentError):
@@ -79,7 +79,7 @@ ExecutionErrorCode: TypeAlias = Literal[
     "callback_error",
     "unknown",
 ]
-"""执行错误码（对应 TS ``ExecutionErrorCode``）。"""
+"""执行错误码。"""
 
 
 class ExecutionError(AgentError):

@@ -1,4 +1,4 @@
-"""OpenAI Responses API 主入口（对应 ``openai-responses.ts``）。"""
+"""OpenAI Responses API 主入口。"""
 
 from __future__ import annotations
 
@@ -165,7 +165,7 @@ from .simple_options import build_base_options
 
 
 class OpenAIResponsesOptions(StreamOptions):
-    """OpenAI Responses API 特定选项（对应 TS ``OpenAIResponsesOptions``）。"""
+    """OpenAI Responses API 特定选项。"""
 
     reasoning_effort: (
         Literal["minimal", "low", "medium", "high", "xhigh", "max"] | None
@@ -201,7 +201,7 @@ def stream(
     context: Context,
     options: OpenAIResponsesOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """OpenAI Responses API 流式生成函数（对应 TS ``stream``）。"""
+    """OpenAI Responses API 流式生成函数。"""   
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -369,7 +369,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     get_client_api_key(
         getattr(model, "provider", ""),
         options.api_key if options else None,
@@ -411,7 +411,7 @@ def create_client(
     fetch: Any = None,
     session_id: str | None = None,
 ) -> Any:
-    """创建 OpenAI 客户端（对应 TS ``createClient``）。"""
+    """创建 OpenAI 客户端。"""
     compat = get_compat(model)
     headers: dict[str, str | None] = {}
 
@@ -461,8 +461,8 @@ def build_params(
     options: OpenAIResponsesOptions | None = None,
     compat: dict[str, Any] | None = None,
     grammar_tool_input_properties: dict[str, str] | None = None,
-) -> dict[str, Any]:
-    """构建请求参数（对应 TS ``buildParams``）。"""
+    ) -> dict[str, Any]:
+    """构建请求参数。"""
     if compat is None:
         compat = get_compat(model)
     if grammar_tool_input_properties is None:
@@ -600,7 +600,7 @@ def get_service_tier_cost_multiplier(
     model: Any,
     service_tier: str | None,
 ) -> float:
-    """获取服务层级成本倍数（对应 TS ``getServiceTierCostMultiplier``）。"""
+    """获取服务层级成本倍数。"""
     if service_tier == "flex":
         return 0.5
     if service_tier == "priority":
@@ -613,7 +613,7 @@ def apply_service_tier_pricing(
     service_tier: str | None,
     model: Any,
 ) -> None:
-    """应用服务层级定价（对应 TS ``applyServiceTierPricing``）。"""
+    """应用服务层级定价。"""
     multiplier = get_service_tier_cost_multiplier(model, service_tier)
     if multiplier == 1.0:
         return

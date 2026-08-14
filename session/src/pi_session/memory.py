@@ -1,4 +1,4 @@
-"""内存会话存储（对应 ``harness/session/memory.ts``）。
+"""内存会话存储。
 
 ``InMemorySessionStorage`` 实现 ``SessionStorage`` 契约；``InMemorySessionRepo``
 实现 ``SessionRepo``（create / open / list / delete / fork）。
@@ -60,7 +60,7 @@ class InMemorySessionStorage(SessionStorage):
         return self._metadata
 
     async def get_stats(self) -> SessionStats:
-        """返回会话统计（增量维护，对应 TS ``getStats``）。"""
+        """返回会话统计（增量维护）。"""
         return self._stats
 
     # -- lanes -------------------------------------------------------------
@@ -107,7 +107,7 @@ class InMemorySessionStorage(SessionStorage):
         self._seq += 1
         stored = record.model_copy(update={"seq": self._seq, "timestamp": _now_ms()})
         self._records.append(stored)
-        # 增量维护恢复投影（对应 TS openOperationsByLane），避免恢复时全量扫描。
+        # 增量维护恢复投影，避免恢复时全量扫描。
         if isinstance(stored, OperationStartedRecord):
             lane_ops = self._open_operations_by_lane.setdefault(stored.lane, {})
             lane_ops[stored.id] = stored
@@ -145,7 +145,7 @@ class InMemorySessionStorage(SessionStorage):
         return entries
 
     async def find_entries_on_branch(self, query: BranchEntryQuery) -> list[Entry]:
-        """沿 parent 链从 ``query.start`` 回溯收集条目（对应 TS ``findEntriesOnBranch``）。"""
+        """沿 parent 链从 ``query.start`` 回溯收集条目。"""
         if query.start is None:
             raise SessionError(
                 "invalid_query", "find_entries_on_branch requires a start"

@@ -1,4 +1,4 @@
-"""Cloudflare AI Gateway Provider（对应 ``cloudflare-ai-gateway.ts``）。"""
+"""Cloudflare AI Gateway Provider。"""
 
 from __future__ import annotations
 

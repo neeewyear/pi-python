@@ -1,4 +1,4 @@
-"""OpenRouter Images Provider（对应 ``openrouter-images.ts``）。"""
+"""OpenRouter Images Provider。"""
 
 from __future__ import annotations
 

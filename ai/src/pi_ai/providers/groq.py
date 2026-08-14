@@ -1,4 +1,4 @@
-"""Groq Provider（对应 ``groq.ts``）。"""
+"""Groq Provider。"""
 
 from __future__ import annotations
 

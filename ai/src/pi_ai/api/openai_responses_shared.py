@@ -1,4 +1,4 @@
-"""OpenAI Responses API 格式转换、工具转换和流式处理逻辑（对应 ``openai-responses-shared.ts``）。
+"""OpenAI Responses API 格式转换、工具转换和流式处理逻辑。
 
 提供 ``convert_responses_messages``、``convert_responses_tools``、``process_responses_stream``
 三大核心函数，供 ``openai-responses`` 等上游模块使用。
@@ -17,7 +17,7 @@ from pydantic import BaseModel
 
 
 class OpenAIResponsesStreamOptions(BaseModel):
-    """OpenAI Responses 流式选项（对应 TS ``OpenAIResponsesStreamOptions``）。"""
+    """OpenAI Responses 流式选项。"""
 
     service_tier: str | None = None
     """请求的服务层（如 "auto"、"default"）。"""
@@ -30,7 +30,7 @@ class OpenAIResponsesStreamOptions(BaseModel):
 
 
 class ConvertResponsesMessagesOptions(BaseModel):
-    """消息转换选项（对应 TS ``ConvertResponsesMessagesOptions``）。"""
+    """消息转换选项。"""
 
     include_system_prompt: bool = True
     """是否包含系统提示词。"""
@@ -43,7 +43,7 @@ class ConvertResponsesMessagesOptions(BaseModel):
 
 
 class ConvertResponsesToolsOptions(BaseModel):
-    """工具转换选项（对应 TS ``ConvertResponsesToolsOptions``）。"""
+    """工具转换选项。"""    
 
     strict: bool | None = None
     """是否强制使用严格模式。"""
@@ -152,7 +152,7 @@ ToolResultOutputContent = list[dict[str, object]]
 
 
 class StreamingToolCall(BaseModel):
-    """流式工具调用（对应 TS ``StreamingToolCall``）。"""
+    """流式工具调用。"""
 
     type: Literal["toolCall"] = "toolCall"
     tool_call_id: str
@@ -178,7 +178,7 @@ ResponsesOutputSlot = (
 
 
 def encode_text_signature_v1(id: str, phase: str | None = None) -> str:
-    """编码文本签名 V1（对应 TS ``encodeTextSignatureV1``）。
+    """编码文本签名 V1。
 
     将 ID 和可选的阶段信息编码为 JSON 字符串，用于多轮对话中的消息 ID 追踪。
     """
@@ -193,7 +193,7 @@ def encode_text_signature_v1(id: str, phase: str | None = None) -> str:
 def parse_text_signature(
     signature: str | None,
 ) -> dict[str, str] | None:
-    """解析文本签名（对应 TS ``parseTextSignature``）。
+    """解析文本签名。
 
     尝试解析 JSON 格式的签名，如果失败则回退到直接使用签名文本作为 ID。
     """
@@ -223,7 +223,7 @@ def convert_tool_result_output(
     model: Any,
     content: list[Any],
 ) -> str | list[dict[str, object]]:
-    """转换工具结果输出（对应 TS ``convertToolResultOutput``）。
+    """转换工具结果输出。
 
     将内部工具结果内容转换为 OpenAI Responses API 格式。
     支持图片输出，但只有模型支持图片输入时才包含。
@@ -278,7 +278,7 @@ def convert_responses_messages(
     allowed_tool_call_providers: set[str],
     options: ConvertResponsesMessagesOptions | None = None,
 ) -> list[dict[str, object]]:
-    """将内部 Message 格式转换为 OpenAI Responses API 的 input 格式（对应 TS ``convertResponsesMessages``）。
+    """将内部 Message 格式转换为 OpenAI Responses API 的 input 格式。
 
     处理：
     - system/developer 角色
@@ -598,7 +598,7 @@ def convert_responses_tools(
     tools: list[Any],
     options: ConvertResponsesToolsOptions | None = None,
 ) -> list[dict[str, object]]:
-    """将内部 Tool 格式转换为 OpenAI 工具格式（对应 TS ``convertResponsesTools``）。
+    """将内部 Tool 格式转换为 OpenAI 工具格式。
 
     支持：
     - 语法约束采样（grammar constrained sampling）
@@ -666,7 +666,7 @@ def convert_responses_tools(
 
 
 def _get_custom_tool_call_input(block: StreamingToolCall) -> str:
-    """获取自定义工具调用的输入字符串（对应 TS ``getCustomToolCallInput``）。"""
+    """获取自定义工具调用的输入字符串。"""
     if block.custom_input is None:
         return ""
     property_name = block.custom_input.get("property", "")
@@ -681,7 +681,7 @@ def _append_custom_tool_call_input(
     next_input: str,
     close: bool,
 ) -> str | None:
-    """追加自定义工具调用输入 delta（对应 TS ``appendCustomToolCallInput``）。"""
+    """追加自定义工具调用输入 delta。"""
     from .constrained_sampling import append_grammar_tool_input_json_delta
 
     custom_input = block.custom_input
@@ -705,7 +705,7 @@ async def process_responses_stream(
     model: Any,
     options: OpenAIResponsesStreamOptions | None = None,
 ) -> None:
-    """处理 OpenAI Responses 流式事件（对应 TS ``processResponsesStream``）。
+    """处理 OpenAI Responses 流式事件。
 
     将 OpenAI 的 ``ResponseStreamEvent`` 流转换为内部 ``ResponsesStreamEvent`` 流，
     同时构建最终的 ``AssistantMessage`` 对象。
@@ -900,10 +900,10 @@ async def process_responses_stream(
                     "encrypted_content": encrypted,
                 },
                 separators=(",", ":"),
-            )
+                )
 
     def finalize_response(response: Any) -> None:
-        """终止响应处理（对应 TS ``finalizeResponse``）。"""
+        """终止响应处理。"""        
         nonlocal saw_terminal_response_event
         saw_terminal_response_event = True
 
@@ -1433,7 +1433,7 @@ def _map_stop_reason(
     status: str | None,
     incomplete_reason: str | None = None,
 ) -> dict[str, Any]:
-    """映射 OpenAI Responses 状态到内部 stop reason（对应 TS ``mapStopReason``）。"""
+    """映射 OpenAI Responses 状态到内部 stop reason。"""
 
     if not status:
         return {"stop_reason": "stop"}

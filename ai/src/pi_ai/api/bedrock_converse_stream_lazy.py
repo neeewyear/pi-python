@@ -1,4 +1,4 @@
-"""Bedrock Converse Stream API 延迟加载（对应 ``bedrock-converse-stream.lazy.ts``）。"""
+"""Bedrock Converse Stream API 延迟加载。"""
 
 from __future__ import annotations
 

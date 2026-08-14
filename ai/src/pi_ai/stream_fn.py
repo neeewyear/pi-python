@@ -1,4 +1,4 @@
-"""模块级默认 streamFn（对应 ``stream-fn.ts``）。
+"""模块级默认 streamFn。  
 
 宿主可在此安装默认模型运行时的 stream 函数，避免 pi-agent 依赖具体 provider。
 """

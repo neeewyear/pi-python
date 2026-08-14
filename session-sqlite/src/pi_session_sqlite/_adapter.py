@@ -1,4 +1,4 @@
-"""aiosqlite 适配器（对应 TS ``sqlite/index.ts`` 的适配层）。
+"""aiosqlite 适配器。
 
 将 ``aiosqlite`` 的异步 API 包装为异步的 ``SqliteDatabase`` 协议。
 """

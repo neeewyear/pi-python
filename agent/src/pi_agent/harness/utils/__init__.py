@@ -1,4 +1,4 @@
-"""工具函数（对应 ``harness/utils/``）。
+"""工具函数。
 
 - ``truncate``：文本截断算法（truncateHead / truncateTail / truncateLine / formatSize）
 - ``shell_output``：Shell 输出捕获（executeShellWithCapture / sanitizeBinaryOutput）

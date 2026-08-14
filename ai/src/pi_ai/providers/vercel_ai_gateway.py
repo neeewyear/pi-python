@@ -1,4 +1,4 @@
-"""Vercel AI Gateway Provider（对应 ``vercel-ai-gateway.ts``）。"""
+"""Vercel AI Gateway Provider。"""
 
 from __future__ import annotations
 

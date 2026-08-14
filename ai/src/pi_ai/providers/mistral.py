@@ -1,4 +1,4 @@
-"""Mistral Provider（对应 ``mistral.ts``）。"""
+"""Mistral Provider。"""
 
 from __future__ import annotations
 

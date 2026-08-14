@@ -1,4 +1,4 @@
-"""工具执行上下文（对应 ``harness/tools/tool-context.ts``）。
+"""工具执行上下文。
 
 为内置执行工具提供文件系统和 shell 能力。
 """

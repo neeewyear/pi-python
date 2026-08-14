@@ -1,4 +1,4 @@
-"""图片 MIME 类型检测与 Base64 编码（对应 ``harness/tools/image.ts``）。
+"""图片 MIME 类型检测与 Base64 编码。
 
 支持 JPEG / PNG / GIF / WebP / BMP 格式检测，以及自定义 Base64 编码。
 """
@@ -9,7 +9,7 @@ _PNG_SIGNATURE = bytes([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])
 
 
 def detect_supported_image_mime_type(buffer: bytes) -> str | None:
-    """检测图片 MIME 类型（对应 TS ``detectSupportedImageMimeType``）。
+    """检测图片 MIME 类型。
 
     支持 JPEG / PNG / GIF / WebP / BMP。返回 ``None`` 表示非图片或
     不被支持的格式。
@@ -28,7 +28,7 @@ def detect_supported_image_mime_type(buffer: bytes) -> str | None:
 
 
 def encode_base64(data: bytes) -> str:
-    """自定义 Base64 编码（对应 TS ``encodeBase64``）。"""
+    """自定义 Base64 编码。"""
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
     output: list[str] = []
     for i in range(0, len(data), 3):

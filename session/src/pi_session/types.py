@@ -1,4 +1,4 @@
-"""会话数据模型（对应 ``harness/session/types.ts``）。
+"""会话数据模型。
 
 - ``Entry``：7 种会话树条目（message / model_change / thinking_level_change /
   active_tools_change / compaction / branch_summary / custom）
@@ -139,7 +139,7 @@ EntryType: TypeAlias = Literal[
     "branch_summary",
     "custom",
 ]
-"""``Entry`` 判别字段的取值（对应 TS ``Entry["type"]``）。"""
+"""``Entry`` 判别字段的取值。"""
 
 
 # ---------------------------------------------------------------------------
@@ -311,7 +311,7 @@ LaneRecordType: TypeAlias = Literal[
     "write_deferred",
     "usage",
 ]
-"""``LaneRecord`` 判别字段的取值（对应 TS ``LaneRecord["type"]``）。"""
+"""``LaneRecord`` 判别字段的取值。"""
 
 
 # ---------------------------------------------------------------------------
@@ -541,7 +541,7 @@ SessionErrorCode: TypeAlias = Literal[
 
 
 class SessionError(Exception):
-    """会话错误（对应 TS ``SessionError``）。"""
+    """会话错误。"""
 
     def __init__(self, code: SessionErrorCode, message: str, cause: BaseException | None = None) -> None:
         super().__init__(message)

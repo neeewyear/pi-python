@@ -1,4 +1,4 @@
-"""Kimi Code (subscription) OAuth 设备码流程（对应 ``oauth/kimi-coding.ts``）。
+"""Kimi Code (subscription) OAuth 设备码流程。
 
 RFC 8628 device authorization grant 针对 https://auth.kimi.com，
 使用 JSON 响应。access token 用于向 https://api.kimi.com/coding 发起请求，

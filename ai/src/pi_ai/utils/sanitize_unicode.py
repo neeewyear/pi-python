@@ -1,4 +1,4 @@
-"""Unicode 清理工具（对应 ``utils/sanitize-unicode.ts``）。"""
+"""Unicode 清理工具。"""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ _UNPAIRED_SURROGATE_PATTERN = re.compile(
 
 
 def sanitize_surrogates(text: str) -> str:
-    """移除字符串中未配对的 Unicode 代理字符（对应 TS ``sanitizeSurrogates``）。
+    """移除字符串中未配对的 Unicode 代理字符。  
 
     有效的 emoji 和其他 BMP 之外的字符使用正确配对的代理，不会被影响。
     """

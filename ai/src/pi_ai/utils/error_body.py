@@ -1,4 +1,4 @@
-"""Provider HTTP 错误标准化（对应 ``utils/error-body.ts``）。
+"""Provider HTTP 错误标准化。
 
 提供 ``normalize_provider_error``、``format_provider_error``、
 ``truncate_error_text``、``safe_json_stringify``。
@@ -12,7 +12,7 @@ MAX_PROVIDER_ERROR_BODY_CHARS = 4000
 
 
 class NormalizedProviderError:
-    """标准化后的 provider 错误（对应 TS ``NormalizedProviderError``）。"""
+    """标准化后的 provider 错误。"""
 
     __slots__ = ("status", "body", "message", "message_carries_body")
 
@@ -30,7 +30,7 @@ class NormalizedProviderError:
 
 
 def normalize_provider_error(error: object) -> NormalizedProviderError:
-    """标准化 provider 错误（对应 TS ``normalizeProviderError``）。
+    """标准化 provider 错误。
 
     探测 SDK 错误对象的字段形状（statusCode、status、body、error、$metadata 等）。
     """
@@ -105,7 +105,7 @@ def _pick_body_text(error: BaseException) -> str | None:
 
 
 def _is_plain_non_empty_object(value: object) -> bool:
-    """检查是否为纯非空对象（对应 TS ``isPlainNonEmptyObject``）。"""
+    """检查是否为纯非空对象。"""
     if not isinstance(value, dict):
         return False
     return len(value) > 0
@@ -114,7 +114,7 @@ def _is_plain_non_empty_object(value: object) -> bool:
 def format_provider_error(
     norm: NormalizedProviderError, prefix: str | None = None
 ) -> str:
-    """格式化 provider 错误显示字符串（对应 TS ``formatProviderError``）。"""
+    """格式化 provider 错误显示字符串。"""
     if norm.message_carries_body or norm.status is None or norm.body is None:
         if prefix is not None and norm.status is not None:
             return f"{prefix} ({norm.status}): {norm.message}"
@@ -125,14 +125,14 @@ def format_provider_error(
 
 
 def truncate_error_text(text: str, max_chars: int) -> str:
-    """截断错误文本（对应 TS ``truncateErrorText``）。"""
+    """截断错误文本。"""
     if len(text) <= max_chars:
         return text
     return f"{text[:max_chars]}... [truncated {len(text) - max_chars} chars]"
 
 
 def safe_json_stringify(value: object) -> str:
-    """安全地 JSON 序列化（对应 TS ``safeJsonStringify``）。"""
+    """安全地 JSON 序列化。"""
     try:
         serialized = json.dumps(value)
         return serialized if serialized != "undefined" else str(value)

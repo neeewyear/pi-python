@@ -1,4 +1,4 @@
-"""模型运行时（对应 TS ``model-runtime.ts``）。
+"""模型运行时。
 
 ``ModelRuntime`` 是 coding-agent 的核心运行时，实现 ``Models`` 协议，
 管理 provider 注册、模型加载、认证和 API 调用。

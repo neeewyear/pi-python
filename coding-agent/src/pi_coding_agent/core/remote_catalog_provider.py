@@ -1,4 +1,4 @@
-"""远程模型目录提供者（对应 TS ``remote-catalog-provider.ts``）。
+"""远程模型目录提供者。
 
 为一个静态内置 provider 添加 pi.dev 远程模型目录覆盖层，支持：
 - 缓存 ETag 验证

@@ -1,4 +1,4 @@
-"""Agent 循环工具执行管线（对应 ``agent-loop.ts`` 工具执行部分）。
+"""Agent 循环工具执行管线。
 
 三阶段管线：
 1. **Clearance**：prepare_tool_call — 工具查找 → before_tool_call 拦截 → 参数校验
@@ -40,18 +40,18 @@ from .types import (
 # ---------------------------------------------------------------------------
 
 AgentEventSink: TypeAlias = Callable[[AgentEvent], Awaitable[None] | None]
-"""事件发射回调（对应 TS ``AgentEventSink``）。"""
+"""事件发射回调。"""
 
 
 class ExecutedToolCallBatch(TypedDict):
-    """工具批次执行结果（对应 TS ``ExecutedToolCallBatch``）。"""
+    """工具批次执行结果。"""
 
     messages: list[ToolResultMessage]
     terminate: bool
 
 
 class PreparedToolCall(TypedDict):
-    """已准备就绪的工具调用（对应 TS ``PreparedToolCall``）。"""
+    """已准备就绪的工具调用。"""
 
     kind: Literal["prepared"]
     tool_call: ToolCallContent
@@ -68,14 +68,14 @@ class ImmediateToolCallOutcome(TypedDict):
 
 
 class ExecutedToolCallOutcome(TypedDict):
-    """工具执行输出（对应 TS ``ExecutedToolCallOutcome``）。"""
+    """工具执行输出。"""
 
     result: AgentToolResult
     is_error: bool
 
 
 class FinalizedToolCallOutcome(TypedDict):
-    """最终化的工具调用结果（对应 TS ``FinalizedToolCallOutcome``）。"""
+    """最终化的工具调用结果。"""
 
     tool_call: ToolCallContent
     result: AgentToolResult
@@ -94,7 +94,7 @@ async def execute_tool_calls(
     signal: CancellationToken | None,
     emit: AgentEventSink,
 ) -> ExecutedToolCallBatch:
-    """路由到 sequential 或 parallel 执行（对应 TS ``executeToolCalls``）。"""
+    """路由到 sequential 或 parallel 执行。"""
     tool_calls = [
         c for c in assistant_message.content if isinstance(c, ToolCallContent)
     ]
@@ -264,7 +264,7 @@ async def prepare_tool_call(
     config: AgentLoopConfig,
     signal: CancellationToken | None,
 ) -> PreparedToolCall | ImmediateToolCallOutcome:
-    """准备工具调用（对应 TS ``prepareToolCall``）。
+    """准备工具调用。
 
     三阶段：
     1. 查找工具 → 不存在则返回 ImmediateToolCallOutcome(is_error=True)
@@ -330,7 +330,7 @@ async def prepare_tool_call(
 def prepare_tool_call_arguments(
     tool: AgentTool, tool_call: ToolCallContent
 ) -> ToolCallContent:
-    """应用工具的 prepare_arguments 钩子（对应 TS ``prepareToolCallArguments``）。"""
+    """应用工具的 prepare_arguments 钩子。"""
     if tool.prepare_arguments is None:
         return tool_call
     prepared_args = tool.prepare_arguments(tool_call.args)
@@ -342,7 +342,7 @@ def prepare_tool_call_arguments(
 def validate_tool_arguments(
     tool: AgentTool, tool_call: ToolCallContent
 ) -> dict[str, object]:
-    """校验工具调用参数（对应 TS ``validateToolArguments``）。
+    """校验工具调用参数。
 
     当前实现为基础校验：确保 args 为 dict。
     TODO：基于 tool.parameters JSON Schema 做深度校验。
@@ -362,7 +362,7 @@ async def execute_prepared_tool_call(
     signal: CancellationToken | None,
     emit: AgentEventSink,
 ) -> ExecutedToolCallOutcome:
-    """执行已准备的工具调用（对应 TS ``executePreparedToolCall``）。"""
+    """执行已准备的工具调用。"""
     update_events: list[Awaitable[None]] = []
     accepting_updates = True
 
@@ -413,7 +413,7 @@ async def finalize_executed_tool_call(
     config: AgentLoopConfig,
     signal: CancellationToken | None,
 ) -> FinalizedToolCallOutcome:
-    """应用 after_tool_call 钩子，逐字段覆盖结果（对应 TS ``finalizeExecutedToolCall``）。"""
+    """应用 after_tool_call 钩子，逐字段覆盖结果。"""
     result = executed["result"]
     is_error = executed["is_error"]
 
@@ -467,7 +467,7 @@ async def finalize_executed_tool_call(
 
 
 def create_error_tool_result(message: str) -> AgentToolResult:
-    """创建错误工具结果（对应 TS ``createErrorToolResult``）。"""
+    """创建错误工具结果。"""
     return AgentToolResult(
         content=[TextContent(text=message)],
         details={},
@@ -477,7 +477,7 @@ def create_error_tool_result(message: str) -> AgentToolResult:
 def create_tool_result_message(
     finalized: FinalizedToolCallOutcome,
 ) -> ToolResultMessage:
-    """将 FinalizedToolCallOutcome 转为 ToolResultMessage（对应 TS ``createToolResultMessage``）。"""
+    """将 FinalizedToolCallOutcome 转为 ToolResultMessage。"""
     result = finalized["result"]
     msg = ToolResultMessage(
         role="toolResult",
@@ -497,7 +497,7 @@ def create_tool_result_message(
 async def emit_tool_execution_end(
     finalized: FinalizedToolCallOutcome, emit: AgentEventSink
 ) -> None:
-    """发射 tool_execution_end 事件（对应 TS ``emitToolExecutionEnd``）。"""
+    """发射 tool_execution_end 事件。"""
     await _emit(
         emit,
         ToolExecutionEndEvent(
@@ -512,7 +512,7 @@ async def emit_tool_execution_end(
 async def emit_tool_result_message(
     tool_result_msg: ToolResultMessage, emit: AgentEventSink
 ) -> None:
-    """发射 toolResult 消息的 message_start / message_end 事件（对应 TS ``emitToolResultMessage``）。"""
+    """发射 toolResult 消息的 message_start / message_end 事件。"""
     await _emit(emit, MessageStartEvent(message=tool_result_msg))
     await _emit(emit, MessageEndEvent(message=tool_result_msg))
 
@@ -520,7 +520,7 @@ async def emit_tool_result_message(
 def should_terminate_tool_batch(
     finalized_calls: list[FinalizedToolCallOutcome],
 ) -> bool:
-    """所有工具调用一致要求终止时返回 True（对应 TS ``shouldTerminateToolBatch``）。"""
+    """所有工具调用一致要求终止时返回 True。"""
     return len(finalized_calls) > 0 and all(
         fc["result"].terminate for fc in finalized_calls
     )

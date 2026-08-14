@@ -1,4 +1,4 @@
-"""消息格式转换（对应 ``transform-messages.ts``）。"""
+"""消息格式转换"""
 
 from __future__ import annotations
 

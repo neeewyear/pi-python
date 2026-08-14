@@ -1,4 +1,4 @@
-"""SDK 入口：创建 AgentSession（对应 TS ``core/sdk.ts``）。
+"""SDK 入口：创建 AgentSession。
 
 提供 ``CreateAgentSessionOptions``、``CreateAgentSessionResult`` 和
 ``create_agent_session`` 函数。
@@ -57,13 +57,13 @@ from .tools import (
 )
 
 # ---------------------------------------------------------------------------
-# ExtensionRunner Protocol（对应 TS ``extensions/runner.ts``）
+# ExtensionRunner Protocol
 # 完整实现将在后续任务中创建
 # ---------------------------------------------------------------------------
 
 
 class ExtensionRunner(Protocol):
-    """扩展运行器（对应 TS ``ExtensionRunner``）。"""
+    """扩展运行器。"""
 
     async def emit_before_provider_headers(
         self, headers: dict[str, str | None]
@@ -90,7 +90,7 @@ set_default_stream_fn(stream_simple)
 
 
 class CreateAgentSessionOptions:
-    """创建 AgentSession 的选项（对应 TS ``CreateAgentSessionOptions``）。
+    """创建 AgentSession 的选项。
 
     Attributes:
         cwd: 项目本地发现的工作目录。默认: ``os.getcwd()``。
@@ -149,7 +149,7 @@ class CreateAgentSessionOptions:
 
 
 class CreateAgentSessionResult:
-    """``create_agent_session`` 的结果（对应 TS ``CreateAgentSessionResult``）。
+    """``create_agent_session`` 的结果。    
 
     Attributes:
         session: 创建的会话。
@@ -191,7 +191,7 @@ def _resolve_path(path_str: str) -> str:
 async def create_agent_session(
     options: CreateAgentSessionOptions | None = None,
 ) -> CreateAgentSessionResult:
-    """使用指定选项创建 AgentSession（对应 TS ``createAgentSession``）。"""
+    """使用指定选项创建 AgentSession。"""
     opts = options or CreateAgentSessionOptions()
 
     cwd = _resolve_path(
@@ -523,7 +523,7 @@ def _make_transform_context(
 # 再导出
 # ---------------------------------------------------------------------------
 
-# 类型再导出（对应 TS 的 export type {...}）
+# 类型再导出
 from pi_agent.types import AgentTool as Tool
 
 from .agent_session_runtime import (

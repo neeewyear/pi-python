@@ -1,4 +1,4 @@
-"""SQLite 分支缓存管理（对应 TS ``sqlite/branch-cache.ts``）。"""
+"""SQLite 分支缓存管理。"""
 
 from __future__ import annotations
 

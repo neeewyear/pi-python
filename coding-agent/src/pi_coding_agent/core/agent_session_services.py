@@ -1,4 +1,4 @@
-"""Agent session services (对应 TS ``core/agent-session-services.ts``)。
+"""Agent session services。 
 
 提供创建 cwd 绑定的运行时服务以及从已创建服务构建 AgentSession 的函数。
 """
@@ -22,7 +22,7 @@ from .settings_manager import SettingsManager
 
 
 class AgentSessionRuntimeDiagnostic:
-    """非致命运行时诊断（对应 TS ``AgentSessionRuntimeDiagnostic``）。
+    """非致命运行时诊断。
 
     在创建服务或会话时收集，由应用层决定是否显示警告或中止启动。
     """
@@ -37,7 +37,7 @@ class AgentSessionRuntimeDiagnostic:
 
 
 class CreateAgentSessionServicesOptions:
-    """创建 cwd 绑定运行时服务的输入（对应 TS ``CreateAgentSessionServicesOptions``）。
+    """创建 cwd 绑定运行时服务的输入。
 
     这些服务在有效会话 cwd 变化时重建。
     CLI 提供的资源路径应在到达此函数前解析为绝对路径，
@@ -66,7 +66,7 @@ class CreateAgentSessionServicesOptions:
 
 
 class CreateAgentSessionFromServicesOptions:
-    """从已创建服务构建 AgentSession 的输入（对应 TS ``CreateAgentSessionFromServicesOptions``）。
+    """从已创建服务构建 AgentSession 的输入。
 
     在服务已存在且 cwd 绑定的模型/工具/会话选项已针对这些服务解析后使用。
     """
@@ -97,7 +97,7 @@ class CreateAgentSessionFromServicesOptions:
 
 
 class AgentSessionServices:
-    """一个有效会话 cwd 的连贯 cwd 绑定运行时服务（对应 TS ``AgentSessionServices``）。
+    """一个有效会话 cwd 的连贯 cwd 绑定运行时服务。
 
     仅基础设施。AgentSession 本身是单独创建的，
     以便会话选项可以先针对这些服务进行解析。
@@ -134,7 +134,7 @@ def _apply_extension_flag_values(
     resource_loader: Any,
     extension_flag_values: dict[str, bool | str] | None,
 ) -> list[AgentSessionRuntimeDiagnostic]:
-    """应用扩展标志值（对应 TS ``applyExtensionFlagValues``）。"""
+    """应用扩展标志值。"""
     if not extension_flag_values:
         return []
 
@@ -185,7 +185,7 @@ def _apply_extension_flag_values(
 async def create_agent_session_services(
     options: CreateAgentSessionServicesOptions,
 ) -> AgentSessionServices:
-    """创建 cwd 绑定的运行时服务（对应 TS ``createAgentSessionServices``）。
+    """创建 cwd 绑定的运行时服务。
 
     返回服务加诊断信息。不创建 AgentSession。
     """
@@ -265,7 +265,7 @@ async def create_agent_session_services(
 async def create_agent_session_from_services(
     options: CreateAgentSessionFromServicesOptions,
 ) -> Any:
-    """从已创建服务构建 AgentSession（对应 TS ``createAgentSessionFromServices``）。
+    """从已创建服务构建 AgentSession。
 
     将会话创建与服务创建分离，以便调用方在构建会话前
     可以针对目标 cwd 解析模型、思考级别、工具和其他会话输入。

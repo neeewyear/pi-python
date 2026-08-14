@@ -1,4 +1,4 @@
-"""Fireworks AI Provider（对应 ``fireworks.ts``）。"""
+"""Fireworks AI Provider。"""
 
 from __future__ import annotations
 

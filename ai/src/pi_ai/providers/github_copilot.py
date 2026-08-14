@@ -1,4 +1,4 @@
-"""GitHub Copilot Provider（对应 ``github-copilot.ts``）。"""
+"""GitHub Copilot Provider。"""
 
 from __future__ import annotations
 

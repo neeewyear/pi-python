@@ -1,4 +1,4 @@
-"""MiniMax CN Provider（对应 ``minimax-cn.ts``）。"""
+"""MiniMax CN Provider。"""
 
 from __future__ import annotations
 

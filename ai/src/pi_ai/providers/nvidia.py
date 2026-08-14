@@ -1,4 +1,4 @@
-"""NVIDIA Provider（对应 ``nvidia.ts``）。"""
+"""NVIDIA Provider。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Cloudflare 认证实现（对应 ``cloudflare-auth.ts``）。"""
+"""Cloudflare 认证实现。"""
 
 from __future__ import annotations
 

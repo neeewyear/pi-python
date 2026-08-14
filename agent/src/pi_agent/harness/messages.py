@@ -1,4 +1,4 @@
-"""自定义消息与 LLM 转换（对应 ``harness/messages.ts``）。
+"""自定义消息与 LLM 转换。
 
 将四种自定义消息（bashExecution / custom / branchSummary / compactionSummary）
 转换为 LLM 可理解的 ``user`` 消息；标准消息原样透传。

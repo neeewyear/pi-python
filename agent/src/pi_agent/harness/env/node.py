@@ -1,4 +1,4 @@
-"""Shell 执行 + NodeExecutionEnv（对应 ``harness/env/nodejs.ts`` 的 Shell 部分）。
+"""Shell 执行 + NodeExecutionEnv。
 
 组合 ``NodeFileSystem`` 实现完整的 ``ExecutionEnv`` 协议。
 """
@@ -31,7 +31,7 @@ EXIT_STDIO_GRACE_SECONDS = 0.1
 
 
 def _resolve_timeout_ms(timeout: int | None) -> Result[int | None, ExecutionError]:
-    """校验并转换超时（对应 TS ``resolveTimeoutMs``）。"""
+    """校验并转换超时。"""
     if timeout is None:
         return ok(None)
     if not isinstance(timeout, (int, float)) or timeout <= 0:
@@ -52,7 +52,7 @@ def _resolve_timeout_ms(timeout: int | None) -> Result[int | None, ExecutionErro
 
 
 async def _find_bash_on_path() -> str | None:
-    """在 PATH 中查找 bash（对应 TS ``findBashOnPath``）。"""
+    """在 PATH 中查找 bash。"""
     try:
         proc = await asyncio.create_subprocess_exec(
             "which",
@@ -73,7 +73,7 @@ async def _find_bash_on_path() -> str | None:
 async def _get_shell_config(
     custom_shell_path: str | None = None,
 ) -> Result[tuple[str, list[str], str | None], ExecutionError]:
-    """获取 shell 配置（对应 TS ``getShellConfig``）。
+    """获取 shell 配置。
 
     返回 ``(shell_path, args, command_transport)``。
     command_transport 为 "stdin" 表示通过 stdin 传命令，否则通过 argv。
@@ -105,7 +105,7 @@ def _get_shell_env(
     extra_env: dict[str, str] | None = None,
     inherit_env: bool = True,
 ) -> dict[str, str] | None:
-    """构建 shell 环境变量（对应 TS ``getShellEnv``）。"""
+    """构建 shell 环境变量。"""
     if not inherit_env:
         return {**(extra_env or {})}
     result = dict(os.environ)
@@ -117,7 +117,7 @@ def _get_shell_env(
 
 
 def _kill_process_tree(pid: int) -> None:
-    """杀掉进程树（对应 TS ``killProcessTree``，macOS 实现）。"""
+    """杀掉进程树（macOS 实现）。"""
     try:
         os.killpg(pid, signal.SIGKILL)
     except (ProcessLookupError, OSError):
@@ -133,7 +133,7 @@ def _kill_process_tree(pid: int) -> None:
 
 
 class NodeExecutionEnv(NodeFileSystem):
-    """执行环境（对应 TS ``NodeExecutionEnv``）。
+    """执行环境。
 
     组合 ``NodeFileSystem`` 并实现 ``Shell`` 协议，提供完整的
     ``ExecutionEnv`` 实现。
@@ -155,7 +155,7 @@ class NodeExecutionEnv(NodeFileSystem):
     async def exec(
         self, command: str, options: ShellExecOptions | None = None
     ) -> Result[ShellExecResult, ExecutionError]:
-        """执行 shell 命令（对应 TS ``exec``）。"""
+        """执行 shell 命令。"""
         opts = options or ShellExecOptions()
 
         # 检查 abort
@@ -324,7 +324,7 @@ class NodeExecutionEnv(NodeFileSystem):
     # ---- 清理 ------------------------------------------------------------
 
     async def cleanup(self) -> None:
-        """清理所有活跃子进程（对应 TS ``cleanup``）。"""
+        """清理所有活跃子进程。"""
         for pid in self._active_child_pids:
             _kill_process_tree(pid)
         self._active_child_pids.clear()

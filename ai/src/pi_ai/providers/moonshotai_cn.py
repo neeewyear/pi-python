@@ -1,4 +1,4 @@
-"""Moonshot AI CN Provider（对应 ``moonshotai-cn.ts``）。"""
+"""Moonshot AI CN Provider。"""
 
 from __future__ import annotations
 

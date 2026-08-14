@@ -1,4 +1,4 @@
-"""OAuth 页面处理（对应 ``oauth/oauth-page.ts``）。"""
+"""OAuth 页面处理。"""
 
 from __future__ import annotations
 

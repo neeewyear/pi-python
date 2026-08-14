@@ -1,4 +1,4 @@
-"""Radius gateway Provider（对应 ``radius.ts``）。"""
+"""Radius gateway Provider。"""
 
 from __future__ import annotations
 

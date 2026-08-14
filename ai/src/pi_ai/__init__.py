@@ -1,6 +1,5 @@
 """pi-ai: Unified LLM API layer for pi.
 
-对应 ``pi/packages/ai/src/index.ts``。
 """
 
 from __future__ import annotations

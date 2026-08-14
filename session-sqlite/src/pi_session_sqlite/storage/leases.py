@@ -1,4 +1,4 @@
-"""SQLite 租约表存储（对应 TS ``sqlite/storage/leases.ts``）。"""
+"""SQLite 租约表存储。"""
 
 from __future__ import annotations
 

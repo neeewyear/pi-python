@@ -1,4 +1,4 @@
-"""Qwen Token Plan CN Provider（对应 ``qwen-token-plan-cn.ts``）。"""
+"""Qwen Token Plan CN Provider。"""
 
 from __future__ import annotations
 

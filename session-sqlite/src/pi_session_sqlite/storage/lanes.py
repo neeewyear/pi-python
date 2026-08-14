@@ -1,4 +1,4 @@
-"""SQLite lane 表存储（对应 TS ``sqlite/storage/lanes.ts``）。"""
+"""SQLite lane 表存储。"""
 
 from __future__ import annotations
 

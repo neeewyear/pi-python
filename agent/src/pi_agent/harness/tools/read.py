@@ -1,4 +1,4 @@
-"""Read 工具（对应 ``harness/tools/read.ts``）。
+"""Read 工具。
 
 提供 ``createReadTool`` 工厂函数，支持文本文件读取（offset/limit + 截断）
 与图片文件读取（MIME 检测 + Base64 编码）。
@@ -31,7 +31,7 @@ from .tool_context import ExecutionToolContext
 
 
 class ReadToolInput(BaseModel):
-    """Read 工具输入参数（对应 TS ``ReadToolInput``）。"""
+    """Read 工具输入参数。"""
 
     path: str
     offset: int | None = None
@@ -39,23 +39,23 @@ class ReadToolInput(BaseModel):
 
 
 class ReadToolDetails(BaseModel):
-    """Read 工具输出详情（对应 TS ``ReadToolDetails``）。"""
+    """Read 工具输出详情。"""
 
     truncation: TruncationResult | None = None
 
 
 ReadImageProcessorResult = dict[str, object]
-"""图片处理器结果（对应 TS ``ReadImageProcessorResult``）。"""
+"""图片处理器结果。"""
 
 ReadImageProcessor = Callable[
     [bytes, str, dict[str, object]],
     Awaitable[ReadImageProcessorResult],
 ]
-"""图片处理器（对应 TS ``ReadImageProcessor``）。"""
+"""图片处理器。"""
 
 
 class ReadToolOptions(BaseModel):
-    """Read 工具选项（对应 TS ``ReadToolOptions``）。"""
+    """Read 工具选项。"""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -71,7 +71,7 @@ class ReadToolOptions(BaseModel):
 def create_read_tool(
     options: ReadToolOptions | None = None,
 ) -> AgentHarnessTool:
-    """创建 Read 工具（对应 TS ``createReadTool``）。"""
+    """创建 Read 工具。"""
     opts = options or ReadToolOptions()
 
     async def _execute(

@@ -1,4 +1,4 @@
-"""Together AI Provider（对应 ``together.ts``）。"""
+"""Together AI Provider。"""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Azure OpenAI Responses Provider（对应 ``azure-openai-responses.ts``）。"""
+"""Azure OpenAI Responses Provider。"""
 
 from __future__ import annotations
 

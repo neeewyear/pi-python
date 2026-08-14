@@ -1,6 +1,5 @@
 """Agent session runtime - owns the current AgentSession plus its cwd-bound services.
 
-Corresponds to TS ``core/agent-session-runtime.ts``.
 """
 
 from __future__ import annotations

@@ -40,21 +40,21 @@ BASH_UPDATE_THROTTLE_MS = 100
 
 
 class BashToolInput(BaseModel):
-    """Bash tool input parameters (corresponds to TS ``BashToolInput``)."""
+    """Bash tool input parameters."""
 
     command: str
     timeout: int | None = None
 
 
 class BashToolDetails(BaseModel):
-    """Bash tool output details (corresponds to TS ``BashToolDetails``)."""
+    """Bash tool output details."""
 
     truncation: object | None = None
     full_output_path: str | None = None
 
 
 class BashSpawnContext(BaseModel):
-    """Bash spawn context (corresponds to TS ``BashSpawnContext``)."""
+    """Bash spawn context."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -98,7 +98,7 @@ class BashOperations:
     """Pluggable operations for the bash tool.
 
     Override these to delegate command execution to remote systems.
-    Corresponds to TS ``BashOperations``.
+
     """
 
     async def exec(
@@ -175,7 +175,7 @@ class BashOperations:
 
 
 class BashToolOptions(BaseModel):
-    """Bash tool options (corresponds to TS ``BashToolOptions``)."""
+    """Bash tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -208,7 +208,6 @@ def create_bash_tool_definition(
 ) -> ToolDefinition[BashToolDetails | None]:
     """Create a bash tool definition.
 
-    Corresponds to TS ``createBashToolDefinition``.
     """
     ops = (
         options.operations
@@ -415,6 +414,6 @@ def create_bash_tool(
 ) -> AgentTool:
     """Create a bash tool (AgentTool).
 
-    Corresponds to TS ``createBashTool``.
+
     """
     return wrap_tool_definition(create_bash_tool_definition(cwd, options))

@@ -35,7 +35,7 @@ from .truncate import (
 
 
 class GrepToolInput(BaseModel):
-    """Grep tool input parameters (corresponds to TS ``GrepToolInput``)."""
+    """Grep tool input parameters."""
 
     pattern: str
     path: str | None = None
@@ -47,7 +47,7 @@ class GrepToolInput(BaseModel):
 
 
 class GrepToolDetails(BaseModel):
-    """Grep tool output details (corresponds to TS ``GrepToolDetails``)."""
+    """Grep tool output details."""
 
     truncation: TruncationResult | None = None
     match_limit_reached: int | None = None
@@ -63,7 +63,7 @@ class GrepOperations:
     """Pluggable operations for the grep tool.
 
     Override these to delegate search to remote systems.
-    Corresponds to TS ``GrepOperations``.
+
     """
 
     async def is_directory(self, absolute_path: str) -> bool:
@@ -84,7 +84,7 @@ class GrepOperations:
 
 
 class GrepToolOptions(BaseModel):
-    """Grep tool options (corresponds to TS ``GrepToolOptions``)."""
+    """Grep tool options."""
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -109,7 +109,7 @@ def create_grep_tool_definition(
 ) -> ToolDefinition[GrepToolDetails | None]:
     """Create a grep tool definition.
 
-    Corresponds to TS ``createGrepToolDefinition``.
+
     """
     custom_ops = options.operations if options is not None else None
 
@@ -414,6 +414,5 @@ def create_grep_tool(
 ) -> AgentTool:
     """Create a grep tool (AgentTool).
 
-    Corresponds to TS ``createGrepTool``.
     """
     return wrap_tool_definition(create_grep_tool_definition(cwd, options))

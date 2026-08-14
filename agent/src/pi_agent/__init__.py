@@ -1,4 +1,4 @@
-"""Pi Agent 的 Python 重构包（对应 ``pi/packages/agent/src/index.ts`` 导出面）。
+"""Pi Agent 的 Python 重构包。
 
 全部 11 阶段已完成，包含以下模块：
 

@@ -1,4 +1,4 @@
-"""图片生成内置 provider 注册（对应 ``images/register-builtins.ts``）。"""
+"""图片生成内置 provider 注册。"""
 
 from __future__ import annotations
 

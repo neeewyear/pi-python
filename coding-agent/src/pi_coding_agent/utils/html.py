@@ -1,4 +1,4 @@
-"""HTML 处理工具（对应 TS ``utils/html.ts``）。
+"""HTML 处理工具。
 
 提供 ``escape_html`` 函数，用于 HTML 转义。
 """

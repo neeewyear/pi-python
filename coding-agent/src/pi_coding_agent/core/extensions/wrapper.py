@@ -1,4 +1,4 @@
-"""工具包装器（对应 TS ``core/extensions/wrapper.ts``）。
+"""工具包装器。
 
 这些包装器仅适配工具执行，使扩展工具接收运行器上下文。
 工具调用和工具结果拦截由 AgentSession 通过 agent-core 钩子处理。

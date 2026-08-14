@@ -1,4 +1,4 @@
-"""Google Vertex AI API 延迟加载（对应 ``google-vertex.lazy.ts``）。"""
+"""Google Vertex AI API 延迟加载。"""
 
 from __future__ import annotations
 

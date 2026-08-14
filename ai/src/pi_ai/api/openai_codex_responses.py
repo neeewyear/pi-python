@@ -1,4 +1,4 @@
-"""OpenAI Codex Responses API 实现（对应 ``openai-codex-responses.ts``）。
+"""OpenAI Codex Responses API 实现。
 
 提供 ``stream``、``stream_simple`` 函数，以及 WebSocket 相关占位实现。
 """
@@ -82,7 +82,7 @@ CodexResponseStatus = Literal[
 
 
 class OpenAICodexResponsesOptions(StreamOptions):
-    """OpenAI Codex Responses 选项（对应 TS ``OpenAICodexResponsesOptions``）。"""
+    """OpenAI Codex Responses 选项。"""
 
     reasoning_effort: (
         Literal["none", "minimal", "low", "medium", "high", "xhigh", "max"] | None
@@ -115,7 +115,7 @@ class OpenAICodexResponsesOptions(StreamOptions):
 
 
 class RequestBody(dict[str, Any]):
-    """Codex 请求体（对应 TS ``RequestBody``）。"""
+    """Codex 请求体。"""
 
 
 SuccessfulAssistantMessage = AssistantMessage
@@ -240,7 +240,7 @@ def stream(
     context: Context,
     options: OpenAICodexResponsesOptions | None = None,
 ) -> AssistantMessageEventStream:
-    """Codex Responses API 流式生成（对应 TS ``stream``）。"""
+    """Codex Responses API 流式生成函数。"""
     event_stream = AssistantMessageEventStream()
 
     async def _run() -> None:
@@ -447,7 +447,7 @@ def stream_simple(
     context: Context,
     options: Any | None = None,
 ) -> AssistantMessageEventStream:
-    """简化的流式接口（对应 TS ``streamSimple``）。"""
+    """简化的流式接口。"""
     api_key = options.api_key if options else None
     if not api_key:
         raise ValueError(f"No API key for provider: {getattr(model, 'provider', '')}")
@@ -485,7 +485,7 @@ def build_request_body(
     cache_session_id: str | None = None,
     grammar_tool_input_properties: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    """构建 Codex 请求体（对应 TS ``buildRequestBody``）。"""
+    """构建 Codex 请求体。"""
     compat = getattr(model, "compat", None) or {}
     supports_strict_mode = (
         compat.get("supportsStrictMode", True) if isinstance(compat, dict) else True
@@ -570,7 +570,7 @@ def get_service_tier_cost_multiplier(
     model: Any,
     service_tier: str | None,
 ) -> float:
-    """获取服务层成本乘数（对应 TS ``getServiceTierCostMultiplier``）。"""
+    """获取服务层成本乘数。"""
     if service_tier == "flex":
         return 0.5
     if service_tier == "priority":
@@ -584,7 +584,7 @@ def apply_service_tier_pricing(
     service_tier: str | None,
     model: Any,
 ) -> None:
-    """应用服务层定价调整（对应 TS ``applyServiceTierPricing``）。"""
+    """应用服务层定价调整。"""
     multiplier = get_service_tier_cost_multiplier(model, service_tier)
     if multiplier == 1.0:
         return
@@ -605,7 +605,7 @@ def resolve_codex_service_tier(
     response_service_tier: str | None,
     request_service_tier: str | None,
 ) -> str | None:
-    """解析 Codex 服务层（对应 TS ``resolveCodexServiceTier``）。"""
+    """解析 Codex 服务层。"""
     if response_service_tier == "default" and request_service_tier in (
         "flex",
         "priority",
@@ -615,7 +615,7 @@ def resolve_codex_service_tier(
 
 
 def resolve_codex_url(base_url: str | None = None) -> str:
-    """解析 Codex URL（对应 TS ``resolveCodexUrl``）。"""
+    """解析 Codex URL。"""
     raw = base_url.strip() if base_url and base_url.strip() else DEFAULT_CODEX_BASE_URL
     normalized = raw.rstrip("/")
     if normalized.endswith("/codex/responses"):
@@ -626,7 +626,7 @@ def resolve_codex_url(base_url: str | None = None) -> str:
 
 
 def resolve_codex_websocket_url(base_url: str | None = None) -> str:
-    """解析 Codex WebSocket URL（对应 TS ``resolveCodexWebSocketUrl``）。"""
+    """解析 Codex WebSocket URL。"""
     url = resolve_codex_url(base_url)
     if url.startswith("https:"):
         url = "wss:" + url[6:]
@@ -648,7 +648,7 @@ async def process_stream(
     grammar_tool_input_properties: dict[str, str],
     options: OpenAICodexResponsesOptions | None = None,
 ) -> None:
-    """处理 Codex 流式响应（对应 TS ``processStream``）。"""
+    """处理 Codex 流式响应。"""
     await process_responses_stream(
         map_codex_events(parse_sse(response)),
         output,
@@ -666,7 +666,7 @@ async def process_stream(
 
 
 class CodexApiError(Exception):
-    """Codex API 错误（对应 TS ``CodexApiError``）。"""
+    """Codex API 错误。"""
 
     def __init__(
         self,
@@ -683,7 +683,7 @@ class CodexApiError(Exception):
 
 
 class CodexProtocolError(Exception):
-    """Codex 协议错误（对应 TS ``CodexProtocolError``）。"""
+    """Codex 协议错误。"""
 
     def __init__(
         self,
@@ -745,7 +745,7 @@ def extract_codex_event_error(event: dict[str, Any]) -> dict[str, str | None]:
 async def map_codex_events(
     events: AsyncIterable[dict[str, Any]],
 ) -> AsyncGenerator[Any, None]:
-    """映射 Codex 事件到标准 Responses 事件（对应 TS ``mapCodexEvents``）。"""
+    """映射 Codex 事件到标准 Responses 事件。"""    
     async for event in events:
         event_type = event.get("type")
         if not isinstance(event_type, str):
@@ -807,7 +807,7 @@ def normalize_codex_status(status: Any) -> CodexResponseStatus | None:
 
 
 async def parse_sse(response: httpx.Response) -> AsyncGenerator[dict[str, Any], None]:
-    """解析 SSE 流（对应 TS ``parseSSE``）。
+    """解析 SSE 流。
 
     使用 httpx 的 ``aiter_lines`` 逐行读取，按 ``\\n\\n`` 分隔事件。
     """
@@ -845,7 +845,7 @@ SESSION_WEBSOCKET_CACHE_TTL_MS = 5 * 60 * 1000
 SESSION_WEBSOCKET_MAX_AGE_MS = 55 * 60 * 1000
 
 OpenAICodexWebSocketDebugStats: type = dict
-"""WebSocket 调试统计（对应 TS ``OpenAICodexWebSocketDebugStats``）。"""
+"""WebSocket 调试统计。"""
 
 # WebSocket 会话缓存（占位）
 _websocket_session_cache: dict[str, dict[str, Any]] = {}
@@ -903,7 +903,7 @@ def close_openai_codex_websocket_sessions(session_id: str | None = None) -> None
 
 
 def extract_account_id(token: str) -> str:
-    """从 JWT token 中提取 account ID（对应 TS ``extractAccountId``）。"""
+    """从 JWT token 中提取 account ID。"""
     try:
         parts = token.split(".")
         if len(parts) != 3:
@@ -934,7 +934,7 @@ def build_base_codex_headers(
     account_id: str,
     token: str,
 ) -> dict[str, str]:
-    """构建基础 Codex 请求头（对应 TS ``buildBaseCodexHeaders``）。"""
+    """构建基础 Codex 请求头。"""
     headers: dict[str, str] = dict(init_headers or {})
 
     if additional_headers:
@@ -959,8 +959,8 @@ def build_sse_headers(
     account_id: str,
     token: str,
     session_id: str | None = None,
-) -> dict[str, str]:
-    """构建 SSE 请求头（对应 TS ``buildSSEHeaders``）。"""
+    ) -> dict[str, str]:
+    """构建 SSE 请求头。""" 
     headers = build_base_codex_headers(
         init_headers, additional_headers, account_id, token
     )
@@ -982,7 +982,7 @@ def build_websocket_headers(
     token: str,
     request_id: str,
 ) -> dict[str, str]:
-    """构建 WebSocket 请求头（对应 TS ``buildWebSocketHeaders``）。"""
+    """构建 WebSocket 请求头。"""
     headers = build_base_codex_headers(
         init_headers, additional_headers, account_id, token
     )
@@ -1006,7 +1006,7 @@ async def parse_error_response(
     status: int,
     status_text: str,
 ) -> dict[str, str]:
-    """解析错误响应（对应 TS ``parseErrorResponse``）。"""
+    """解析错误响应。"""
     message = text or status_text or "Request failed"
     friendly_message: str | None = None
 
@@ -1052,7 +1052,7 @@ async def parse_error_response(
 
 
 def assert_successful_output(output: AssistantMessage) -> None:
-    """断言输出成功（对应 TS ``assertSuccessfulOutput``）。"""
+    """断言输出成功。"""
     if output.stop_reason == "pending":
         raise RuntimeError("Codex stream ended without a stop reason")
     if output.stop_reason in ("error", "aborted"):

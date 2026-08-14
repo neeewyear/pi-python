@@ -1,4 +1,4 @@
-"""路径解析工具（对应 ``harness/tools/path-utils.ts``）。
+"""路径解析工具。
 
 提供 Unicode 空格规范化与文件读取路径解析。
 """
@@ -26,7 +26,7 @@ async def resolve_tool_path(
     path: str,
     signal: CancellationToken | None = None,
 ) -> str:
-    """解析工具路径为绝对路径（对应 TS ``resolveToolPath``）。"""
+    """解析工具路径为绝对路径。"""
     return get_or_throw(await env.absolute_path(_normalize_tool_path(path), signal))
 
 
@@ -35,7 +35,7 @@ async def resolve_read_tool_path(
     path: str,
     signal: CancellationToken | None = None,
 ) -> str:
-    """解析读取工具路径，尝试多种变体（对应 TS ``resolveReadToolPath``）。"""
+    """解析读取工具路径，尝试多种变体。"""
     resolved = await resolve_tool_path(env, path, signal)
     variants = [
         resolved,
@@ -57,6 +57,6 @@ async def resolve_read_tool_path(
 
 
 def _normalize_nfd(text: str) -> str:
-    """NFD 归一化（对应 JS ``String.prototype.normalize("NFD")``）。"""
+    """NFD 归一化。"""
     import unicodedata
     return unicodedata.normalize("NFD", text)

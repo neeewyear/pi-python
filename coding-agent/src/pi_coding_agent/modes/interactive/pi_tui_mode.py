@@ -72,7 +72,6 @@ def _detect_theme_from_env() -> str | None:
     """从 ``COLORFGBG`` 环境变量探测终端明暗。
 
     COLORFGBG 形如 "fg;bg"，bg 为 ANSI 色号（0-15）；色号 >= 8 为亮色系。
-    对应 TS ``detectTerminalBackgroundFromEnv``（getAnsiColorLuminance 判断）。
     """
     raw = os.environ.get("COLORFGBG", "")
     if not raw:

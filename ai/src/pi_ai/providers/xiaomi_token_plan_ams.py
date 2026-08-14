@@ -1,4 +1,4 @@
-"""Xiaomi Token Plan AMS Provider（对应 ``xiaomi-token-plan-ams.ts``）。"""
+"""Xiaomi Token Plan AMS Provider。"""
 
 from __future__ import annotations
 
